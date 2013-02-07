@@ -39,7 +39,7 @@ db = SQLAlchemy(_uri_to_database_)
 
 The class also provides access to all the SQLAlchemy
 functions from the `sqlalchemy` and `sqlalchemy.orm` modules.
-So you can declare models like this::
+So you can declare models like this:
 
 ```python
 class User(db.Model):
@@ -50,7 +50,7 @@ class User(db.Model):
 In a web application you need to call `db.session.remove()`
 after each response, and `db.session.rollback()` if an error occurs.
 If your application object has a `after_request` and `on_exception
-decorators, just pass that object at creation::
+decorators, just pass that object at creation:
 
 ```python
 app = Flask(__name__)
