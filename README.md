@@ -47,17 +47,15 @@ class User(db.Model):
     passw_hash = db.Column(db.String(80))
 ```
 
-In a web application you need to call `db.session.remove()`
-after each response, and `db.session.rollback()` if an error occurs.
-If your application object has a `after_request` and `on_exception
-decorators, just pass that object at creation:
+In a web application you need to call `db.session.remove()` after each response, and `db.session.rollback()` if an error occurs. However, if your application object has `after_request` and `on_exception`
+decorators, just pass it to automatically make that binding. It works with Bottle's `hook` too.
 
 ```python
 app = Flask(__name__)
 db = SQLAlchemy('sqlite://', app=app)
 ```
 
-or later:
+or:
 
 ```python
 db = SQLAlchemy()
