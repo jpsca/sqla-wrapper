@@ -14,14 +14,14 @@ class ToDo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(60), nullable=False)
     done = db.Column(db.Boolean, nullable=False, default=False)
-    pub_date = db.Column(db.DateTime, nullable=False,
-        default=datetime.utcnow)
+    pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 to_do = ToDo(title='Install orm', done=True)
 db.add(to_do)
 db.commit()
 
-completed = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
+all_todos = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
+
 ```
 
 It does an automatic table naming (if no name is defined) and, to the
