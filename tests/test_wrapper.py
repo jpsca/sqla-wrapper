@@ -68,12 +68,8 @@ def test_query():
     ToDo = create_test_model(db)
     db.create_all()
 
-    def add(title, text=''):
-        todo = ToDo(title, text)
-        db.add(todo)
-    
-    add('First', 'The text')
-    add('Second', 'The text')
+    db.add(ToDo('First', 'The text'))
+    db.add(ToDo('Second', 'The text'))
     db.flush()
     
     titles = ' '.join(x.title for x in db.query(ToDo).all())
@@ -122,18 +118,10 @@ def test_multiple_databases():
     db1.create_all()
     db2.create_all()
 
-    def add1(title, text):
-        todo1 = ToDo1(title, text)
-        db1.add(todo1)
-
-    def add2(title, text):
-        todo2 = ToDo2(title, text)
-        db2.add(todo2)
-
-    add1('A', 'a')
-    add1('B', 'b')
-    add2('Q', 'q')
-    add1('C', 'c')
+    db1.add(ToDo1('A', 'a'))
+    db1.add(ToDo1('B', 'b'))
+    db2.add(ToDo2('Q', 'q'))
+    db1.add(ToDo1('C', 'c'))
     db1.commit()
     db2.commit()
 
@@ -144,4 +132,23 @@ def test_multiple_databases():
 def test_repr():
     db = SQLAlchemy(URI1)
     assert str(db) == "<SQLAlchemy('%s')>" % URI1
+
+
+def test_aggregated_query():
+    db = SQLAlchemy(URI1)
+
+    class Unit(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        name = db.Column(db.String(60))
+        price = db.Column(db.Integer)
+
+    db.create_all()
+    db.add(Unit(price=25))
+    db.add(Unit(price=5))
+    db.add(Unit(price=10))
+    db.add(Unit(price=3))
+    db.commit()
+
+    res = db.query(db.func.sum(Unit.price).label('price')).first()
+    assert res.price == 43
 

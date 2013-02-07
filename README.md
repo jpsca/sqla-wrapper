@@ -64,6 +64,35 @@ app = Flask(__name__)
 db.init_app(app)
 ```
 
+## More examples
+
+### Many databases, one web app
+
+```python
+app = Flask(__name__)
+db1 = SQLAlchemy(URI1, app)
+db2 = SQLAlchemy(URI1, app)
+```
+
+### Many web apps, one database
+
+```python
+db = SQLAlchemy(URI1)
+
+app1 = Flask(__name__)
+app2 = Flask(__name__)
+db.init_app(app1)
+db.init_app(app2)
+```
+
+### Aggegated selects
+
+```python
+res = db.query(db.func.sum(Unit.price).label('price')).all()
+print res.price
+```
+
+
 ---------------------------------------
 [MIT License] (http://www.opensource.org/licenses/mit-license.php).
 
