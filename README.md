@@ -47,8 +47,8 @@ class User(db.Model):
     passw_hash = db.Column(db.String(80))
 ```
 
-In a web application you need to call `db.session.remove()` after each response, and `db.session.rollback()` if an error occurs. However, if your application object has `after_request` and `on_exception`
-decorators, just pass it to automatically make that binding. It works with Bottle's `hook` too.
+In a web application you need to call `db.session.remove()` after each response, and `db.session.rollback()` if an error occurs. However, if your application object has an `after_request` and/or an `on_exception`
+decorator, just pass it to automatically make that binding. It works with Bottle's `hook` too.
 
 ```python
 app = Flask(__name__)
