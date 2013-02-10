@@ -81,7 +81,7 @@ setup(
     zip_safe = False,
     url = 'http://github.com/lucuma/orm',
     license = 'MIT license (http://www.opensource.org/licenses/mit-license.php)',
-    description = 'Implements an easy-to-use and framework-independent light wrapper for SQLAlchemy',
+    description = 'An easy-to-use and framework-independent light wrapper for SQLAlchemy',
     long_description = read_from(get_path('README.rst')),
     install_requires = get_requirements(),
     classifiers = [
@@ -98,4 +98,3 @@ setup(
     cmdclass = {'test': PyTest},
     test_suite = '__main__.run_tests'
 )
-

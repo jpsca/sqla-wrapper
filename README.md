@@ -1,5 +1,5 @@
 
-# ORM
+# O.R.M.
 
 A framework-independent wrapper for SQLAlchemy that makes it really easy and fun to use.
 
