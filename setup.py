@@ -3,6 +3,8 @@ import io
 import os
 import re
 from setuptools import setup
+from setuptools.command.test import test as TestCommand
+import sys
 
 
 PACKAGE = 'orm'
@@ -56,10 +58,17 @@ def get_requirements():
     return [l for l in lines if l and not l.startswith('#')]
 
 
-def run_tests():
-    import sys, subprocess
-    errno = subprocess.call([sys.executable, 'runtests.py'])
-    raise SystemExit(errno)
+class PyTest(TestCommand):
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = ['tests']
+        self.test_suite = True
+
+    def run_tests(self):
+        import pytest
+        errno = pytest.main(self.test_args)
+        sys.exit(errno)
 
 
 setup(
@@ -85,6 +94,8 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
+    tests_require = ['pytest'],
+    cmdclass = {'test': PyTest},
     test_suite = '__main__.run_tests'
 )
 
