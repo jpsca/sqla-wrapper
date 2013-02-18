@@ -72,7 +72,7 @@ class PyTest(TestCommand):
 
 
 setup(
-    name = 'ORM',
+    name = 'O.R.M.',
     version = get_version(),
     author = 'Juan-Pablo Scaletti',
     author_email = 'juanpablo@lucumalabs.com',
@@ -94,7 +94,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
-    tests_require = ['pytest'],
+    tests_require = ['pytest', 'pytest-cov'],
     cmdclass = {'test': PyTest},
     test_suite = '__main__.run_tests'
 )
