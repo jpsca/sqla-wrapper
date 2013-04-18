@@ -1,6 +1,8 @@
 
 # O.R.M.
 
+[![Build Status](https://travis-ci.org/lucuma/orm.png)](https://travis-ci.org/lucuma/orm)
+
 A framework-independent wrapper for SQLAlchemy that makes it really easy and fun to use.
 
 Example:

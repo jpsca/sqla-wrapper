@@ -104,6 +104,7 @@ class SQLAlchemy(object):
 
         self.Model = declarative_base(cls=Model, name='Model')
         self.Model.db = self
+        self.Model.query = self.session.query
         
         if app is not None:
             self.init_app(app)
