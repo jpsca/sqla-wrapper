@@ -24,7 +24,7 @@ def read_from(filepath):
 def get_version():
     data = read_from(get_path(PACKAGE, '__init__.py'))
     version = re.search(r"__version__\s*=\s*'([^']+)'", data).group(1)
-    return version.encode('utf-8')
+    return version
 
 
 def find_package_data(root, include_files=None):
@@ -72,19 +72,19 @@ class PyTest(TestCommand):
 
 
 setup(
-    name = 'O.R.M.',
-    version = get_version(),
-    author = 'Juan-Pablo Scaletti',
-    author_email = 'juanpablo@lucumalabs.com',
-    packages = [PACKAGE],
-    package_data = find_packages_data(PACKAGE, 'tests'),
-    zip_safe = False,
-    url = 'http://github.com/lucuma/orm',
-    license = 'MIT license (http://www.opensource.org/licenses/mit-license.php)',
-    description = 'An easy-to-use and framework-independent light wrapper for SQLAlchemy',
-    long_description = read_from(get_path('README.rst')),
-    install_requires = get_requirements(),
-    classifiers = [
+    name='ORM',
+    version=get_version(),
+    author='Juan-Pablo Scaletti',
+    author_email='juanpablo@lucumalabs.com',
+    packages=[PACKAGE],
+    package_data=find_packages_data(PACKAGE, 'tests'),
+    zip_safe=False,
+    url='http://github.com/lucuma/orm',
+    license='MIT license (http://www.opensource.org/licenses/mit-license.php)',
+    description='An easy-to-use and framework-independent light wrapper for SQLAlchemy',
+    long_description=read_from(get_path('README.rst')),
+    install_requires=get_requirements(),
+    classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
@@ -94,7 +94,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
-    tests_require = ['pytest', 'pytest-cov'],
-    cmdclass = {'test': PyTest},
-    test_suite = '__main__.run_tests'
+    tests_require=['pytest', 'pytest-cov'],
+    cmdclass={'test': PyTest},
+    test_suite='__main__.run_tests'
 )

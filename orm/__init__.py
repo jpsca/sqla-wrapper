@@ -1,4 +1,4 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
     ==========
     ORM
@@ -33,16 +33,16 @@
 
     ---------------------------------------
     MIT License (http://www.opensource.org/licenses/mit-license.php).
-    © 2013 by Lúcuma labs (http://lucumalabs.com).
+    © 2012 by Lúcuma labs (http://lucumalabs.com).
 
 """
-import os
 import threading
 
 try:
     import sqlalchemy
 except ImportError:
-    raise ImportError('Unable to load the sqlalchemy package.'
+    raise ImportError(
+        'Unable to load the sqlalchemy package.'
         ' `orm` needs the SQLAlchemy library to run.'
         ' You can get download it from http://www.sqlalchemy.org/'
         ' If you\'ve already installed SQLAlchemy, then make sure you have '
@@ -52,10 +52,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.schema import MetaData
 
 from .helpers import (create_scoped_session, include_sqlalchemy, Model,
-    EngineConnector)
+                      EngineConnector)
 
 
-__version__ = '1.0'
+__version__ = '1.0.1'
 
 
 class SQLAlchemy(object):
@@ -90,14 +90,16 @@ class SQLAlchemy(object):
     """
 
     def __init__(self, uri='sqlite://', app=None, echo=False, pool_size=None,
-            pool_timeout=None, pool_recycle=None):
+                 pool_timeout=None, pool_recycle=None):
         self.uri = uri
         self.info = make_url(uri)
 
-        self.options = self.build_options_dict(echo=echo, pool_size=pool_size,
-            pool_timeout=pool_timeout, pool_recycle=pool_recycle)
+        self.options = self.build_options_dict(echo=echo,
+                                               pool_size=pool_size,
+                                               pool_timeout=pool_timeout,
+                                               pool_recycle=pool_recycle)
         self.apply_driver_hacks()
-        
+    
         self.connector = None
         self._engine_lock = threading.Lock()
         self.session = create_scoped_session(self)
@@ -105,10 +107,10 @@ class SQLAlchemy(object):
         self.Model = declarative_base(cls=Model, name='Model')
         self.Model.db = self
         self.Model.query = self.session.query
-        
+
         if app is not None:
             self.init_app(app)
-        
+
         include_sqlalchemy(self)
 
     def apply_driver_hacks(self):
@@ -120,9 +122,9 @@ class SQLAlchemy(object):
         elif self.info.drivername == 'sqlite':
             pool_size = self.options.get('pool_size')
             if self.info.database in (None, '', ':memory:') and pool_size == 0:
-                raise ValueError('SQLite in-memory database with an '
-                    'empty queue (pool_size = 0) is not possible due to '
-                    'data loss.')
+                raise ValueError(
+                    'SQLite in-memory database with an empty queue'
+                    ' (pool_size = 0) is not possible due to data loss.')
 
     def build_options_dict(self, **kwargs):
         options = {'convert_unicode': True}
@@ -134,7 +136,7 @@ class SQLAlchemy(object):
     def init_app(self, app):
         """This callback can be used to initialize an application for the
         use with this database setup. In a web application or a multithreaded
-        environment, never use a database without initialize it first, 
+        environment, never use a database without initialize it first,
         or connections will leak.
 
         """
@@ -152,7 +154,7 @@ class SQLAlchemy(object):
         def rollback(error=None):
             try:
                 self.session.rollback()
-            except (Exception), e:
+            except Exception:
                 pass
 
         self.set_flask_hooks(app, shutdown, rollback)
@@ -167,11 +169,11 @@ class SQLAlchemy(object):
     def set_bottle_hooks(self, app, shutdown, rollback):
         if hasattr(app, 'hook'):
             app.hook('after_request')(shutdown)
-    
+
     @property
     def query(self):
         return self.session.query
-    
+
     def add(self, *args, **kwargs):
         return self.session.add(*args, **kwargs)
 
@@ -214,5 +216,5 @@ class SQLAlchemy(object):
         return meta
 
     def __repr__(self):
-        return '<%s(%r)>' % (self.__class__.__name__, self.uri)
+        return '<SQLAlchemy(%r)>' % (self.uri, )
 
