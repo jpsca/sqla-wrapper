@@ -25,6 +25,5 @@ Example:
 
     completed = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
 
-It does an automatic table naming (if no name is defined) and, to the
-base query class.
+It does an automatic table naming (if no name is defined) by pluralizing the class name using the `inflector` library. So, for example, a `User` model gets a table named `users`.
 

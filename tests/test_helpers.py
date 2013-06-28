@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import pytest
-
 from orm.helpers import get_table_name
 
 

@@ -26,8 +26,7 @@ all_todos = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
 
 ```
 
-It does an automatic table naming (if no name is defined) and, to the
-base query class.
+It does an automatic table naming (if no name is defined) by pluralizing the class name using the `inflector` library. So, for example, a `User` model gets a table named `users`, etc.
 
 
 ## How to use
@@ -47,13 +46,15 @@ So you can declare models like this:
 class User(db.Model):
     login = db.Column(db.String(80), unique=True)
     passw_hash = db.Column(db.String(80))
+    profile_id = db.Column(db.Integer, db.ForeignKey(Profile.id))
+    profile = db.relationship(Profile, backref=db.backref('user'))
 ```
 
-In a web application you need to call `db.session.remove()` after each response, and `db.session.rollback()` if an error occurs. However, if your application object has an `after_request` and/or an `on_exception`
-decorator, just pass it to automatically make that binding. It works with Bottle's `hook` too.
+In a web application you need to call `db.session.remove()` after each response, and `db.session.rollback()` if an error occurs. However, if you are using Flask or other framework that uses the `after_request` and `on_exception` decorators, these bindings can be done automatically (this works with Bottle's `hook` too):
 
 ```python
 app = Flask(__name__)
+
 db = SQLAlchemy('sqlite://', app=app)
 ```
 
@@ -63,6 +64,7 @@ or:
 db = SQLAlchemy()
 
 app = Flask(__name__)
+
 db.init_app(app)
 ```
 
@@ -93,6 +95,7 @@ db.init_app(app2)
 res = db.query(db.func.sum(Unit.price).label('price')).all()
 print res.price
 ```
+
 
 
 ---------------------------------------
