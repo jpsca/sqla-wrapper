@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-b'This library requires Python 2.6, 2.7, 3.3 or newer'
+b'This library requires Python 2.6, 2.7 or pypy'
 import io
 import os
+import re
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
-
-import orm
 
 
 PACKAGE = 'orm'
@@ -18,8 +17,14 @@ def get_path(*args):
 
 
 def read_from(filepath):
-    with io.open(filepath, 'rt', encoding='utf-8') as f:
+    with io.open(filepath, 'rt', encoding='utf8') as f:
         return f.read()
+
+
+def get_version():
+    data = read_from(get_path(PACKAGE, '__init__.py'))
+    version = re.search(r"__version__\s*=\s*u?'([^']+)'", data).group(1)
+    return str(version)
 
 
 def find_package_data(root, include_files=('.gitignore', )):
@@ -46,6 +51,12 @@ def find_packages_data(*roots):
     return dict([(root, find_package_data(root)) for root in roots])
 
 
+def get_description():
+    data = read_from(get_path(PACKAGE, '__init__.py'))
+    desc = re.search('"""(.+)"""', data, re.DOTALL).group(1)
+    return desc.strip()
+
+
 def get_requirements(filename='requirements.txt'):
     data = read_from(get_path(filename))
     lines = map(lambda s: s.strip(), data.splitlines())
@@ -53,8 +64,8 @@ def get_requirements(filename='requirements.txt'):
 
 
 setup(
-    name='ORM',
-    version=orm.__version__,
+    name='orm',
+    version=get_version(),
     author='Juan-Pablo Scaletti',
     author_email='juanpablo@lucumalabs.com',
     packages=[PACKAGE],
@@ -63,7 +74,7 @@ setup(
     url='http://github.com/lucuma/orm',
     license='MIT license (http://www.opensource.org/licenses/mit-license.php)',
     description='An easy-to-use and framework-independent light wrapper for SQLAlchemy',
-    long_description=read_from(get_path('README.rst')),
+    long_description=get_description(),
     install_requires=get_requirements(),
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -74,7 +85,6 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.3',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]

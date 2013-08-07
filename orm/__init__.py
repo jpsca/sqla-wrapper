@@ -1,40 +1,42 @@
 # -*- coding: utf-8 -*-
 """
-    ==========
-    ORM
-    ==========
+==========
+O.R.M.
+==========
 
-    A framework-independent wrapper for SQLAlchemy that makes it
-    really easy and fun to use.
+A framework-independent wrapper for SQLAlchemy that makes it really easy and fun to use.
 
-    Example:
+This library works with Python 2.6, 2.7 and pypy.
 
-    .. sourcecode:: python
 
-        from orm import SQLALchemy
+Example:
 
-        db = SQLALchemy('postgresql://scott:tiger@localhost:5432/mydatabase')
+::
 
-        class ToDo(db.Model):
-            id = db.Column(db.Integer, primary_key=True)
-            title = db.Column(db.String(60), nullable=False)
-            done = db.Column(db.Boolean, nullable=False, default=False)
-            pub_date = db.Column(db.DateTime, nullable=False,
-                default=datetime.utcnow)
+    from orm import SQLALchemy
 
-        to_do = ToDo(title='Install orm', done=True)
-        db.add(to_do)
-        db.commit()
+    db = SQLALchemy('postgresql://scott:tiger@localhost:5432/mydatabase')
 
-        completed = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
+    class ToDo(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        title = db.Column(db.String(60), nullable=False)
+        done = db.Column(db.Boolean, nullable=False, default=False)
+        pub_date = db.Column(db.DateTime, nullable=False,
+            default=datetime.utcnow)
 
-    It does an automatic table naming (if no name is defined) by pluralizing
-    the class name using the `inflector` library. So a `User` model gets a
-    table named `users`.
+    to_do = ToDo(title='Install orm', done=True)
+    db.add(to_do)
+    db.commit()
 
-    ---------------------------------------
-    MIT License (http://www.opensource.org/licenses/mit-license.php).
-    © 2012 by Lúcuma labs (http://lucumalabs.com).
+    completed = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
+
+
+It does an automatic table naming (if no name is defined) by pluralizing the class name using the `inflector` library. So, for example, a `User` model gets a table named `users`.
+
+
+---------------------------------------
+MIT License (http://www.opensource.org/licenses/mit-license.php).
+© 2012 by Lúcuma labs (http://lucumalabs.com).
 
 """
 import threading
@@ -56,7 +58,7 @@ from .helpers import (create_scoped_session, include_sqlalchemy, Model,
                       EngineConnector)
 
 
-__version__ = '1.0.1'
+__version__ = '1.0.3'
 
 
 class SQLAlchemy(object):

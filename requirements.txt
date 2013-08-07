@@ -1,5 +1,5 @@
 # This file collects all required third-party applications that are needed
 # to run this project.
 
-inflector
+inflector==1.6
 SQLAlchemy
