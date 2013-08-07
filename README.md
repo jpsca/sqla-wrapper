@@ -29,7 +29,7 @@ all_todos = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
 
 ```
 
-It does an automatic table naming (if no name is defined) by pluralizing the class name using the `inflector` library. So, for example, a `User` model gets a table named `users`, etc.
+It does an automatic table naming (if no table name is defined using the `__tablename__` property) by pluralizing the class name with the `inflection` library. So, for example, a `User` model gets a table named `users`
 
 
 ## How to use

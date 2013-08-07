@@ -2,13 +2,10 @@
 import re
 import threading
 
-from inflector import Inflector, English
+import inflection
 import sqlalchemy
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.orm.query import Query
-
-
-inflector = Inflector(English)
 
 
 def create_scoped_session(db):
@@ -43,7 +40,7 @@ def get_table_name(classname):
         return '_' + word.lower()
 
     tname = CAMELCASE_RE.sub(_join, classname).lstrip('_')
-    return inflector.pluralize(tname).lower()
+    return inflection.pluralize(tname).lower()
 
 
 class ModelTableNameDescriptor(object):
