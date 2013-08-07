@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import re
 import threading
 
 import inflection
@@ -29,18 +28,8 @@ def include_sqlalchemy(obj):
     obj.Table = make_table(obj)
 
 
-CAMELCASE_RE = re.compile(r'([A-Z]+)(?=[a-z0-9])')
-
-
 def get_table_name(classname):
-    def _join(match):
-        word = match.group()
-        if len(word) > 1:
-            return ('_%s_%s' % (word[:-1], word[-1])).lower()
-        return '_' + word.lower()
-
-    tname = CAMELCASE_RE.sub(_join, classname).lstrip('_')
-    return inflection.pluralize(tname).lower()
+    return inflection.pluralize(inflection.underscore(classname))
 
 
 class ModelTableNameDescriptor(object):

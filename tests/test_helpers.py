@@ -8,4 +8,3 @@ def test_get_table_name():
     assert get_table_name('UserTestCase') == 'user_test_cases'
     assert get_table_name('URL') == 'urls'
     assert get_table_name('HTTPRequest') == 'http_requests'
-
