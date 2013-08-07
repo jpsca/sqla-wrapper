@@ -64,7 +64,7 @@ def get_requirements(filename='requirements.txt'):
 
 
 setup(
-    name='orm',
+    name='ORM',
     version=get_version(),
     author='Juan-Pablo Scaletti',
     author_email='juanpablo@lucumalabs.com',
