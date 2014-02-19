@@ -4,12 +4,11 @@ import threading
 import inflection
 import sqlalchemy
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.orm.query import Query
 
 
-def create_scoped_session(db):
+def create_scoped_session(db, query_cls):
     return scoped_session(sessionmaker(autocommit=False, autoflush=True,
-        bind=db.engine, query_cls=Query))
+        bind=db.engine, query_cls=query_cls))
 
 
 def make_table(db):
@@ -67,7 +66,7 @@ class Model(object):
     """Baseclass for custom user models."""
 
     __tablename__ = ModelTableNameDescriptor()
-    
+
     def __iter__(self):
         """Returns an iterable that supports .next()
         so we can do dict(sa_instance).
@@ -75,7 +74,7 @@ class Model(object):
         for k in self.__dict__.keys():
             if not k.startswith('_'):
                 yield (k, getattr(self, k))
-    
+
     def __repr__(self):
         return '<%s>' % self.__class__.__name__
 

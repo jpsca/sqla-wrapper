@@ -13,6 +13,7 @@ except ImportError:
 from sqlalchemy.engine.url import make_url
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.schema import MetaData
+from sqlalchemy.orm.query import Query
 
 from .helpers import (create_scoped_session, include_sqlalchemy, Model,
                       EngineConnector)
@@ -50,19 +51,21 @@ class SQLAlchemy(object):
     """
 
     def __init__(self, uri='sqlite://', app=None, echo=False, pool_size=None,
-                 pool_timeout=None, pool_recycle=None):
+                 pool_timeout=None, pool_recycle=None, query_cls=Query):
         self.uri = uri
         self.info = make_url(uri)
 
-        self.options = self.build_options_dict(echo=echo,
-                                               pool_size=pool_size,
-                                               pool_timeout=pool_timeout,
-                                               pool_recycle=pool_recycle)
+        self.options = self.build_options_dict(
+            echo=echo,
+            pool_size=pool_size,
+            pool_timeout=pool_timeout,
+            pool_recycle=pool_recycle
+        )
         self.apply_driver_hacks()
-    
+
         self.connector = None
         self._engine_lock = threading.Lock()
-        self.session = create_scoped_session(self)
+        self.session = create_scoped_session(self, query_cls=query_cls)
 
         self.Model = declarative_base(cls=Model, name='Model')
         self.Model.db = self
@@ -78,7 +81,7 @@ class SQLAlchemy(object):
             self.info.query.setdefault('charset', 'utf8')
             self.options.setdefault('pool_size', 10)
             self.options.setdefault('pool_recycle', 7200)
-        
+
         elif self.info.drivername == 'sqlite':
             pool_size = self.options.get('pool_size')
             if self.info.database in (None, '', ':memory:') and pool_size == 0:
@@ -139,13 +142,13 @@ class SQLAlchemy(object):
 
     def flush(self, *args, **kwargs):
         return self.session.flush(*args, **kwargs)
-    
+
     def commit(self):
         return self.session.commit()
-    
+
     def rollback(self):
         return self.session.rollback()
-    
+
     @property
     def metadata(self):
         """Returns the metadata"""
@@ -160,11 +163,11 @@ class SQLAlchemy(object):
                 connector = EngineConnector(self)
                 self.connector = connector
             return connector.get_engine()
-    
+
     def create_all(self):
         """Creates all tables. """
         self.Model.metadata.create_all(bind=self.engine)
-    
+
     def drop_all(self):
         """Drops all tables. """
         self.Model.metadata.drop_all(bind=self.engine)
