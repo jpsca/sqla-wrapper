@@ -36,7 +36,7 @@ It does an automatic table naming (if no table name is already defined using the
 
 
 How to use
----------------------
+========================
 
 The SQLAlchemy class is used to instantiate a SQLAlchemy connection to
 a database.
@@ -79,7 +79,7 @@ or
 
 
 More examples
----------------------
+------------------------
 
 Many databases, one web app
 `````````````````````````````
@@ -124,6 +124,81 @@ Mixins
     class Model(IDMixin, db.Model):
         field = db.Column(db.Unicode)
 
+
+Pagination
+------------------------
+
+All the results can be easily paginated
+
+.. code:: python
+
+    users = db.query(User).paginate(page=2, per_page=20)
+    print(list(users))  # [User(21), User(22), User(23), ... , User(40)]
+
+
+The paginator object it's an iterable that returns only the results for that page, so you use it in your templates in the same way than the original result:
+
+.. code:: html+jinja
+
+    {% for item in paginated_items %}
+        <li>{{ item.name }}</li>
+    {% endfor %}
+
+
+Rendering the pages
+`````````````````````````````
+
+Below your results is common that you want it to render the list of pages.
+
+The ``paginator.pages`` property is an iterator that returns the page numbers, but sometimes not all of them: if there are more than 11 pages, the result will be one of these, depending of what is the current page::
+
+.. image:: docs/_static/paginator1.png
+
+.. image:: docs/_static/paginator2.png
+
+.. image:: docs/_static/paginator3.png
+
+
+Skipped page numbers are represented as ``None``.
+
+How many items are displayed can be controlled calling ``paginator.iter_pages`` instead.
+
+This is one way how you could render such a pagination in your templates:
+
+.. sourcecode:: html+jinja
+
+    {% macro render_paginator(paginator, endpoint) %}
+      <p>Showing {{ paginator.showing }} or {{ paginator.total }}</p>
+
+      <ol class="paginator">
+      {%- if paginator.has_prev %}
+        <li><a href="{{ url_for(endpoint, page=paginator.prev_num) }}"
+         rel="me prev">«</a></li>
+      {% else %}
+        <li class="disabled"><span>«</span></li>
+      {%- endif %}
+
+      {%- for page in paginator.pages %}
+        {% if page %}
+          {% if page != paginator.page %}
+            <li><a href="{{ url_for(endpoint, page=page) }}"
+             rel="me">{{ page }}</a></li>
+          {% else %}
+            <li class="current"><span>{{ page }}</span></li>
+          {% endif %}
+        {% else %}
+          <li><span class=ellipsis>…</span></li>
+        {% endif %}
+      {%- endfor %}
+
+      {%- if paginator.has_next %}
+        <li><a href="{{ url_for(endpoint, page=paginator.next_num) }}"
+         rel="me next">»</a></li>
+      {% else %}
+        <li class="disabled"><span>»</span></li>
+      {%- endif %}
+      </ol>
+    {% endmacro %}
 
 ______
 

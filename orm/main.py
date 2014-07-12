@@ -15,8 +15,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.schema import MetaData
 from sqlalchemy.orm.query import Query
 
-from .helpers import (create_scoped_session, include_sqlalchemy, Model,
-                      EngineConnector)
+from .helpers import (_create_scoped_session, _include_sqlalchemy,
+                      BaseQuery, Model, EngineConnector)
 
 
 class SQLAlchemy(object):
@@ -48,10 +48,17 @@ class SQLAlchemy(object):
         app = Flask(__name__)
         db.init_app(app)
 
+    .. admonition:: Check types carefully
+
+       Don't perform type or `isinstance` checks against `db.Table`, which
+       emulates `Table` behavior but is not a class. `db.Table` exposes the
+       `Table` interface, but is a function which allows omission of metadata.
+
     """
 
-    def __init__(self, uri='sqlite://', app=None, echo=False, pool_size=None,
-                 pool_timeout=None, pool_recycle=None, query_cls=Query):
+    def __init__(self, uri='sqlite://', app=None, echo=False,
+                 pool_size=None, pool_timeout=None, pool_recycle=None,
+                 query_cls=BaseQuery):
         self.uri = uri
         self.info = make_url(uri)
 
@@ -65,7 +72,7 @@ class SQLAlchemy(object):
 
         self.connector = None
         self._engine_lock = threading.Lock()
-        self.session = create_scoped_session(self, query_cls=query_cls)
+        self.session = _create_scoped_session(self, query_cls=query_cls)
 
         self.Model = declarative_base(cls=Model, name='Model')
         self.Model.db = self
@@ -74,7 +81,7 @@ class SQLAlchemy(object):
         if app is not None:
             self.init_app(app)
 
-        include_sqlalchemy(self)
+        _include_sqlalchemy(self)
 
     def apply_driver_hacks(self):
         if self.info.drivername == 'mysql':

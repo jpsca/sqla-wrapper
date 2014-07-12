@@ -1,5 +1,4 @@
-Copyright (c) 2013 by Juan Pablo Scaletti and contributors.  See AUTHORS
-for more details.
+Copyright (c) 2012 by Juan Pablo Scaletti.
 
 Some rights reserved.
 
@@ -31,3 +30,9 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE AND DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 DAMAGE.
+
+------
+
+Portions of the code adapted from `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`. Copyright (c) 2010 by Armin Ronacher.
+Used under the BSD license.
+
