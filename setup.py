@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-b'This library requires Python 2.6, 2.7 or pypy'
+b'This library requires Python 2.6, 2.7, 3.3, 3.4 or pypy'
 import io
 import os
 import re

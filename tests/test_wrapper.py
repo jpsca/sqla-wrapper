@@ -153,3 +153,17 @@ def test_aggregated_query():
     res = db.query(db.func.sum(Unit.price).label('price')).first()
     assert res.price == 43
 
+
+def test_id_mixin():
+    db = SQLAlchemy(URI1)
+
+    class IDMixin(object):
+        id = db.Column(db.Integer, primary_key=True)
+
+    class Model(db.Model, IDMixin):
+        field = db.Column(db.String)
+
+    db.create_all()
+
+    assert Model.__tablename__ == 'models'
+    assert hasattr(Model, 'id')
