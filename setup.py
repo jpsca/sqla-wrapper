@@ -9,7 +9,7 @@ except ImportError:
     from distutils.core import setup
 
 
-PACKAGE = 'orm'
+PACKAGE = 'sqlalchemy_wrapper'
 
 
 def get_path(*args):
@@ -64,14 +64,14 @@ def get_requirements(filename='requirements.txt'):
 
 
 setup(
-    name='ORM',
+    name='SQLAlchemy-Wrapper',
     version=get_version(),
     author='Juan-Pablo Scaletti',
     author_email='juanpablo@lucumalabs.com',
     packages=[PACKAGE],
     package_data=find_packages_data(PACKAGE, 'tests'),
     zip_safe=False,
-    url='http://github.com/lucuma/orm',
+    url='http://github.com/lucuma/sqlalchemy-wrapper',
     license='MIT license (http://www.opensource.org/licenses/mit-license.php)',
     description='An easy-to-use and framework-independent light wrapper for SQLAlchemy',
     long_description=get_description(),

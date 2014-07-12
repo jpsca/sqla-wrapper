@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from orm import SQLAlchemy, Paginator
+from sqlalchemy_wrapper import SQLAlchemy, Paginator
 
 
 def create_test_model():

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-    ==========
-    O.R.M.
-    ==========
+    ==================
+    SQLAlchemy-Wrapper
+    ==================
 
     A framework-independent wrapper for SQLAlchemy that makes it really easy
     and fun to use.
@@ -11,7 +11,7 @@
     :license: BSD, see LICENSE for more details.
 
 """
-from orm.main import SQLAlchemy
-from orm.paginator import Paginator
+from .main import SQLAlchemy
+from .paginator import Paginator
 
 __version__ = '1.2.0'

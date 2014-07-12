@@ -1,10 +1,10 @@
-============
-ORM |travis|
-============
+===========================
+SQLAlchemy-Wrapper |travis|
+===========================
 
-.. |travis| image:: https://travis-ci.org/lucuma/orm.png
+.. |travis| image:: https://travis-ci.org/lucuma/sqlalchemy-wrapper.png
    :alt: Build Status
-   :target: https://travis-ci.org/lucuma/orm
+   :target: https://travis-ci.org/lucuma/sqlalchemy-wrapper
 
 A framework-independent wrapper for SQLAlchemy that makes it really easy and fun to use.
 
@@ -14,7 +14,7 @@ Example:
 
 .. code:: python
 
-    from orm import SQLALchemy
+    from sqlalchemy_wrapper import SQLALchemy
 
     db = SQLALchemy('postgresql://scott:tiger@localhost:5432/mydatabase')
 
@@ -25,7 +25,7 @@ Example:
         pub_date = db.Column(db.DateTime, nullable=False,
             default=datetime.utcnow)
 
-    to_do = ToDo(title='Install orm', done=True)
+    to_do = ToDo(title='Install SQLAlchemy-Wrapper', done=True)
     db.add(to_do)
     db.commit()
 

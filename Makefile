@@ -15,7 +15,7 @@ clean-pyc:
 	find . -name '*~' -delete
 
 test:
-	py.test --cov-config .coveragerc --cov orm tests/
+	py.test --cov-config .coveragerc --cov sqlalchemy_wrapper tests/
 
 publish: clean
 	python setup.py sdist upload

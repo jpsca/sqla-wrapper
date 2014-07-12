@@ -2,7 +2,7 @@
 from datetime import datetime
 import pytest
 
-from orm import SQLAlchemy
+from sqlalchemy_wrapper import SQLAlchemy
 
 
 URI1 = 'sqlite://'

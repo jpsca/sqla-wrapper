@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from orm.helpers import _get_table_name
+from sqlalchemy_wrapper.helpers import _get_table_name
 
 
 def test_get_table_name():

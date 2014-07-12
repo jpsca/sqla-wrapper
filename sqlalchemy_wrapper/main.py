@@ -6,7 +6,7 @@ try:
 except ImportError:
     raise ImportError(
         'Unable to load the sqlalchemy package.'
-        ' `orm` needs the SQLAlchemy library to run.'
+        ' `SQLAlchemy-Wrapper` needs the SQLAlchemy library to run.'
         ' You can get download it from http://www.sqlalchemy.org/'
         ' If you\'ve already installed SQLAlchemy, then make sure you have '
         ' it in your PYTHONPATH.')
