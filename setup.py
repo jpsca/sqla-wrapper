@@ -73,19 +73,20 @@ setup(
     zip_safe=False,
     url='http://github.com/lucuma/sqlalchemy-wrapper',
     license='MIT license (http://www.opensource.org/licenses/mit-license.php)',
-    description='An easy-to-use and framework-independent light wrapper for SQLAlchemy',
+    description='A framework-independent wrapper for SQLAlchemy that makes it really easy to use',
     long_description=get_description(),
     install_requires=get_requirements(),
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
+        'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-        'Topic :: Software Development :: Libraries :: Python Modules'
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: Implementation :: PyPy',
     ]
 )

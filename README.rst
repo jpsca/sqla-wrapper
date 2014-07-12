@@ -38,10 +38,15 @@ It does an automatic table naming (if no table name is already defined using the
 How to use
 ========================
 
+::
+    pip install sqlalchemy_wrapper
+
 The SQLAlchemy class is used to instantiate a SQLAlchemy connection to
 a database.
 
 .. code:: python
+
+    from sqlalchemy_wrapper import SQLALchemy
 
     db = SQLAlchemy(_uri_to_database_)
 
