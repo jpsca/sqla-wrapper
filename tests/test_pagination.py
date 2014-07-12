@@ -48,7 +48,7 @@ def test_list_pagination():
     p.page = 10
     assert list(p.pages) == \
         [1, 2, None, 8, 9, 10, 11, 12, 13, 14, None, 24, 25]
-    assert list(p) == range(181, 201)
+    assert list(p) == list(range(181, 201))
 
 
 def test_abstract_list_pagination():
