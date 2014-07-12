@@ -5,7 +5,7 @@
 
 A framework-independent wrapper for SQLAlchemy that makes it really easy and fun to use.
 
-This library works with Python 2.6, 2.7 and pypy.
+This library works with Python 2.6, 2.7, 3.3, 3.4 and pypy.
 
 
 Example:

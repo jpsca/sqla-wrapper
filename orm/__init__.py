@@ -6,12 +6,12 @@ O.R.M.
 
 A framework-independent wrapper for SQLAlchemy that makes it really easy and fun to use.
 
-This library works with Python 2.6, 2.7 and pypy.
+This library works with Python 2.6, 2.7, 3.3, 3.4 and pypy.
 
 
 Example:
 
-::
+.. code:: python
 
     from orm import SQLALchemy
 
@@ -40,7 +40,8 @@ How to use
 The SQLAlchemy class is used to instantiate a SQLAlchemy connection to
 a database.
 
-::
+.. code:: python
+
     db = SQLAlchemy(_uri_to_database_)
 
 
@@ -48,7 +49,8 @@ The class also provides access to all the SQLAlchemy
 functions from the `sqlalchemy` and `sqlalchemy.orm` modules.
 So you can declare models like this:
 
-::
+.. code:: python
+
     class User(db.Model):
         login = db.Column(db.String(80), unique=True)
         passw_hash = db.Column(db.String(80))
@@ -58,12 +60,15 @@ So you can declare models like this:
 
 In a web application you need to call `db.session.remove()` after each response, and `db.session.rollback()` if an error occurs. However, if you are using Flask or other framework that uses the `after_request` and `on_exception` decorators, these bindings can be done automatically (this works with Bottle's `hook` too):
 
-::
+.. code:: python
+
     app = Flask(__name__)
 
     db = SQLAlchemy('sqlite://', app=app)
 
-or::
+or
+
+.. code:: python
 
     db = SQLAlchemy()
 
@@ -78,7 +83,8 @@ More examples
 Many databases, one web app
 `````````````````````````````
 
-::
+.. code:: python
+
     app = Flask(__name__)
     db1 = SQLAlchemy(URI1, app)
     db2 = SQLAlchemy(URI1, app)
@@ -87,7 +93,8 @@ Many databases, one web app
 Many web apps, one database
 `````````````````````````````
 
-::
+.. code:: python
+
     db = SQLAlchemy(URI1)
 
     app1 = Flask(__name__)
@@ -99,14 +106,15 @@ Many web apps, one database
 Aggegated selects
 `````````````````````````````
 
-::
+.. code:: python
+
     res = db.query(db.func.sum(Unit.price).label('price')).all()
     print res.price
 
 
 ------------------------------------------------------------------------------
 MIT License (http://www.opensource.org/licenses/mit-license.php).
-© 2012 by Lúcuma labs (http://lucumalabs.com).
+© 2012 by `Juan Pablo Scaletti <http://jpscaletti.com>`_
 
 """
 from orm.main import SQLAlchemy
