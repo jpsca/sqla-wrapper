@@ -150,13 +150,17 @@ Rendering the pages
 
 Below your results is common that you want it to render the list of pages.
 
-The ``paginator.pages`` property is an iterator that returns the page numbers, but sometimes not all of them: if there are more than 11 pages, the result will be one of these, depending of what is the current page::
+The ``paginator.pages`` property is an iterator that returns the page numbers, but sometimes not all of them: if there are more than 11 pages, the result will be one of these, depending of what is the current page:
+
 
 .. image:: docs/_static/paginator1.png
+   :class: center
 
 .. image:: docs/_static/paginator2.png
+   :class: center
 
 .. image:: docs/_static/paginator3.png
+   :class: center
 
 
 Skipped page numbers are represented as ``None``.
