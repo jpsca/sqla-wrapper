@@ -6,7 +6,7 @@ SQLAlchemy-Wrapper |travis|
    :alt: Build Status
    :target: https://travis-ci.org/lucuma/sqlalchemy-wrapper
 
-A framework-independent wrapper for SQLAlchemy that makes it really easy and fun to use.
+A framework-independent wrapper for SQLAlchemy that makes it really easy to use.
 
 Works with Python 2.6, 2.7, 3.3, 3.4 and pypy.
 
