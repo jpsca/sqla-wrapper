@@ -1,14 +1,14 @@
-==========
-O.R.M.
-==========
+============
+ORM |travis|
+============
 
-.. image:: https://travis-ci.org/lucuma/orm.png
+.. |travis| image:: https://travis-ci.org/lucuma/orm.png
    :alt: Build Status
    :target: https://travis-ci.org/lucuma/orm
 
 A framework-independent wrapper for SQLAlchemy that makes it really easy and fun to use.
 
-This library works with Python 2.6, 2.7, 3.3, 3.4 and pypy.
+Works with Python 2.6, 2.7, 3.3, 3.4 and pypy.
 
 Example:
 
@@ -113,6 +113,6 @@ Aggegated selects
     print res.price
 
 
--------------------------------------------------------------------------
+
 :copyright: © 2012 by `Juan Pablo Scaletti <http://jpscaletti.com>`_.
 :license: BSD, see LICENSE for more details.
