@@ -32,7 +32,7 @@ Example:
     completed = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
 
 
-It does an automatic table naming (if no table name is already defined using the ``__tablename__`` property) by pluralizing the class name with the `inflection <http://inflection.readthedocs.org>`_ library. So, for example, a `User` model gets a table named `users`.
+It does an automatic table naming (if no table name is already defined using the ``__tablename__`` property) by pluralizing the class name with the `inflection <http://inflection.readthedocs.org>`_ library. So, for example, a ``User`` model gets a table named ``users``.
 
 
 How to use
@@ -47,7 +47,7 @@ a database.
 
 
 The class also provides access to all the SQLAlchemy
-functions from the `sqlalchemy` and `sqlalchemy.orm` modules.
+functions from the ``sqlalchemy`` and ``sqlalchemy.orm`` modules.
 So you can declare models like this:
 
 .. code:: python
@@ -59,7 +59,7 @@ So you can declare models like this:
         profile = db.relationship(Profile, backref=db.backref('user'))
 
 
-In a web application you need to call `db.session.remove()` after each response, and `db.session.rollback()` if an error occurs. However, if you are using Flask or other framework that uses the `after_request` and `on_exception` decorators, these bindings it is done automatically (this works with Bottle's `hook` too):
+In a web application you need to call ``db.session.remove()`` after each response, and ``db.session.rollback()`` if an error occurs. However, if you are using Flask or other framework that uses the `after_request` and ``on_exception`` decorators, these bindings it is done automatically (this works with Bottle's ``hook`` too):
 
 .. code:: python
 
