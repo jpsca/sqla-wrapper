@@ -128,4 +128,4 @@ Mixins
 ______
 
 :copyright: © 2012 by `Juan Pablo Scaletti <http://jpscaletti.com>`_.
-:license: BSD, see <LICENSE> for more details.
+:license: BSD, see LICENSE for more details.
