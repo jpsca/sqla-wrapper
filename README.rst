@@ -32,7 +32,7 @@ Example:
     completed = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
 
 
-It does an automatic table naming (if no table name is already defined using the `__tablename__` property) by pluralizing the class name with the `inflection <http://inflection.readthedocs.org>`_ library. So, for example, a `User` model gets a table named `users`.
+It does an automatic table naming (if no table name is already defined using the ``__tablename__`` property) by pluralizing the class name with the `inflection <http://inflection.readthedocs.org>`_ library. So, for example, a `User` model gets a table named `users`.
 
 
 How to use
@@ -88,7 +88,7 @@ Many databases, one web app
 
     app = Flask(__name__)
     db1 = SQLAlchemy(URI1, app)
-    db2 = SQLAlchemy(URI1, app)
+    db2 = SQLAlchemy(URI2, app)
 
 
 Many web apps, one database
@@ -111,6 +111,18 @@ Aggegated selects
 
     res = db.query(db.func.sum(Unit.price).label('price')).all()
     print res.price
+
+
+Mixins
+`````````````````````````````
+
+.. code:: python
+
+    class IDMixin(object):
+        id = db.Column(db.Integer, primary_key=True)
+
+    class Model(IDMixin, db.Model):
+        field = db.Column(db.Unicode)
 
 
 
