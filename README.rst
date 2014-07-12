@@ -59,8 +59,10 @@ So you can declare models like this:
 .. code:: python
 
     class User(db.Model):
-        login = db.Column(db.String(80), unique=True)
-        passw_hash = db.Column(db.String(80))
+
+        login = db.Column(db.Unicode, unique=True)
+        passw_hash = db.Column(db.Unicode)
+
         profile_id = db.Column(db.Integer, db.ForeignKey(Profile.id))
         profile = db.relationship(Profile, backref=db.backref('user'))
 
