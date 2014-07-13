@@ -58,17 +58,16 @@ class SQLAlchemy(object):
 
     def __init__(self, uri='sqlite://', app=None, echo=False,
                  pool_size=None, pool_timeout=None, pool_recycle=None,
-                 query_cls=BaseQuery):
+                 convert_unicode=True, query_cls=BaseQuery):
         self.uri = uri
         self.info = make_url(uri)
-
-        self.options = self.build_options_dict(
-            echo=echo,
-            pool_size=pool_size,
-            pool_timeout=pool_timeout,
-            pool_recycle=pool_recycle
+        self.options = self._cleanup_options(
+            echo = echo,
+            pool_size = pool_size,
+            pool_timeout = pool_timeout,
+            pool_recycle = pool_recycle,
+            convert_unicode = convert_unicode,
         )
-        self.apply_driver_hacks()
 
         self.connector = None
         self._engine_lock = threading.Lock()
@@ -83,24 +82,28 @@ class SQLAlchemy(object):
 
         _include_sqlalchemy(self)
 
-    def apply_driver_hacks(self):
+    def _cleanup_options(self, **kwargs):
+        options = dict([
+            (key, val)
+            for key, val in kwargs.items()
+            if val is not None
+        ])
+        return self._apply_driver_hacks(options)
+
+    def _apply_driver_hacks(self, options):
         if self.info.drivername == 'mysql':
             self.info.query.setdefault('charset', 'utf8')
-            self.options.setdefault('pool_size', 10)
-            self.options.setdefault('pool_recycle', 7200)
+            options.setdefault('pool_size', 10)
+            options.setdefault('pool_recycle', 7200)
 
         elif self.info.drivername == 'sqlite':
-            pool_size = self.options.get('pool_size')
-            if self.info.database in (None, '', ':memory:') and pool_size == 0:
+            no_pool = options.get('pool_size') == 0
+            memory_based = self.info.database in (None, '', ':memory:')
+            if memory_based and no_pool:
                 raise ValueError(
                     'SQLite in-memory database with an empty queue'
-                    ' (pool_size = 0) is not possible due to data loss.')
-
-    def build_options_dict(self, **kwargs):
-        options = {'convert_unicode': True}
-        for key, value in kwargs.items():
-            if value is not None:
-                options[key] = value
+                    ' (pool_size = 0) is not possible due to data loss.'
+                )
         return options
 
     def init_app(self, app):
@@ -108,7 +111,6 @@ class SQLAlchemy(object):
         use with this database setup. In a web application or a multithreaded
         environment, never use a database without initialize it first,
         or connections will leak.
-
         """
         if not hasattr(app, 'databases'):
             app.databases = []
@@ -141,27 +143,6 @@ class SQLAlchemy(object):
             app.hook('after_request')(shutdown)
 
     @property
-    def query(self):
-        return self.session.query
-
-    def add(self, *args, **kwargs):
-        return self.session.add(*args, **kwargs)
-
-    def flush(self, *args, **kwargs):
-        return self.session.flush(*args, **kwargs)
-
-    def commit(self):
-        return self.session.commit()
-
-    def rollback(self):
-        return self.session.rollback()
-
-    @property
-    def metadata(self):
-        """Returns the metadata"""
-        return self.Model.metadata
-
-    @property
     def engine(self):
         """Gives access to the engine. """
         with self._engine_lock:
@@ -170,6 +151,32 @@ class SQLAlchemy(object):
                 connector = EngineConnector(self)
                 self.connector = connector
             return connector.get_engine()
+
+    @property
+    def metadata(self):
+        """Proxy for Model.metadata"""
+        return self.Model.metadata
+
+    @property
+    def query(self):
+        """Proxy for session.query"""
+        return self.session.query
+
+    def add(self, *args, **kwargs):
+        """Proxy for session.add"""
+        return self.session.add(*args, **kwargs)
+
+    def flush(self, *args, **kwargs):
+        """Proxy for session.flush"""
+        return self.session.flush(*args, **kwargs)
+
+    def commit(self):
+        """Proxy for session.commit"""
+        return self.session.commit()
+
+    def rollback(self):
+        """Proxy for session.rollback"""
+        return self.session.rollback()
 
     def create_all(self):
         """Creates all tables. """
@@ -186,4 +193,4 @@ class SQLAlchemy(object):
         return meta
 
     def __repr__(self):
-        return '<SQLAlchemy(%r)>' % (self.uri, )
+        return "<SQLAlchemy('{0}')>".format(self.uri)

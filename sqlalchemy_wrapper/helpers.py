@@ -9,29 +9,31 @@ from .paginator import Paginator
 
 
 def _create_scoped_session(db, query_cls):
-    return scoped_session(sessionmaker(autocommit=False, autoflush=True,
-        bind=db.engine, query_cls=query_cls))
+    session = sessionmaker(autoflush=True, autocommit=False,
+                           bind=db.engine, query_cls=query_cls)
+    return scoped_session(session)
 
 
-def _make_table(db):
-    def _make_table(*args, **kwargs):
+def _tablemaker(db):
+    def make_sa_table(*args, **kwargs):
         if len(args) > 1 and isinstance(args[1], db.Column):
             args = (args[0], db.metadata) + args[1:]
+        kwargs.setdefault('bind_key', None)
         info = kwargs.pop('info', None) or {}
         info.setdefault('bind_key', None)
         kwargs['info'] = info
         return sqlalchemy.Table(*args, **kwargs)
-    return _make_table
+
+    return make_sa_table
 
 
-def _include_sqlalchemy(obj):
+def _include_sqlalchemy(db):
     for module in sqlalchemy, sqlalchemy.orm:
         for key in module.__all__:
-            if not hasattr(obj, key):
-                setattr(obj, key, getattr(module, key))
-    # Note: obj.Table does not attempt to be a SQLAlchemy Table class.
-    obj.Table = _make_table(obj)
-    obj.event = sqlalchemy.event
+            if not hasattr(db, key):
+                setattr(db, key, getattr(module, key))
+    db.Table = _tablemaker(db)
+    db.event = sqlalchemy.event
 
 
 def _get_table_name(classname):
@@ -81,17 +83,17 @@ class ModelTableNameDescriptor(object):
 
 class EngineConnector(object):
 
-    def __init__(self, sqlalch):
-        self._sqlalch = sqlalch
+    def __init__(self, sa_obj):
+        self._sa_obj = sa_obj
         self._engine = None
         self._connected_for = None
         self._lock = threading.Lock()
 
     def get_engine(self):
         with self._lock:
-            uri = self._sqlalch.uri
-            info = self._sqlalch.info
-            options = self._sqlalch.options
+            uri = self._sa_obj.uri
+            info = self._sa_obj.info
+            options = self._sa_obj.options
             echo = options.get('echo')
             if (uri, echo) == self._connected_for:
                 return self._engine
@@ -101,7 +103,8 @@ class EngineConnector(object):
 
 
 class Model(object):
-    """Baseclass for custom user models."""
+    """Baseclass for custom user models.
+    """
 
     __tablename__ = ModelTableNameDescriptor()
 
@@ -115,4 +118,3 @@ class Model(object):
 
     def __repr__(self):
         return '<%s>' % self.__class__.__name__
-

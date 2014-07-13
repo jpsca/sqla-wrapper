@@ -161,7 +161,7 @@ class Paginator(object):
         """Iterates over the page numbers in the pagination."""
         return self.iter_pages()
 
-    def iter_pages(self, left_edge=2, left_current=2, right_current=5, right_edge=2):
+    def iter_pages(self, left_edge=2, left_current=3, right_current=4, right_edge=2):
         """Iterates over the page numbers in the pagination.  The four
         parameters control the thresholds how many numbers should be produced
         from the sides:
@@ -212,6 +212,7 @@ class Paginator(object):
               {%- endif %}
               </ol>
             {% endmacro %}
+
         """
         last = 0
         for num in xrange(1, self.num_pages + 1):
