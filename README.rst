@@ -215,4 +215,4 @@ This is one way how you could render such a pagination in your templates:
 ______
 
 :copyright: © 2012 by `Juan Pablo Scaletti <http://jpscaletti.com>`_.
-:license: BSD, see LICENSE for more details.
+:license: MIT, see LICENSE for more details.

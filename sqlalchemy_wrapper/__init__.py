@@ -8,7 +8,7 @@
     to use.
 
     :copyright: © 2012 by `Juan Pablo Scaletti <http://jpscaletti.com>`_.
-    :license: BSD, see LICENSE for more details.
+    :license: MIT, see LICENSE for more details.
 
 """
 from .main import SQLAlchemy
