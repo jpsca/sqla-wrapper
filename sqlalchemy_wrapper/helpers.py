@@ -18,10 +18,6 @@ def _tablemaker(db):
     def make_sa_table(*args, **kwargs):
         if len(args) > 1 and isinstance(args[1], db.Column):
             args = (args[0], db.metadata) + args[1:]
-        kwargs.setdefault('bind_key', None)
-        info = kwargs.pop('info', None) or {}
-        info.setdefault('bind_key', None)
-        kwargs['info'] = info
         return sqlalchemy.Table(*args, **kwargs)
 
     return make_sa_table

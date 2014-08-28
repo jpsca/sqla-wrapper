@@ -32,14 +32,20 @@ class Paginator(object):
     """Helper class to paginate data.
     You can construct it from any SQLAlchemy query object or other iterable.
 
-    :query: Iterable to paginate. Can be a query results object, a list or any
+    :query:
+        Iterable to paginate. Can be a query results object, a list or any
         other iterable.
-    :page: Current page.
-    :per_page: Max number of items to display on each page.
-    :total: Total number of items. If provided, no attempt wll be made to
+    :page:
+        Current page.
+    :per_page:
+        Max number of items to display on each page.
+    :total:
+        Total number of items. If provided, no attempt wll be made to
         calculate it from the ``query`` argument.
-    :padding: Number of elements of the next page to show.
-    :on_error: Used if the page number is too big for the total number
+    :padding:
+        Number of elements of the next page to show.
+    :on_error:
+        Used if the page number is too big for the total number
         of items. Raised if it's an exception, called otherwise.
         ``None`` by default.
     """

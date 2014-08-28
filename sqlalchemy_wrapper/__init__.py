@@ -11,7 +11,8 @@
     :license: MIT, see LICENSE for more details.
 
 """
-from .main import SQLAlchemy
-from .paginator import Paginator
+from .main import SQLAlchemy  # noqa
+from .paginator import Paginator  # noqa
 
-__version__ = '1.2.1'
+
+__version__ = '1.2.2'
