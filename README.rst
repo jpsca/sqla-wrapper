@@ -14,7 +14,7 @@ Example:
 
 .. code:: python
 
-    from sqlalchemy_wrapper import SQLALchemy
+    from sqlalchemy_wrapper import SQLAlchemy
 
     db = SQLALchemy('postgresql://scott:tiger@localhost:5432/mydatabase')
 
