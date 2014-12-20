@@ -86,3 +86,8 @@ def test_paginated_joined_query():
 
     assert items_in_page[0].id == 6
     assert items_in_page[1].id == 7
+
+
+def test_bool_paginator():
+    assert Paginator(range(5))
+    assert not Paginator([])

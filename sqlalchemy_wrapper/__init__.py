@@ -15,4 +15,4 @@ from .main import SQLAlchemy  # noqa
 from .paginator import Paginator  # noqa
 
 
-__version__ = '1.2.2'
+__version__ = '1.2.3'

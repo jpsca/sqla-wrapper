@@ -89,6 +89,11 @@ class Paginator(object):
 
         self.padding = padding
 
+    def __bool__(self):
+        return self.total > 0
+
+    __nonzero__ = __bool__
+
     @property
     def num_pages(self):
         """The total number of pages."""
