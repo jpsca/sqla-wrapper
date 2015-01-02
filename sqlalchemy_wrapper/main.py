@@ -13,7 +13,6 @@ except ImportError:
 from sqlalchemy.engine.url import make_url
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.schema import MetaData
-from sqlalchemy.orm.query import Query
 
 from .helpers import (_create_scoped_session, _include_sqlalchemy,
                       BaseQuery, Model, EngineConnector)
@@ -62,11 +61,11 @@ class SQLAlchemy(object):
         self.uri = uri
         self.info = make_url(uri)
         self.options = self._cleanup_options(
-            echo = echo,
-            pool_size = pool_size,
-            pool_timeout = pool_timeout,
-            pool_recycle = pool_recycle,
-            convert_unicode = convert_unicode,
+            echo=echo,
+            pool_size=pool_size,
+            pool_timeout=pool_timeout,
+            pool_recycle=pool_recycle,
+            convert_unicode=convert_unicode,
         )
 
         self.connector = None
@@ -131,6 +130,7 @@ class SQLAlchemy(object):
 
         self.set_flask_hooks(app, shutdown, rollback)
         self.set_bottle_hooks(app, shutdown, rollback)
+        self.set_webpy_hooks(app, shutdown, rollback)
 
     def set_flask_hooks(self, app, shutdown, rollback):
         if hasattr(app, 'after_request'):
@@ -141,6 +141,17 @@ class SQLAlchemy(object):
     def set_bottle_hooks(self, app, shutdown, rollback):
         if hasattr(app, 'hook'):
             app.hook('after_request')(shutdown)
+
+    def set_webpy_hooks(self, app, shutdown, rollback):
+        try:
+            import web
+        except ImportError:
+            return
+        if not hasattr(web, 'application'):
+            return
+        if not isinstance(app, web.application):
+            return
+        app.processors.append(0, web.unloadhook(shutdown))
 
     @property
     def engine(self):

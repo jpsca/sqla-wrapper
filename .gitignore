@@ -5,6 +5,7 @@ build
 dist
 *.egg*
 .idea
+*.sublime-*
 .coverage
 .tox
 htmlcov
