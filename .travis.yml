@@ -5,7 +5,7 @@ python:
   - "pypy"
   - "2.6"
   - "3.3"
-# command to install dependencies
-install: python setup.py install & pip install -r requirements-tests.txt
-# command to run tests, e.g. python setup.py test
+install:
+    - python setup.py install
+    - pip install -r requirements-tests.txt
 script: py.test tests

@@ -7,7 +7,7 @@
     A framework-independent wrapper for SQLAlchemy that makes it really easy
     to use.
 
-    :copyright: © 2012 by `Juan Pablo Scaletti <http://jpscaletti.com>`_.
+    :copyright: © 2012-2015 by `Juan Pablo Scaletti <http://jpscaletti.com>`_.
     :license: MIT, see LICENSE for more details.
 
 """
