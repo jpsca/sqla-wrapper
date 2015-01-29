@@ -2,6 +2,10 @@
 SQLAlchemy-Wrapper |travis|
 ===========================
 
+.. image:: https://badges.gitter.im/Join%20Chat.svg
+   :alt: Join the chat at https://gitter.im/lucuma/sqlalchemy-wrapper
+   :target: https://gitter.im/lucuma/sqlalchemy-wrapper?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
 .. |travis| image:: https://travis-ci.org/lucuma/sqlalchemy-wrapper.png
    :alt: Build Status
    :target: https://travis-ci.org/lucuma/sqlalchemy-wrapper
