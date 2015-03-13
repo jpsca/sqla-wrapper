@@ -4,8 +4,11 @@
 build
 dist
 *.egg*
+
 .idea
 *.sublime-*
+*.nja
+
 .coverage
 .tox
 htmlcov
