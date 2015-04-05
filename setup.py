@@ -72,7 +72,7 @@ setup(
     package_data=find_packages_data(PACKAGE, 'tests'),
     zip_safe=False,
     url='http://github.com/lucuma/sqlalchemy-wrapper',
-    license='MIT license (http://www.opensource.org/licenses/mit-license.php)',
+    license='MIT license (see LICENSE)',
     description='A framework-independent wrapper for SQLAlchemy that makes it really easy to use',
     long_description=get_description(),
     install_requires=get_requirements(),
