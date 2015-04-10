@@ -191,6 +191,7 @@ html_context = {
     'author': u'Juan-Pablo Scaletti',
     'author_url': u'http://jpscaletti.com',
     'github': u'https://github.com/lucuma/SQLAlchemy-Wrapper',
+    'analytics_code': 'UA-1495972-20',
 }
 
 # -- Options for LaTeX output ---------------------------------------------
