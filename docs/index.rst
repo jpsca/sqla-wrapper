@@ -10,7 +10,7 @@ SQLAlchemy-Wrapper
 
 
 SQLAlchemy is great but it can be very difficult to setup, specially for begineers.
-So, instead of have to write something like this:
+So, *instead* of have to write something like this:
 
 .. sourcecode:: python
 
@@ -20,13 +20,13 @@ So, instead of have to write something like this:
 
     engine = create_engine('sqlite:///:memory:')
     Session = sessionmaker(bind=engine)
-    Base = declarative_base()
+    Model = declarative_base()
 
-    class ToDo(Base):
+    class ToDo(Model):
         id = Column(Integer, primary_key=True)
         ...
 
-    Base.metadata.create_all(engine)
+    Model.metadata.create_all(engine)
     session = Session()
     todos = session.query(ToDo).all()
 
