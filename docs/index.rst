@@ -9,32 +9,45 @@ SQLAlchemy-Wrapper
     A friendly wrapper for SQLAlchemy.
 
 
-Works with Python 2.7, 3.3+ and pypy.
+SQLAlchemy is great but it can be very difficult to setup, specially for begineers.
+So, instead of have to write something like this:
 
-Example:
+.. sourcecode:: python
 
-.. code-block:: python
+    from sqlalchemy import create_engine
+    from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy.orm import sessionmaker, Column, Integer
+
+    engine = create_engine('sqlite:///:memory:')
+    Session = sessionmaker(bind=engine)
+    Base = declarative_base()
+
+    class ToDo(Base):
+        id = Column(Integer, primary_key=True)
+        ...
+
+    Base.metadata.create_all(engine)
+    session = Session()
+    todos = session.query(ToDo).all()
+
+with SQLAlchemy-Wrapper you can write it like this:
+
+.. sourcecode:: python
 
     from sqlalchemy_wrapper import SQLAlchemy
 
-    db = SQLALchemy('postgresql://scott:tiger@localhost:5432/mydb')
+    db = SQLALchemy('sqlite:///:memory:')
 
     class ToDo(db.Model):
         id = db.Column(db.Integer, primary_key=True)
-        title = db.Column(db.String(60), nullable=False)
-        done = db.Column(db.Boolean, nullable=False, default=False)
-        pub_date = db.Column(db.DateTime, nullable=False,
-            default=datetime.utcnow)
+        ...
 
-    to_do = ToDo(title='Install SQLAlchemy-Wrapper', done=True)
-    db.add(to_do)
-    db.commit()
-
-    completed = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
-    paginated = db.query(ToDo).paginate(page=2, per_page=10)
+    db.create_all()
+    todos = db.query(ToDo).all()
 
 
 SQLAlchemy-Wrapper was forked from `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_. Read about the goals of the project in the :ref:`about` section.
 
+Works with Python 2.7, 3.3+ and pypy.
 
 .. include:: contents.rst.inc

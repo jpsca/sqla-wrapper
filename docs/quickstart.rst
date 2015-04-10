@@ -40,33 +40,7 @@ If you are using Flask or other framework that uses the ``after_request`` and ``
     In any other scenario **you have to** call ``db.session.remove()`` after each response or a memory leak will happen.
 
 
-Connection URI Format
-``````````````````````````````````````````````
-
-For a complete list of connection URIs head over to the SQLAlchemy documentation under (`Supported Databases <http://www.sqlalchemy.org/docs/core/engines.html>`_).  This here shows some common connection strings.
-
-SQLAlchemy indicates the source of an Engine as a URI combined with
-optional keyword arguments to specify options for the Engine. The form of the URI is::
-
-    dialect+driver://username:password@host:port/database
-
-Many of the parts in the string are optional. If no driver is specified the default one is selected (make sure to *not* include the ``+`` in that case).
-
-Postgres::
-
-    postgresql://scott:tiger@localhost/mydatabase
-
-MySQL::
-
-    mysql://scott:tiger@localhost/mydatabase
-
-Oracle::
-
-    oracle://scott:tiger@127.0.0.1:1521/sidname
-
-SQLite (note the four leading slashes)::
-
-    sqlite:////absolute/path/to/foo.db
+.. include:: connection-uri.rst.inc
 
 
 A Minimal Application
