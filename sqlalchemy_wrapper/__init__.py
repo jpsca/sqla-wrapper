@@ -1,18 +1,18 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 """
     ==================
     SQLAlchemy-Wrapper
     ==================
 
-    A framework-independent wrapper for SQLAlchemy that makes it really easy
-    to use.
+    A friendly wrapper for SQLAlchemy.
 
-    :copyright: © 2012-2015 by `Juan Pablo Scaletti <http://jpscaletti.com>`_.
-    :license: MIT, see LICENSE for more details.
+    :copyright: 2012-2015 by `Juan-Pablo Scaletti <http://jpscaletti.com>`_.
+    :copyright: 2010 by Armin Ronacher.
+    :license: BSD, see LICENSE for more details.
 
 """
-from .main import SQLAlchemy, BaseQuery  # noqa
-from .paginator import Paginator  # noqa
+from .main import SQLAlchemy, BaseQuery, Model  # noqa
+from .paginator import Paginator, sanitize_page_number  # noqa
 
 
-__version__ = '1.3.1'
+__version__ = '1.4.0'

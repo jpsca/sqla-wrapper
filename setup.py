@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 b'This library requires Python 2.6, 2.7, 3.3, 3.4 or pypy'
 import io
 import os
@@ -72,7 +72,7 @@ setup(
     package_data=find_packages_data(PACKAGE, 'tests'),
     zip_safe=False,
     url='http://github.com/lucuma/sqlalchemy-wrapper',
-    license='MIT license (see LICENSE)',
+    license='BSD (see LICENSE)',
     description='A framework-independent wrapper for SQLAlchemy that makes it really easy to use',
     long_description=get_description(),
     install_requires=get_requirements(),
@@ -80,7 +80,7 @@ setup(
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',

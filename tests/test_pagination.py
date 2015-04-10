@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 from __future__ import print_function
 
 from sqlalchemy_wrapper import SQLAlchemy, Paginator

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 import threading
 
 import inflection
@@ -37,6 +37,14 @@ def _get_table_name(classname):
 
 
 class BaseQuery(Query):
+    """The default query object used for models. This can be subclassed and
+    replaced for individual models by setting the :attr:`~SQLAlchemy.query_cls`
+    attribute.
+
+    This is a subclass of a standard SQLAlchemy
+    :class:`~sqlalchemy.orm.query.Query` class and has all the methods of a
+    standard query as well.
+    """
 
     def get_or_error(self, uid, error):
         """Like :meth:`get` but raises an error if not found instead of
@@ -62,7 +70,8 @@ class BaseQuery(Query):
 
     def paginate(self, **kwargs):
         """Paginate this results.
-        Returns an :class:`Pagination` object.
+
+        Returns an :class:`Paginator` object.
         """
         return Paginator(self, **kwargs)
 

@@ -1,0 +1,16 @@
+Documentation.addTranslations({
+    "locale": "es",
+    "plural_expr": "(n != 1)",
+    "messages": {
+        "permalink_header": "{{ _('permalink_header') }}",
+        "permalink_definition": "{{ _('permalink_definition') }}",
+        "hide_search_matches": "{{ _('hide_search_matches') }}",
+        "searching": "{{ _('searching') }}",
+        "preparing_search": "{{ _('preparing_search') }}",
+        "search_results found %s": "{{ _('search_results found %s') }}",
+        "search_result_in": "{{ _('search_result_in') }}",
+        "search_results": "{{ _('search_results') }}",
+        "search_results_no_results": "{{ _('search_results_no_results') }}",
+        "": ""
+    }
+});

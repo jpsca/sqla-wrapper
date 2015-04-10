@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 """
     ==========
     Paginator
@@ -6,9 +6,6 @@
 
     A helper class for pagination of any iterable, like a SQLAlchemy query
     result or a list.
-
-    :copyright: © 2012 by `Juan Pablo Scaletti <http://jpscaletti.com>`_.
-    :license: MIT, see LICENSE for more details.
 
 """
 from math import ceil
@@ -19,8 +16,10 @@ DEFAULT_PER_PAGE = 10
 
 
 def sanitize_page_number(page):
-    if page == 'last':
-        return page
+    """A helper function for cleanup a ``page`` argument. Cast a string to
+    integer and check that the final value is positive.
+    If the value is not valid returns 1.
+    """
     if isinstance(page, string_type) and page.isdigit():
         page = int(page)
     if isinstance(page, int) and (page > 0):
@@ -29,31 +28,32 @@ def sanitize_page_number(page):
 
 
 class Paginator(object):
-    """Helper class to paginate data.
+    """Helper class for paginate data.
     You can construct it from any SQLAlchemy query object or other iterable.
-
-    :query:
-        Iterable to paginate. Can be a query results object, a list or any
-        other iterable.
-    :page:
-        Current page.
-    :per_page:
-        Max number of items to display on each page.
-    :total:
-        Total number of items. If provided, no attempt wll be made to
-        calculate it from the ``query`` argument.
-    :padding:
-        Number of elements of the next page to show.
-    :on_error:
-        Used if the page number is too big for the total number
-        of items. Raised if it's an exception, called otherwise.
-        ``None`` by default.
     """
     showing = 0
     total = 0
 
     def __init__(self, query, page=1, per_page=DEFAULT_PER_PAGE, total=None,
                  padding=0, on_error=None):
+        """
+        :query:
+            Iterable to paginate. Can be a query results object, a list or any
+            other iterable.
+        :page:
+            Current page.
+        :per_page:
+            Max number of items to display on each page.
+        :total:
+            Total number of items. If provided, no attempt wll be made to
+            calculate it from the ``query`` argument.
+        :padding:
+            Number of elements of the next page to show.
+        :on_error:
+            Used if the page number is too big for the total number
+            of items. Raised if it's an exception, called otherwise.
+            ``None`` by default.
+        """
         self.query = query
 
         # The number of items to be displayed on a page.
@@ -177,17 +177,23 @@ class Paginator(object):
         parameters control the thresholds how many numbers should be produced
         from the sides:
 
-        1..left_edge
-        ...
-        (current - left_current), current, (current + right_current)
-        ...
-        (num_pages - right_edge)..num_pages
+        .. code::
+
+            1..left_edge
+            None
+            (current - left_current), current, (current + right_current)
+            None
+            (num_pages - right_edge)..num_pages
 
         Example:
 
-        1 2 ... 8 9 (10) 11 12 13 14 15 ... 19 20
+        .. sourcecode:: python
 
-        Skipped page numbers are represented as `None`.
+            >>> pg = Paginator(range(1, 20), page=10)
+            >>> [p for p in pg.iter_pages(left_edge=2, left_current=2, right_current=5, right_edge=2)]
+            [1, 2, None, 8, 9, 10, 11, 12, 13, 14, 15, None, 19, 20]
+
+        Skipped page numbers are represented as ``None``.
         This is one way how you could render such a pagination in the template:
 
         .. sourcecode:: html+jinja

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 from sqlalchemy_wrapper.helpers import _get_table_name
 
 
