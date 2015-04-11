@@ -24,12 +24,14 @@
     <link rel="prev" title="{{ prev.title|striptags|e }}" href="{{ prev.link|e }}">
   {%- endif %}
   <meta property="og:type" content="website">
-  <meta property="og:locale" content="{{ LANG }}">
+  <meta property="og:locale" content="{{ LANG or 'en' }}">
   <meta property="og:title" content="{{ title|striptags|e }}{{ titlesuffix }}">
-  {#<meta property="og:url" content="">
-  <meta property="og:image" content="">
-  <meta name="og:description" content="">
-  <meta name="description" content="">#}
+  {% if url %}<meta property="og:url" content="{{ url }}">{% endif %}
+  {% if seo_image %}<meta property="og:image" content="{{ seo_image }}">{% endif %}
+  {% if seo_description -%}
+  <meta name="og:description" content="{{ seo_description }}">
+  <meta name="description" content="{{ seo_description }}">
+  {%- endif %}
 </head>
 <body class="{% block bodyclass %}{% endblock %}">
 {% include "header.html" %}
