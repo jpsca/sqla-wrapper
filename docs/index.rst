@@ -47,6 +47,8 @@ with SQLAlchemy-Wrapper you can write it like this:
     todos = db.query(ToDo).all()
 
 
+It also can :ref:`paginate <pagination>` the results for you.
+
 SQLAlchemy-Wrapper was born as a framework-independent fork of `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_.
 Read about the goals of the project in the :ref:`about` section.
 
