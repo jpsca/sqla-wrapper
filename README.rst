@@ -8,35 +8,26 @@ SQLAlchemy-Wrapper |travis|
 
 A friendly wrapper for SQLAlchemy.
 
-Works with Python 2.7, 3.3, 3.4 and pypy.
 
-Example:
-
-.. code-block:: python
+.. sourcecode:: python
 
     from sqlalchemy_wrapper import SQLAlchemy
 
-    db = SQLALchemy('postgresql://scott:tiger@localhost:5432/mydatabase')
+    db = SQLALchemy('sqlite:///:memory:')
 
     class ToDo(db.Model):
         id = db.Column(db.Integer, primary_key=True)
-        title = db.Column(db.String(60), nullable=False)
-        done = db.Column(db.Boolean, nullable=False, default=False)
-        pub_date = db.Column(db.DateTime, nullable=False,
-            default=datetime.utcnow)
+        ...
 
-    to_do = ToDo(title='Install SQLAlchemy-Wrapper', done=True)
-    db.add(to_do)
-    db.commit()
-
-    completed = db.query(ToDo).order_by(Todo.pub_date.desc()).all()
-    paginated = db.query(ToDo).paginate(page=2, per_page=10)
+    db.create_all()
+    todos = db.query(ToDo).all()
 
 
 Read the complete documentation here: http://sqlawrapper.lucuma.co
 
-______
+SQLAlchemy-Wrapper was born as a framework-independent fork of `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_. Read about the goals of the project in the `About SQLAlchemy-Wrapper <http://sqlawrapper.lucuma.co/about.html>`_ section of the documentation.
 
+Works with Python 2.7, 3.3, 3.4 and pypy.
 
 Contributing
 ======================
@@ -75,9 +66,6 @@ are touch by the tests::
 Our test suite `runs continuously on Travis CI <https://travis-ci.org/lucuma/sqlalchemy-wrapper>`_ with every update.
 
 
-______
-
-SQLAlchemy-Wrapper was forked from `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_. Read about the goals of the project `here <http://sqlawrapper.lucuma.co/about.html>`_.
 
 :copyright: 2012-2015 by `Juan-Pablo Scaletti <http://jpscaletti.com>`_.
 :copyright: 2010 by Armin Ronacher.
