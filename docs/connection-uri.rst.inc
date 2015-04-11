@@ -26,6 +26,6 @@ SQLite (note the four leading slashes)::
 
     sqlite:////absolute/path/to/foo.db
 
-SQLite in memory
+SQLite in memory::
 
     sqlite:///:memory:

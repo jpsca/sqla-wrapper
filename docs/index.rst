@@ -9,8 +9,9 @@ SQLAlchemy-Wrapper
     A friendly wrapper for SQLAlchemy.
 
 
-SQLAlchemy is great but it can be very difficult to setup, specially for begineers.
-So, *instead* of have to write something like this:
+SQLAlchemy is great but it is difficult to setup, specially for beginners.
+
+So, *instead* of having to write something like this:
 
 .. sourcecode:: python
 
@@ -46,8 +47,8 @@ with SQLAlchemy-Wrapper you can write it like this:
     todos = db.query(ToDo).all()
 
 
-SQLAlchemy-Wrapper was forked from `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_. Read about the goals of the project in the :ref:`about` section.
+SQLAlchemy-Wrapper born as a framework-independent fork of `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_. Read about the goals of the project in the :ref:`about` section.
 
-Works with Python 2.7, 3.3+ and pypy.
+Tested with Python 2.7, 3.3+ and pypy.
 
 .. include:: contents.rst.inc

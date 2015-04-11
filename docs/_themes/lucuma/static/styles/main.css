@@ -22,6 +22,11 @@ html, body {
   overflow-x: hidden;
 }
 
+.wrapper .section iframe {
+    width: 100%;
+    min-height: 380px;
+}
+
 a img {
   border: none;
 }

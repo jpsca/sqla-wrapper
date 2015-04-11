@@ -7,7 +7,7 @@ Generally SQLAlchemy-Wrapper behaves like a properly configured declarative base
 
 Things to keep in mind:
 
--   The baseclass for all your models is called `db.Model`. It's stored on the SQLAlchemy instance you have to create. See :ref:`quickstart` for more details.
+-   The base class for all your models is called `db.Model`. It's stored on the SQLAlchemy instance you have to create. See :ref:`quickstart` for more details.
 -   Some parts that are required in SQLAlchemy are optional in SQLAlchemy-Wrapper. For instance the table name is automatically set for you (unless overridden) by pluralizing the class name with the `inflection <http://inflection.readthedocs.org>`_ library. So, for example, a ``UserEmail`` model gets a table named ``user_emails``.
 
 
@@ -33,11 +33,11 @@ A very simple example:
 
 You don't need a custom `__init__` method because all your models have one that takes keyword arguments, but you can add your own `__init__` and then call the one from `db.Model` using `super`.
 
-Use :class:`~sqlalchemy.Column` to define a column. The name of the column is the name you assign it to. If you want to use a different name in the table you can provide an optional first argument which is a string with the desired column name.
+Use :class:`~sqlalchemy.Column` to define a column. The name of the column is the name you assign it to. If you want to use a different name in the table you can give an optional first argument which is a string with the desired column name.
 
 Primary keys are marked with ``primary_key=True``. Multiple keys can be marked as primary keys in which case they become a compound primary key.
 
-The types of the column are the first argument to :class:`~sqlalchemy.Column`. You can either provide them directly or call them to further specify them (like providing a length). The following
+The types of the column are the first argument to :class:`~sqlalchemy.Column`. You can either declare them directly or call them to further specifications (like providing a length). The following
 types are the most common:
 
 =================== =====================================
@@ -143,8 +143,8 @@ As the SQLAchemy models are Python classes, you can build them by resuing the co
         field = db.Column(db.Unicode)
 
 
-In this example `Model1` and `Model2` doesn't have to declare a primary key since is coming from the `BaseMixin`. `BaseMixin` however will not generate a table in the database because it doesn't inherit from `db.Model`.
+In this example `Model1` and `Model2` doesn't have to declare a primary key because is coming from the `BaseMixin`. `BaseMixin` however will not generate a table in the database because it doesn't inherit from `db.Model`.
 
-In your models, be careful to put `db.Model` *last* in the list of inherited classes or they will not be intialized properly.
+In your models, be careful to put `db.Model` *last* in the list of inherited classes or they will not be initialized properly.
 
 The example is very simple, but you can include in your mixins many fields, methods, validators and so on. You could even generate them dynamically.

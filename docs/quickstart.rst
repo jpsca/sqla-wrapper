@@ -192,7 +192,7 @@ Road to Enlightenment
 -   the :attr:`~SQLAlchemy.engine`
 -   a :meth:`SQLAlchemy.create_all` and :meth:`SQLAlchemy.drop_all` methods to create and drop tables according to the models.
 -   a :meth:`SQLAlchemy.query`, :meth:`SQLAlchemy.add`, :meth:`SQLAlchemy.delete`, :meth:`SQLAlchemy.flush`, :meth:`SQLAlchemy.commit` and , :meth:`SQLAlchemy.rollback` methods, as proxy for the ones in :meth:`SQLAlchemy.session`.
--   a :class:`Model` baseclass that is a configured declarative base.
+-   a :class:`Model` base class that is a configured declarative base.
 
 
 

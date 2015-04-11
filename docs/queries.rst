@@ -68,6 +68,14 @@ The following queries assume following entries in the database:
 3           guest       guest@example.com
 =========== =========== =====================
 
+.. deactivated::
+
+    See a live demo right below:
+
+    .. raw:: html
+
+        <iframe src="https://codepicnic.com/consoles/sqlalchemy-wrapper-1428695354/embed"></iframe>
+
 Retrieve a user by username:
 
 .. sourcecode:: python

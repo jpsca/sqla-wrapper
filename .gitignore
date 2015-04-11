@@ -14,3 +14,4 @@ dist
 .tox
 htmlcov
 __pycache__
+docs/_themes/lucuma/static/.webassets-cache
