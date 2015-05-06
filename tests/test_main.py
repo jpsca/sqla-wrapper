@@ -41,6 +41,9 @@ def test_init_app():
 
     class App(object):
 
+        def teardown_appcontext(self, f):
+            f()
+
         def after_request(self, f):
             f()
 
