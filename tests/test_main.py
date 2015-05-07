@@ -1,5 +1,6 @@
 # coding=utf-8
 from datetime import datetime
+import mock
 import pytest
 
 from sqlalchemy_wrapper import SQLAlchemy
@@ -39,29 +40,47 @@ def test_define_table():
 
 def test_init_app():
 
+    teardown_appcontext_spy = mock.Mock()
+    after_request_spy = mock.Mock()
+    on_exception_spy = mock.Mock()
+    hook_spy = mock.Mock()
+
+    # Flask-like (>=0.9)
+    class AppWithTearDownAppContext(object):
+        def teardown_appcontext(self, f):
+            teardown_appcontext_spy()
+
+    # Old Flask- or Bottle-like
     class App(object):
 
         def after_request(self, f):
-            f()
+            after_request_spy()
 
         def on_exception(self, f):
-            f()
+            on_exception_spy()
 
         def hook(self, name):
             def decorator(f):
-                f()
+                hook_spy()
             return decorator
 
     app = App()
     db = SQLAlchemy(URI1)
     db.init_app(app)
     assert app.databases
+    after_request_spy.assert_called_once()
+    on_exception_spy.assert_called_once()
+    hook_spy.assert_called_once()
 
     app = App()
     db = SQLAlchemy(URI1, app)
     assert app.databases
     db.init_app(app)
     assert len(app.databases) == 1
+
+    app = AppWithTearDownAppContext()
+    db = SQLAlchemy(URI1, app)
+    teardown_appcontext_spy.assert_called_once()
 
 
 def test_query():

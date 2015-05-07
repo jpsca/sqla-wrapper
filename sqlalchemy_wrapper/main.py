@@ -157,8 +157,16 @@ class SQLAlchemy(object):
         hooks to call ``db.session.remove()`` after each response, and
         ``db.session.rollback()`` if an error occurs.
         """
-        if hasattr(app, 'after_request'):
-            app.after_request(shutdown)
+        # 0.9 and later
+        if hasattr(app, 'teardown_appcontext'):
+            teardown = app.teardown_appcontext
+        # 0.7 to 0.8
+        elif hasattr(app, 'teardown_request'):
+            teardown = app.teardown_request
+        # Older Flask versions
+        else:
+            teardown = app.after_request
+        teardown(shutdown)
         if hasattr(app, 'on_exception'):
             app.on_exception(rollback)
 
