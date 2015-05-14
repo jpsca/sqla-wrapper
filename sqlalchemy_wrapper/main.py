@@ -37,12 +37,13 @@ class SQLAlchemy(object):
             login = db.Column(db.String(80), unique=True)
             passw_hash = db.Column(db.String(80))
 
-    In a web application you need to call ``db.session.remove()``
-    after each response, and ``db.session.rollback()`` if an error occurs.
+    In a web application or a multithreaded environment you need to
+    call ``db.session.remove()`` after each response,
+    and ``db.session.rollback()`` if an error occurs.
 
-    No need to do it If your application object has an ``after_request``
-    and ``on_exception`` decorators, just pass your application object
-    at creation:
+    However, there's no need to do it if your application object has an
+    ``after_request`` and ``on_exception`` hooks, just pass your
+    application object at creation:
 
     .. sourcecode:: python
 
@@ -126,10 +127,15 @@ class SQLAlchemy(object):
         return options
 
     def init_app(self, app):
-        """This callback can be used to initialize an application for the
-        use with this database setup. In a web application or a multithreaded
-        environment, never use a database without initialize it first,
-        or connections will leak.
+        """In a web application or a multithreaded environment you need to
+        call ``db.session.remove()`` after each response,
+        and ``db.session.rollback()`` if an error occurs.
+
+        This callback can be used to setup the application's ``after_request``
+        and ``on_exception`` hooks to do that automatically.
+
+        Flask, Bottle and webpy are supported. Other frameworks might also
+        apply if their hook syntax are the same.
         """
         if not hasattr(app, 'databases'):
             app.databases = []

@@ -46,8 +46,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'SQLAlchemy-Wrapper'
-
-copyright = u'Juan-Pablo Scaletti'
+copyright = u'by Juan-Pablo Scaletti'
+author = u'Juan-Pablo Scaletti'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -278,10 +278,11 @@ texinfo_documents = [
 # -- Options for Epub output ----------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'SQLAlchemy-Wrapper'
-epub_author = u'Juan-Pablo Scaletti'
-epub_publisher = u'Juan-Pablo Scaletti'
-epub_copyright = u'Juan-Pablo Scaletti'
+epub_title = project
+epub_author = author
+epub_publisher = author
+epub_copyright = copyright
+
 
 # The basename for the epub file. It defaults to the project name.
 # epub_basename = u'SQLAlchemy-Wrapper'

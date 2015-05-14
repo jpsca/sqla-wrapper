@@ -46,7 +46,7 @@ html {
 }
 
 body {
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.5;
   color: #333333;
 }
@@ -854,7 +854,7 @@ pre, code {
 }
 
 pre {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
   margin: 20px 0;
   padding: 5px 10px;
