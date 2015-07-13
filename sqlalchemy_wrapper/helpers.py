@@ -1,17 +1,27 @@
 # coding=utf-8
+from operator import itemgetter
+import sys
 import threading
+import time
 
 import inflection
 import sqlalchemy
-from sqlalchemy.orm import scoped_session, sessionmaker, Query
+from sqlalchemy.event import listen
+from sqlalchemy.orm import Query
 
 from .paginator import Paginator
 
 
-def _create_scoped_session(db, query_cls):
-    session = sessionmaker(autoflush=True, autocommit=False,
-                           bind=db.engine, query_cls=query_cls)
-    return scoped_session(session)
+# the best timer function for the platform
+if sys.platform == 'win32':
+    _timer = time.clock
+else:
+    _timer = time.time
+
+try:
+    from flask import _app_ctx_stack as connection_stack
+except ImportError:
+    connection_stack = None
 
 
 def _tablemaker(db):
@@ -88,22 +98,25 @@ class ModelTableNameDescriptor(object):
 
 class EngineConnector(object):
 
-    def __init__(self, sa_obj):
-        self._sa_obj = sa_obj
+    def __init__(self, sqla):
+        self._sqla = sqla
         self._engine = None
         self._connected_for = None
         self._lock = threading.Lock()
 
     def get_engine(self):
         with self._lock:
-            uri = self._sa_obj.uri
-            info = self._sa_obj.info
-            options = self._sa_obj.options
+            uri = self._sqla.uri
+            info = self._sqla.info
+            options = self._sqla.options
             echo = options.get('echo')
             if (uri, echo) == self._connected_for:
                 return self._engine
             self._engine = engine = sqlalchemy.create_engine(info, **options)
             self._connected_for = (uri, echo)
+
+            if connection_stack and self._sqla.record_queries:
+                EngineDebug(self._engine, self._sqla).register()
             return engine
 
 
@@ -123,3 +136,104 @@ class Model(object):
 
     def __repr__(self):
         return '<%s>' % self.__class__.__name__
+
+
+class DebugQueryTuple(tuple):
+    statement = property(itemgetter(0))
+    parameters = property(itemgetter(1))
+    start_time = property(itemgetter(2))
+    end_time = property(itemgetter(3))
+    context = property(itemgetter(4))
+
+    @property
+    def duration(self):
+        return self.end_time - self.start_time
+
+    def __repr__(self):
+        return '<query statement="%s" parameters=%r duration=%.03f>' % (
+            self.statement,
+            self.parameters,
+            self.duration
+        )
+
+
+def _frame_context(frm):
+    return '{filename}:{lineno} ({blueprint})'.format(
+        filename=frm.f_code.co_filename,
+        lineno=frm.f_lineno,
+        blueprint=frm.f_code.co_name
+    )
+
+
+def _calling_context(app_path):
+    frm = sys._getframe(1)
+    frames = [frm]
+    while frm.f_back is not None:
+        if frm.f_code.co_filename.startswith(app_path):
+            return _frame_context(frm)
+        frm = frm.f_back
+        frames.append(frm)
+
+    # The call was made from a library?
+    for frm in frames:
+        filepath = frm.f_code.co_filename
+        if '/sqlalchemy/' not in filepath:
+            if '/sqlalchemy-wrapper/' not in filepath:
+                return _frame_context(frm)
+
+    return '<unknown>'
+
+
+class EngineDebug(object):
+    """Sets up handlers for two events that let us track the execution time of queries."""
+
+    def __init__(self, engine, sqla):
+        self.engine = engine
+        self.sqla = sqla
+
+    def register(self):
+        listen(self.engine, 'before_cursor_execute', self.before_cursor_execute)
+        listen(self.engine, 'after_cursor_execute', self.after_cursor_execute)
+
+    def before_cursor_execute(self, conn, cursor, statement,
+                              parameters, context, executemany):
+        if connection_stack.top is not None:
+            context._query_start_time = _timer()
+
+    def after_cursor_execute(self, conn, cursor, statement,
+                             parameters, context, executemany):
+        ctx = connection_stack.top
+        if ctx is not None:
+            queries = getattr(ctx, 'sqlalchemy_queries', None)
+            if queries is None:
+                queries = []
+                setattr(ctx, 'sqlalchemy_queries', queries)
+            debug_query = (
+                statement, parameters, context._query_start_time,
+                _timer(), _calling_context(self.sqla.app_path)
+            )
+            queries.append(DebugQueryTuple(debug_query))
+
+
+def get_debug_queries():
+    """
+    Return a list of named tuples with the following attributes:
+
+    :statement:
+        The SQL statement issued
+    :parameters:
+        The parameters for the SQL statement
+    :start_time:
+    :end_time:
+        Time the query started / the results arrived.  Please keep in mind
+        that the timer function used depends on your platform. These
+        values are only useful for sorting or comparing.  They do not
+        necessarily represent an absolute timestamp.
+    :duration:
+        Time the query took in seconds
+    :context:
+        A string giving a rough estimation of where in your application
+        query was issued.  The exact format is undefined so don't try
+        to reconstruct filename or function name.
+    """
+    return getattr(connection_stack.top, 'sqlalchemy_queries', [])

@@ -4,6 +4,7 @@ import threading
 try:
     from sqlalchemy.engine.url import make_url
     from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy.orm import scoped_session, sessionmaker
     from sqlalchemy.schema import MetaData
 except ImportError:
     raise ImportError(
@@ -14,9 +15,8 @@ except ImportError:
         ' it in your PYTHONPATH.')
 
 from .helpers import (
-    _create_scoped_session, _include_sqlalchemy,
-    BaseQuery, Model, EngineConnector
-)
+    _include_sqlalchemy, BaseQuery, Model, EngineConnector,
+    connection_stack, get_debug_queries)
 
 
 class SQLAlchemy(object):
@@ -69,8 +69,10 @@ class SQLAlchemy(object):
 
     def __init__(self, uri='sqlite://', app=None, echo=False,
                  pool_size=None, pool_timeout=None, pool_recycle=None,
-                 convert_unicode=True, query_cls=BaseQuery):
+                 convert_unicode=True, query_cls=BaseQuery,
+                 record_queries=False, **session_options):
         self.uri = uri
+        self.record_queries = record_queries
         self.info = make_url(uri)
         self.options = self._cleanup_options(
             echo=echo,
@@ -82,16 +84,23 @@ class SQLAlchemy(object):
 
         self.connector = None
         self._engine_lock = threading.Lock()
-        self.session = _create_scoped_session(self, query_cls=query_cls)
+
+        session_options.setdefault('autoflush', True)
+        session_options.setdefault('autocommit', False)
+        session_options.setdefault('query_cls', query_cls)
+        session_options.setdefault('bind', self.engine)
+        self.session = self._create_scoped_session(**session_options)
 
         self.Model = declarative_base(cls=Model, name='Model')
         self.Model.db = self
         self.Model.query = self.session.query
 
+        self.app_path = ''
         if app is not None:
             self.init_app(app)
 
         _include_sqlalchemy(self)
+        monkeypatch_flask_debugtoolbar()
 
     def _cleanup_options(self, **kwargs):
         options = dict([
@@ -126,6 +135,10 @@ class SQLAlchemy(object):
                 )
         return options
 
+    def _create_scoped_session(self, **kwargs):
+        session = sessionmaker(**kwargs)
+        return scoped_session(session)
+
     def init_app(self, app):
         """In a web application or a multithreaded environment you need to
         call ``db.session.remove()`` after each response,
@@ -137,6 +150,7 @@ class SQLAlchemy(object):
         Flask, Bottle and webpy are supported. Other frameworks might also
         apply if their hook syntax are the same.
         """
+        self.app_path = app.root_path
         if not hasattr(app, 'databases'):
             app.databases = []
         if isinstance(app.databases, list):
@@ -264,3 +278,10 @@ class SQLAlchemy(object):
 
     def __repr__(self):
         return "<SQLAlchemy('{0}')>".format(self.uri)
+
+
+def monkeypatch_flask_debugtoolbar():
+    import flask_debugtoolbar.panels.sqlalchemy
+    flask_debugtoolbar.panels.sqlalchemy.SQLAlchemy = SQLAlchemy
+    flask_debugtoolbar.panels.sqlalchemy.get_debug_queries = get_debug_queries
+    flask_debugtoolbar.panels.sqlalchemy.sqlalchemy_available = True
