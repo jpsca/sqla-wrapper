@@ -100,7 +100,9 @@ class SQLAlchemy(object):
             self.init_app(app)
 
         _include_sqlalchemy(self)
-        monkeypatch_flask_debugtoolbar()
+
+        if connection_stack and record_queries:
+            monkeypatch_flask_debugtoolbar()
 
     def _cleanup_options(self, **kwargs):
         options = dict([
@@ -281,7 +283,11 @@ class SQLAlchemy(object):
 
 
 def monkeypatch_flask_debugtoolbar():
-    import flask_debugtoolbar.panels.sqlalchemy
+    try:
+        import flask_debugtoolbar.panels.sqlalchemy
+    except ImportError:
+        return
+
     flask_debugtoolbar.panels.sqlalchemy.SQLAlchemy = SQLAlchemy
     flask_debugtoolbar.panels.sqlalchemy.get_debug_queries = get_debug_queries
     flask_debugtoolbar.panels.sqlalchemy.sqlalchemy_available = True
