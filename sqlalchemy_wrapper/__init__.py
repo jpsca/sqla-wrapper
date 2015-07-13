@@ -15,4 +15,4 @@ from .main import SQLAlchemy, BaseQuery, Model  # noqa
 from .paginator import Paginator, sanitize_page_number  # noqa
 from .helpers import get_debug_queries  # noqa
 
-__version__ = '1.5.0'
+__version__ = '1.5.1'

@@ -152,7 +152,7 @@ class SQLAlchemy(object):
         Flask, Bottle and webpy are supported. Other frameworks might also
         apply if their hook syntax are the same.
         """
-        self.app_path = app.root_path
+        self.app_path = getattr(app, 'root_path', '')
         if not hasattr(app, 'databases'):
             app.databases = []
         if isinstance(app.databases, list):
