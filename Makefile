@@ -1,22 +1,38 @@
-.PHONY: clean clean-pyc test publish
+.PHONY: all
 
-all: clean clean-pyc test
+clean: clean-build clean-pyc
 
-clean: clean-pyc
-	rm -rf build
-	rm -rf dist
+clean-build:
+	rm -rf build/
+	rm -rf dist/
 	rm -rf *.egg-info
-	find . -name '.DS_Store' -delete
-	rm -rf tests/__pycache__
 
 clean-pyc:
-	find . -name '*.pyc' -delete
-	find . -name '*.pyo' -delete
-	find . -name '*~' -delete
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -rf {} +
+
+lint:
+	flake8 sqlalchemy_wrapper tests --ignore=E501
 
 test:
-	py.test --cov-config .coveragerc --cov sqlalchemy_wrapper tests/
+	py.test -x tests/
+
+test-all:
+	tox
+
+coverage:
+	py.test -x --cov-config .coveragerc --cov sqlalchemy_wrapper --cov-report html tests/
+	open htmlcov/index.html
 
 publish: clean
 	python setup.py sdist upload
+	python setup.py bdist_wheel upload
 
+sdist: clean
+	python setup.py sdist
+	ls -l dist
+
+wheel: clean
+	pip wheel --wheel-dir=wheel .

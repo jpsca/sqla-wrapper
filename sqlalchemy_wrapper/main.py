@@ -6,7 +6,7 @@ try:
     from sqlalchemy.ext.declarative import declarative_base
     from sqlalchemy.orm import scoped_session, sessionmaker
     from sqlalchemy.schema import MetaData
-except ImportError:
+except ImportError:  # pragma: no cover
     raise ImportError(
         'Unable to load the sqlalchemy package.'
         ' `SQLAlchemy-Wrapper` needs the SQLAlchemy library to run.'
@@ -179,6 +179,7 @@ class SQLAlchemy(object):
         hooks to call ``db.session.remove()`` after each response, and
         ``db.session.rollback()`` if an error occurs.
         """
+        teardown = None
         # 0.9 and later
         if hasattr(app, 'teardown_appcontext'):
             teardown = app.teardown_appcontext
@@ -186,9 +187,11 @@ class SQLAlchemy(object):
         elif hasattr(app, 'teardown_request'):
             teardown = app.teardown_request
         # Older Flask versions
-        else:
+        elif hasattr(app, 'after_request'):
             teardown = app.after_request
-        teardown(shutdown)
+        if teardown:
+            teardown(shutdown)
+
         if hasattr(app, 'on_exception'):
             app.on_exception(rollback)
 
@@ -277,6 +280,14 @@ class SQLAlchemy(object):
         meta = meta or MetaData()
         meta.reflect(bind=self.engine)
         return meta
+
+    def get_engine(cls, current_app):
+        """Proxy for compatibility with flask-debugtoolbar
+        """
+        databases = getattr(current_app, 'databases', None)
+        if not databases:
+            return None
+        return databases[0].engine
 
     def __repr__(self):
         return "<SQLAlchemy('{0}')>".format(self.uri)

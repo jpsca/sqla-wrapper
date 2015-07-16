@@ -39,48 +39,69 @@ def test_define_table():
 
 
 def test_init_app():
+    class FakeApp(object):
+        pass
 
+    app = FakeApp()
+    db = SQLAlchemy(URI1, app)
+    assert app.databases
+    db.init_app(app)
+    assert len(app.databases) == 1
+
+
+def test_flask_hooks_0_9():
     teardown_appcontext_spy = mock.Mock()
-    after_request_spy = mock.Mock()
-    on_exception_spy = mock.Mock()
-    hook_spy = mock.Mock()
 
-    # Flask-like (>=0.9)
     class AppWithTearDownAppContext(object):
         def teardown_appcontext(self, f):
             teardown_appcontext_spy()
 
-    # Old Flask- or Bottle-like
-    class App(object):
+    app = AppWithTearDownAppContext()
+    SQLAlchemy(URI1, app=app)
+    assert teardown_appcontext_spy.call_count
 
+
+def test_flask_hooks_0_8():
+    teardown_request_spy = mock.Mock()
+
+    class AppWithTearDownRequest(object):
+        def teardown_request(self, f):
+            teardown_request_spy()
+
+    app = AppWithTearDownRequest()
+    SQLAlchemy(URI1, app=app)
+    assert teardown_request_spy.call_count
+
+
+def test_flask_hooks_old():
+    after_request_spy = mock.Mock()
+    on_exception_spy = mock.Mock()
+
+    class App(object):
         def after_request(self, f):
             after_request_spy()
 
         def on_exception(self, f):
             on_exception_spy()
 
+    app = App()
+    SQLAlchemy(URI1, app=app)
+    assert after_request_spy.call_count
+    assert on_exception_spy.call_count
+
+
+def test_bottle_hooks():
+    hook_spy = mock.Mock()
+
+    class App(object):
         def hook(self, name):
             def decorator(f):
                 hook_spy()
             return decorator
 
     app = App()
-    db = SQLAlchemy(URI1)
-    db.init_app(app)
-    assert app.databases
-    # after_request_spy.assert_called_once()
-    # on_exception_spy.assert_called_once()
-    # hook_spy.assert_called_once()
-
-    app = App()
-    db = SQLAlchemy(URI1, app)
-    assert app.databases
-    db.init_app(app)
-    assert len(app.databases) == 1
-
-    app = AppWithTearDownAppContext()
-    db = SQLAlchemy(URI1, app)
-    # teardown_appcontext_spy.assert_called_once()
+    SQLAlchemy(URI1, app=app)
+    assert hook_spy.call_count
 
 
 def test_query():
@@ -186,3 +207,15 @@ def test_id_mixin():
 
     assert Model.__tablename__ == 'models'
     assert hasattr(Model, 'id')
+
+
+def test_get_engine():
+    class FakeApp(object):
+        pass
+
+    app1 = FakeApp()
+    app2 = FakeApp()
+    db = SQLAlchemy(URI1, app=app1)
+
+    assert SQLAlchemy().get_engine(app1) == db.engine
+    assert SQLAlchemy().get_engine(app2) is None

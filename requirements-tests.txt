@@ -2,3 +2,5 @@
 pytest-cov
 tox
 mock
+flake8
+flask_debugtoolbar
