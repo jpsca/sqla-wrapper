@@ -21,7 +21,7 @@ See `LICENSE` for more details.
 What about Flask-SQLAlchemy?
 ----------------------------------------------
 
-SQLAlchemy-Wrapper was forked from `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_.
+SQLAlchemy-Wrapper was born as a framework-independent fork of `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_, but there are other reasons to use it instead:
 
 Flask-SQLAlchemy needs a Flask app to get the connection URI and a request context in order to run. This can be cumbersome for testing or standalone scripts.
 

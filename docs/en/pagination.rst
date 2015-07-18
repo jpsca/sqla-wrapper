@@ -49,13 +49,13 @@ However, *all page numbers* are sometimes too many to display.
 The :attr:`~Paginator.pages` property is an iterator that returns the page numbers, but sometimes not all of them: if there are more than 11 pages, the result will be similar to one of these, depending of what page you are currently on:
 
 
-.. figure:: _static/paginator1.png
+.. figure:: ../_assets/paginator1.png
    :align: center
 
-.. figure:: _static/paginator2.png
+.. figure:: ../_assets/paginator2.png
    :align: center
 
-.. figure:: _static/paginator3.png
+.. figure:: ../_assets/paginator3.png
    :align: center
 
 

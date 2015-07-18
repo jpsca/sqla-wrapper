@@ -46,7 +46,7 @@ html {
 }
 
 body {
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.5;
   color: #333333;
 }
@@ -144,8 +144,8 @@ h6 .small,
 
 
 h1, .h1 {
-  font-size: 2.4em;
-  font-weight: 700;
+    font-size: 1.9em;
+    font-weight: 500
 }
 
 h2, .h2 {
@@ -850,32 +850,14 @@ abbr, acronym {
 /* -- code displays --------------------------------------------------------- */
 
 pre, code {
-  font-family: "Menlo", "Consolas", monospace;
-}
-
-pre {
-  font-size: 14px;
+  font-size: 15px;
+  font-family: "Monaco", "Menlo", "Consolas", monospace;
   line-height: 1.5;
   margin: 20px 0;
-  padding: 5px 10px;
-  min-width: 300px;
   overflow: auto;
   color: #222;
-}
-
-code {
-  padding: 2px 4px;
-  color: #d14;
-  border-radius: 3px;
-  background-color: #f7f7f9;
-  border: 1px solid #e1e1e8;
-  white-space: nowrap;
-  font-size: 90%;
-}
-
-dt code {
-    color: #000;
-    font-size: inherit;
+  padding: 5px 10px;
+  min-width: 300px;
 }
 
 pre, tt, code,
@@ -899,17 +881,22 @@ table.highlighttable td {
   padding: 0 0.5em 0 0.5em;
 }
 
-.descname {
-  background-color: transparent;
-  border: none;
+code.docutils.literal {
+  margin: 0;
+  padding: 1px 2px;
+  background-color: #F5F5F5;
+  font-size: 85%;
   font-weight: bold;
-  font-size: 100%;
 }
 
-.descclassname {
+tt.descname {
   background-color: transparent;
-  border: none;
-  font-weight: normal;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+tt.descclassname {
+  background-color: transparent;
 }
 
 tt.xref, a tt {

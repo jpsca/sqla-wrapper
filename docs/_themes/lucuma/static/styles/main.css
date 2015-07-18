@@ -22,11 +22,6 @@ html, body {
   overflow-x: hidden;
 }
 
-.wrapper .section iframe {
-    width: 100%;
-    min-height: 380px;
-}
-
 a img {
   border: none;
 }
@@ -148,20 +143,6 @@ header h1 a, header h1 a:hover, header h1 a:visited {
   padding: 0 20px;
   text-align: left;
   text-decoration: none;
-}
-
-header h1.logo a, header h1.logo a:hover, header h1.logo a:visited {
-    padding-left: 0;
-    /*text-indent: -9999px;*/
-    background-color: transparent;
-    color: #333;
-    font-size: 14px;
-}
-
-header h1 a img {
-    border: none;
-    height: 50px;
-    vertical-align: middle;
 }
 
 header h1 a small {

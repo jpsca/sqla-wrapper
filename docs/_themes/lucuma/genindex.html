@@ -29,13 +29,13 @@
 {% endmacro %}
 
 {%- extends "layout.html" %}
-{% set title = _('index') %}
+{% set title = t_nav_index %}
 
 
 {% block content %}
 <div id="genindex">
   <div class="wrapper">
-    <h1 id="index">{{ _('index') }}</h1>
+    <h1 id="index">{{ t.nav_index }}</h1>
 
     <div class="genindex-jumpbox">
      {% for key, dummy in genindexentries -%}
