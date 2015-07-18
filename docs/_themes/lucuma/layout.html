@@ -1,6 +1,6 @@
 {% import 'locale-'+language+'_t' as t -%}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ language }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -11,7 +11,17 @@
     title="{{ _('opensearch_search_in') }}"
     href="{{ pathto('_static/opensearch.xml', 1) }}"/>
   <link rel="shortcut icon" type="image/x-icon" href="{{ pathto('_static/favicon.ico', 1) }}">
-  <link href="{{ pathto('_static/styles/styles.min.css', 1) }}" rel="stylesheet">
+
+  <link href="{{ pathto('_static/styles/normalize.css', 1) }}" rel="stylesheet">
+  <link href="{{ pathto('_static/styles/font-awesome.css', 1) }}" rel="stylesheet">
+  <link href="{{ pathto('_static/styles/main.css', 1) }}" rel="stylesheet">
+  <link href="{{ pathto('_static/styles/type.css', 1) }}" rel="stylesheet">
+  <link href="{{ pathto('_static/styles/button.css', 1) }}" rel="stylesheet">
+  <link href="{{ pathto('_static/styles/pygments.css', 1) }}" rel="stylesheet">
+  <link href="{{ pathto('_static/styles/magnific-popup.css', 1) }}" rel="stylesheet">
+  <link href="{{ pathto('_static/styles/responsive.css', 1) }}" rel="stylesheet">
+  <link href="{{ pathto('_static/styles/print.css', 1) }}" rel="stylesheet" media="print">
+
   {% if hasdoc('genindex') -%}
     <link rel="index" title="{{ t.nav_index }}" href="{{ pathto('genindex') }}">
   {%- endif %}
@@ -36,6 +46,7 @@
 {% include "header.html" %}
 {% block content %}{% endblock %}
 {% include "footer.html" %}
+
 <script>
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '{{ url_root }}',
@@ -44,7 +55,12 @@ var DOCUMENTATION_OPTIONS = {
     HAS_SOURCE: true // neccesary for showing context in the search results
 };
 </script>
-<script src="{{ pathto('_static/scripts/scripts.min.js', 1) }}"></script>
+<script src="{{ pathto('_static/scripts/jquery.js', 1) }}"></script>
+<script src="{{ pathto('_static/scripts/lodash.js', 1) }}"></script>
+<script src="{{ pathto('_static/scripts/magnific-popup.js', 1) }}"></script>
+<script src="{{ pathto('_static/scripts/doctools.js', 1) }}"></script>
+<script src="{{ pathto('_static/scripts/picturefill.min.js', 1) }}"></script>
+<script src="{{ pathto('_static/scripts/main.js', 1) }}"></script>
 <script src="{{ pathto('_static/translations.js', 1) }}"></script>
 {% block scripts %}{% endblock %}
 <script>

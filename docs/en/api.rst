@@ -51,7 +51,7 @@ Models
       underlying query.
 
 
-Utilities
+Pagination
 ----------------------------------------------
 
 .. autoclass:: Paginator

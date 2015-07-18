@@ -1,6 +1,17 @@
 <header>
   <div class="wrapper clearfix">
-    <h1><a href="{{ pathto('index') }}" title="{{ t.return_to_home_page }}">{{ project }}</a></h1>
+    <h1><a href="{{ pathto('index') }}" title="{{ t.return_to_home_page }}">
+      {%- if logo -%}
+        {%- if logo.startswith -%}
+          <img src="{{ pathto(logo, 1) }}" alt="{{ project }}">
+        {%- else -%}
+          <img alt="{{ project }}" src="{{ pathto(logo[0].split(' ')[0], 1) }}"
+            srcset="{{ logo|join(', ') }}">
+        {%- endif -%}
+      {%- else -%}
+        {{ project }}
+      {%- endif -%}
+    </a></h1>
     <ul class="nav">
       <li>
         {% include "search-form.html" %}

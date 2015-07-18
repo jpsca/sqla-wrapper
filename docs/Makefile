@@ -26,8 +26,7 @@ latexpdf-%:
 	cd $* && make latexpdf LANG=$*
 
 clean:
-	rm -rf _build/html/es
-	rm -rf _build/html/en
+	rm -rf _build
 
 publishdocs: clean html
 	scp -r _build/html/* jps@lucuma3:/var/www/lucumalabs/sqlawrapper/

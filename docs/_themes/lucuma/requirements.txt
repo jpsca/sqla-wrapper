@@ -1,3 +1,0 @@
-closure
-cssmin
-webassets
