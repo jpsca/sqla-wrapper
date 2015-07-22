@@ -5,8 +5,7 @@ Referencia del API
 
 .. module:: sqlalchemy_wrapper
 
-This part of the documentation documents all the public classes and
-functions in SQLAlchemy-Wrapper.
+Esta parte de la documentación muestra todas las clases y funciones públicas en SQLAlchemy-Wrapper.
 
 
 Configuración
@@ -51,7 +50,7 @@ Modelos
       underlying query.
 
 
-Herramientas
+Paginador
 ----------------------------------------------
 
 .. autoclass:: Paginator

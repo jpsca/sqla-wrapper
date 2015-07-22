@@ -1,6 +1,4 @@
-*,
-*:before,
-*:after {
+*, *:before, *:after {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -164,6 +162,10 @@ header h1 a small {
     font-size: smaller;
     display: block;
     font-size: 20px;
+}
+
+header h1 a img {
+    max-height: 46px;
 }
 
 header .nav {

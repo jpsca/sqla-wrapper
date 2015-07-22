@@ -5,8 +5,7 @@
         {%- if logo.startswith -%}
           <img src="{{ pathto(logo, 1) }}" alt="{{ project }}">
         {%- else -%}
-          <img alt="{{ project }}" src="{{ pathto(logo[0].split(' ')[0], 1) }}"
-            srcset="{{ logo|join(', ') }}">
+          <img srcset="{{ logo|join(', ') }}" alt="{{ project }}" >
         {%- endif -%}
       {%- else -%}
         {{ project }}

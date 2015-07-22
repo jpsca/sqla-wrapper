@@ -26,5 +26,8 @@ this guide:
         'url': project_url,
         'seo_description': description,
         'license': license,
+
+        # optional, if not defined the project name'll be used
+        'logo': relative path or list of srcset paths
    }
 

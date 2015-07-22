@@ -9,9 +9,9 @@ SQLAlchemy-Wrapper
     Un empaque amigable para SQLAlchemy.
 
 
-SQLAlchemy is great but it is difficult to setup, specially for beginners.
+SQLAlchemy is genial pero por todas sus opciones se hace dificil saber como usarlo, sobre todo al verlo por primera vez.
 
-So, *instead* of having to write something like this:
+Esta biblioteca existe para cambiar eso. *En vez* de tener que escribir algo como:
 
 .. sourcecode:: python
 
@@ -31,7 +31,7 @@ So, *instead* of having to write something like this:
     session = Session()
     todos = session.query(ToDo).all()
 
-with SQLAlchemy-Wrapper you can write it like this:
+con SQLAlchemy-Wrapper puedes simplemente hacer:
 
 .. sourcecode:: python
 
@@ -46,12 +46,11 @@ with SQLAlchemy-Wrapper you can write it like this:
     db.create_all()
     todos = db.query(ToDo).all()
 
+También puede :ref:`paginar <pagination>` los resultados por ti.
 
-It can also :ref:`paginate <pagination>` the results for you.
+SQLAlchemy-Wrapper nacio como un clon de `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_ pero independiente de cualquier framework y con algunas opiniones diferentes.
+Lee más sobre los objetivos del proyecto en la sección de :ref:`about`.
 
-SQLAlchemy-Wrapper was born as a framework-independent fork of `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_.
-Read about the goals of the project in the :ref:`about` section.
-
-Tested with Python 2.7, 3.3+ and pypy.
+Testeado con Python 2.7, 3.3+ y pypy.
 
 .. include:: contents.rst.inc

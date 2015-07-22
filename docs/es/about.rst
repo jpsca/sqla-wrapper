@@ -5,15 +5,15 @@ Sobre SQLAlchemy-Wrapper
 
 Objetivos del proyecto
 ----------------------------------------------
-- Make really easy to setup SQLAlchemy
-- Be framework independent
-- Do not hide SQLAlchemy syntax
+- Hacer muy sencillo empezar con SQLAlchemy
+- Ser independiente de cualquier framework web
+- Dejar que puedas reusar tu conocimiento de SQLALchemy, en vez de ocultar su sintaxis
 
 
 Licencia
 ----------------------------------------------
 
-SQLAlchemy-Wrapper is under a BSD license. It basically means: do whatever you want with it as long as the copyright in SQLAlchemy-Wrapper sticks around, the conditions are not modified and the disclaimer is present.
+SQLAlchemy-Wrapper está bajo una licencia BSD. Básicamente significa: haz lo que quiers con ella siempre y cuando el aviso de copyright permanezca, las condiciones no se modifiquen y el texto de descargo siga presente.
 
 Mira el archivo `LICENSE` para más detalles.
 

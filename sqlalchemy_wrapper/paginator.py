@@ -64,7 +64,8 @@ class Paginator(object):
         # The total number of items matching the query.
         if total is None:
             try:
-                total = query.count()
+                # For counting no need to waste time with ordering
+                total = query.order_by(None).count()
             except (TypeError, AttributeError):
                 total = query.__len__()
         self.total = total

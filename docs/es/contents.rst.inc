@@ -13,7 +13,7 @@ Guías de usuario
 
 Referencia del API
 --------------------------------
-If you are looking for information on a specific function, class or method, this part of the documentation is for you.
+¿Buscando información sobre una función específica? ¿Quieres darte una idea de como está organizado el código? Esta parte de la documentación es para ti.
 
 .. toctree::
    :maxdepth: 2
