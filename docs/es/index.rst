@@ -64,7 +64,7 @@ Para poder ver los **queries** en el toolbar, **tienes que activar primero el re
 
 
 
-SQLAlchemy-Wrapper nacio como un clon de `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_ pero independiente de cualquier framework y con algunas opiniones diferentes.
+SQLAlchemy-Wrapper nació como un clon de `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_ pero independiente de cualquier framework y con algunas opiniones diferentes.
 Lee más sobre los objetivos del proyecto en la sección de :ref:`about`.
 
 Testeado con Python 2.7, 3.3+ y pypy.
