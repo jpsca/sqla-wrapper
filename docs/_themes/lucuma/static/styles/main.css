@@ -164,10 +164,6 @@ header h1 a small {
     font-size: 20px;
 }
 
-header h1 a img {
-    max-height: 46px;
-}
-
 header .nav {
     float: right;
     list-style-type: none;
@@ -221,6 +217,29 @@ header .nav .search-form button {
     background-color: transparent;
     border: none;
     margin-left: -44px;
+}
+
+header h1.logo a,
+header h1.logo a:hover,
+header h1.logo a:visited {
+    background-color: transparent;
+    color: #444;
+    font-family: Arial, sans-serif;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 40px;
+    padding-left: 0;
+    text-align: left;
+    text-decoration: none;
+}
+header h1.logo a:hover {
+    color: #111;
+}
+header h1.logo a img {
+    max-height: 32px;
+    vertical-align: middle;
+}
 }
 
 #main {

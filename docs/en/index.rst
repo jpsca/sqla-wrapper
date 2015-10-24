@@ -50,8 +50,6 @@ with SQLAlchemy-Wrapper you can write it like this:
 It can also :ref:`paginate <pagination>` the results for you.
 
 
-
-
 Using it with Flask-DebugToolbar
 ----------------------------------
 
@@ -59,12 +57,14 @@ SQLAlchemy-Wrapper is fully compatible with Flask-DebugToolbar, but it needs an 
 
 In order to see the queries on the Flask debug toolbar, you **must activate first the query recording using the argument record_queries**:
 
-.. sourcecode:: python 
-    
+.. sourcecode:: python
+
         db = SQLAlchemy(SQLALCHEMY_URI, app=app, record_queries=True)
 
 (In Flask-SQLAlchemy this is done automatically if DEBUG is True... *I'll probably do something similar soon*)
 
+
+----
 
 SQLAlchemy-Wrapper was born as a framework-independent fork of `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_.
 Read about the goals of the project in the :ref:`about` section.
