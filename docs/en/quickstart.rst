@@ -16,7 +16,7 @@ The SQLAlchemy class is used to instantiate a SQLAlchemy connection to a databas
 
 .. sourcecode:: python
 
-    from sqlalchemy_wrapper import SQLALchemy
+    from sqlalchemy_wrapper import SQLAlchemy
 
     db = SQLAlchemy(_uri_to_database_)
 
