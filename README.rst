@@ -27,7 +27,7 @@ Read the complete documentation here: http://sqlawrapper.lucuma.co
 
 SQLAlchemy-Wrapper was born as a framework-independent fork of `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_. Read about the goals of the project in the `About SQLAlchemy-Wrapper <http://sqlawrapper.lucuma.co/about.html>`_ section of the documentation.
 
-Works with Python 2.7, 3.3, 3.4 and pypy.
+Works with Python 2.7, 3.3+ and pypy.
 
 Contributing
 ======================
@@ -68,5 +68,9 @@ Our test suite `runs continuously on Travis CI <https://travis-ci.org/lucuma/sql
 
 
 :copyright: 2012-2015 by `Juan-Pablo Scaletti <http://jpscaletti.com>`_.
-:copyright: 2010 by Armin Ronacher.
+
+Some of the code was extracted and adapted from `Flask-SQLAlchemy <http://flask-sqlalchemy.pocoo.org/>`_
+
+:copyright: 2010-2014 by Armin Ronacher.
+
 :license: BSD, see LICENSE for more details.
