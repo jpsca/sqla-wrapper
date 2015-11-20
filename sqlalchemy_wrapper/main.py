@@ -69,7 +69,8 @@ class SQLAlchemy(object):
 
     def __init__(self, uri='sqlite://', app=None, echo=False,
                  pool_size=None, pool_timeout=None, pool_recycle=None,
-                 metadata=None, convert_unicode=True, record_queries=False,
+                 convert_unicode=True, isolation_level=None,
+                 record_queries=False, metadata=None,
                  query_cls=BaseQuery, model_class=Model, **session_options):
         self.uri = uri
         self.record_queries = record_queries
@@ -80,6 +81,7 @@ class SQLAlchemy(object):
             pool_timeout=pool_timeout,
             pool_recycle=pool_recycle,
             convert_unicode=convert_unicode,
+            isolation_level=isolation_level,
         )
 
         self.connector = None
