@@ -10,6 +10,7 @@ dist
 *.sublime-*
 *.nja
 
+.cache
 .coverage
 .tox
 htmlcov

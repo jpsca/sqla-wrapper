@@ -68,9 +68,9 @@ Our test suite `runs continuously on Travis CI <https://travis-ci.org/lucuma/sql
 
 
 :copyright: 2012-2015 by `Juan-Pablo Scaletti <http://jpscaletti.com>`_.
+:license: BSD, see LICENSE for more details.
 
 Some of the code was extracted and adapted from `Flask-SQLAlchemy <http://flask-sqlalchemy.pocoo.org/>`_
 
 :copyright: 2010-2014 by Armin Ronacher.
-
 :license: BSD, see LICENSE for more details.
