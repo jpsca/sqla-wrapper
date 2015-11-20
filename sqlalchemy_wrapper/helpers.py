@@ -6,9 +6,11 @@ import time
 
 import inflection
 import sqlalchemy
+from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.event import listen
 from sqlalchemy.orm import Query
 
+from ._compat import itervalues
 from .paginator import Paginator
 
 
@@ -86,14 +88,56 @@ class BaseQuery(Query):
         return Paginator(self, **kwargs)
 
 
-class ModelTableNameDescriptor(object):
+class _BoundDeclarativeMeta(DeclarativeMeta):
 
-    def __get__(self, obj, type):
-        tablename = type.__dict__.get('__tablename__')
-        if not tablename:
-            tablename = _get_table_name(type.__name__)
-            setattr(type, '__tablename__', tablename)
-        return tablename
+    def __new__(cls, name, bases, dic):
+        print(name)
+        if _should_set_tablename(bases, dic):
+            dic['__tablename__'] = _get_table_name(name)
+        return DeclarativeMeta.__new__(cls, name, bases, dic)
+
+    def __init__(self, name, bases, dic):
+        bind_key = dic.pop('__bind_key__', None)
+        DeclarativeMeta.__init__(self, name, bases, dic)
+        if bind_key is not None:
+            self.__table__.info['bind_key'] = bind_key
+
+
+def _should_set_tablename(bases, dic):
+    """Check what values are set by a class and its bases to determine if a
+    tablename should be automatically generated.
+    The class and its bases are checked in order of precedence: the class
+    itself then each base in the order they were given at class definition.
+    Abstract classes do not generate a tablename, although they may have set
+    or inherited a tablename elsewhere.
+    If a class defines a tablename or table, a new one will not be generated.
+    Otherwise, if the class defines a primary key, a new name will be generated.
+    This supports:
+    * Joined table inheritance without explicitly naming sub-models.
+    * Single table inheritance.
+    * Inheriting from mixins or abstract models.
+    :param bases: base classes of new class
+    :param d: new class dict
+    :return: True if tablename should be set
+
+    Copied from Flask-SQLAlchemy <http://flask-sqlalchemy.pocoo.org/>
+    Copyright (c) 2014 by Armin Ronacher.
+    Used under the BSD LICENSE, see LICENSE for more details.
+    """
+    if '__tablename__' in dic or '__table__' in dic or '__abstract__' in dic:
+        return False
+
+    if any(v.primary_key for v in itervalues(dic) if isinstance(v, sqlalchemy.Column)):
+        return True
+
+    for base in bases:
+        if hasattr(base, '__tablename__') or hasattr(base, '__table__'):
+            return False
+
+        for name in dir(base):
+            attr = getattr(base, name)
+            if isinstance(attr, sqlalchemy.Column) and attr.primary_key:
+                return True
 
 
 class EngineConnector(object):
@@ -123,8 +167,6 @@ class EngineConnector(object):
 class Model(object):
     """Baseclass for custom user models.
     """
-
-    __tablename__ = ModelTableNameDescriptor()
 
     def __iter__(self):
         """Returns an iterable that supports .next()

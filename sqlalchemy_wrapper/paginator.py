@@ -10,7 +10,7 @@
 """
 from math import ceil
 
-from ._compat import xrange, string_type
+from ._compat import xrange, string_types
 
 DEFAULT_PER_PAGE = 10
 
@@ -20,7 +20,7 @@ def sanitize_page_number(page):
     integer and check that the final value is positive.
     If the value is not valid returns 1.
     """
-    if isinstance(page, string_type) and page.isdigit():
+    if isinstance(page, string_types) and page.isdigit():
         page = int(page)
     if isinstance(page, int) and (page > 0):
         return page

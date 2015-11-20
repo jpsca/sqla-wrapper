@@ -16,7 +16,7 @@ except ImportError:  # pragma: no cover
 
 from .helpers import (
     _include_sqlalchemy, BaseQuery, Model, EngineConnector,
-    connection_stack, get_debug_queries)
+    _BoundDeclarativeMeta, connection_stack, get_debug_queries)
 
 
 class SQLAlchemy(object):
@@ -69,8 +69,8 @@ class SQLAlchemy(object):
 
     def __init__(self, uri='sqlite://', app=None, echo=False,
                  pool_size=None, pool_timeout=None, pool_recycle=None,
-                 convert_unicode=True, query_cls=BaseQuery,
-                 record_queries=False, **session_options):
+                 metadata=None, convert_unicode=True, record_queries=False,
+                 query_cls=BaseQuery, model_class=Model, **session_options):
         self.uri = uri
         self.record_queries = record_queries
         self.info = make_url(uri)
@@ -91,7 +91,7 @@ class SQLAlchemy(object):
         session_options.setdefault('bind', self.engine)
         self.session = self._create_scoped_session(**session_options)
 
-        self.Model = declarative_base(cls=Model, name='Model')
+        self.Model = self.make_declarative_base(model_class, metadata)
         self.Model.db = self
         self.Model.query = self.session.query
 
@@ -111,6 +111,13 @@ class SQLAlchemy(object):
             if val is not None
         ])
         return self.apply_driver_hacks(options)
+
+    def make_declarative_base(self, model_class, metadata=None):
+        """Creates the declarative base."""
+        return declarative_base(
+            cls=model_class, name='Model',
+            metadata=metadata, metaclass=_BoundDeclarativeMeta
+        )
 
     def apply_driver_hacks(self, options):
         """This method is called before engine creation and used to inject

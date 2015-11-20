@@ -9,8 +9,15 @@ import sys
 PY2 = sys.version_info[0] == 2
 
 if PY2:
-    string_type = (basestring, )
+    string_types = (unicode, bytes)
     xrange = xrange
+
+    def itervalues(d):
+        return d.itervalues()
+
 else:
-    string_type = str
+    string_types = (str, )
     xrange = range
+
+    def itervalues(d):
+        return iter(d.values())
