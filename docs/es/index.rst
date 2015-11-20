@@ -37,7 +37,7 @@ con SQLAlchemy-Wrapper puedes simplemente hacer:
 
     from sqlalchemy_wrapper import SQLAlchemy
 
-    db = SQLALchemy('sqlite:///:memory:')
+    db = SQLAlchemy('sqlite:///:memory:')
 
     class ToDo(db.Model):
         id = db.Column(db.Integer, primary_key=True)
