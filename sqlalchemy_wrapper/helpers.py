@@ -91,7 +91,6 @@ class BaseQuery(Query):
 class _BoundDeclarativeMeta(DeclarativeMeta):
 
     def __new__(cls, name, bases, dic):
-        print(name)
         if _should_set_tablename(bases, dic):
             dic['__tablename__'] = _get_table_name(name)
         return DeclarativeMeta.__new__(cls, name, bases, dic)
