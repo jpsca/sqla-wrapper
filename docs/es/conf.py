@@ -40,7 +40,7 @@ author = u'Juan-Pablo Scaletti'
 description = u'Un empaque amigable para SQLAlchemy'
 license = u'Código licenciado como BSD'
 author_url = 'http://jpscaletti.com'
-github = 'https://github.com/lucuma/sqlalchemy-wrapper'
+github = 'https://github.com/jpscaletti/sqlalchemy-wrapper'
 project_url = 'http://sqlawrapper.lucuma.co/es/'
 analytics_code = 'UA-1495972-20'
 

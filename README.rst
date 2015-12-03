@@ -2,9 +2,9 @@
 SQLAlchemy-Wrapper |travis|
 ===========================
 
-.. |travis| image:: https://travis-ci.org/lucuma/sqlalchemy-wrapper.png
+.. |travis| image:: https://travis-ci.org/jpscaletti/sqlalchemy-wrapper.png
    :alt: Build Status
-   :target: https://travis-ci.org/lucuma/sqlalchemy-wrapper
+   :target: https://travis-ci.org/jpscaletti/sqlalchemy-wrapper
 
 A friendly wrapper for SQLAlchemy.
 
@@ -32,9 +32,9 @@ Works with Python 2.7, 3.3+ and pypy.
 Contributing
 ======================
 
-#. Check for `open issues <https://github.com/lucuma/sqlalchemy-wrapper/issues>`_ or open
+#. Check for `open issues <https://github.com/jpscaletti/sqlalchemy-wrapper/issues>`_ or open
    a fresh issue to start a discussion around a feature idea or a bug.
-#. Fork the `SQLAlchemy-Wrapper repository on Github <https://github.com/lucuma/sqlalchemy-wrapper>`_
+#. Fork the `SQLAlchemy-Wrapper repository on Github <https://github.com/jpscaletti/sqlalchemy-wrapper>`_
    to start making your changes.
 #. Write a test which shows that the bug was fixed or that the feature works
    as expected.
@@ -63,7 +63,7 @@ are touch by the tests::
 
     $  make coverage
 
-Our test suite `runs continuously on Travis CI <https://travis-ci.org/lucuma/sqlalchemy-wrapper>`_ with every update.
+Our test suite `runs continuously on Travis CI <https://travis-ci.org/jpscaletti/sqlalchemy-wrapper>`_ with every update.
 
 
 

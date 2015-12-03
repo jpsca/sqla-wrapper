@@ -71,7 +71,7 @@ setup(
     packages=[PACKAGE],
     package_data=find_packages_data(PACKAGE, 'tests'),
     zip_safe=False,
-    url='http://github.com/lucuma/sqlalchemy-wrapper',
+    url='http://github.com/jpscaletti/sqlalchemy-wrapper',
     license='BSD (see LICENSE)',
     description='A framework-independent wrapper for SQLAlchemy that makes it really easy to use',
     long_description=get_description(),
