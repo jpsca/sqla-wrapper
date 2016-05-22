@@ -20,6 +20,7 @@ from .helpers import (
 
 
 class SQLAlchemy(object):
+
     """This class is used to instantiate a SQLAlchemy connection to
     a database.
 
@@ -263,31 +264,34 @@ class SQLAlchemy(object):
         """
         return self.session.flush(*args, **kwargs)
 
-    def commit(self):
+    def commit(self, *args, **kwargs):
         """Proxy for ``self.session.commit``.
         """
-        return self.session.commit()
+        return self.session.commit(*args, **kwargs)
 
-    def rollback(self):
+    def rollback(self, *args, **kwargs):
         """Proxy for ``self.session.rollback``.
         """
-        return self.session.rollback()
+        return self.session.rollback(*args, **kwargs)
 
-    def create_all(self):
+    def create_all(self, *args, **kwargs):
         """Creates all tables.
         """
-        self.Model.metadata.create_all(bind=self.engine)
+        kwargs.setdefault('bind', self.engine)
+        self.Model.metadata.create_all(*args, **kwargs)
 
-    def drop_all(self):
+    def drop_all(self, *args, **kwargs):
         """Drops all tables.
         """
-        self.Model.metadata.drop_all(bind=self.engine)
+        kwargs.setdefault('bind', self.engine)
+        self.Model.metadata.drop_all(*args, **kwargs)
 
-    def reflect(self, meta=None):
+    def reflect(self, meta=None, *args, **kwargs):
         """Reflects tables from the database.
         """
         meta = meta or MetaData()
-        meta.reflect(bind=self.engine)
+        kwargs.setdefault('bind', self.engine)
+        meta.reflect(*args, **kwargs)
         return meta
 
     def get_engine(cls, current_app):
