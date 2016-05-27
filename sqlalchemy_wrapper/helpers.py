@@ -202,13 +202,13 @@ class Model(object):
 
     @classproperty
     def session(cls):
-        if cls._session is None:
-            cls._session = cls.db.session if cls.db is not None else None
-        return cls._session
+        if Model._session is None:
+            Model._session = Model.db.session if Model.db is not None else None
+        return Model._session
 
     @classproperty
     def query(cls):
-        return cls._query(cls) if cls.db.session is not None else None
+        return cls.session.query(cls) if cls.session is not None else None
 
     def save(self):
         self.session.add(self)
