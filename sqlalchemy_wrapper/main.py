@@ -68,6 +68,11 @@ class SQLAlchemy(object):
 
     """
 
+    session = None
+    query = None
+    engine = None
+
+
     def __init__(self, uri='sqlite://', app=None, echo=False,
                  pool_size=None, pool_timeout=None, pool_recycle=None,
                  convert_unicode=True, isolation_level=None,
@@ -94,9 +99,10 @@ class SQLAlchemy(object):
         session_options.setdefault('bind', self.engine)
         self.session = self._create_scoped_session(**session_options)
 
+        
         self.Model = self.make_declarative_base(model_class, metadata)
+        self.Model._query = self.session.query
         self.Model.db = self
-        self.Model.query = self.session.query
 
         self.app_path = ''
         if app is not None:
