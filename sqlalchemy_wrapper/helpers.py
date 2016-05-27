@@ -25,6 +25,13 @@ try:
 except ImportError:
     connection_stack = None
 
+class classproperty(object):
+    def __init__(self,getter):
+        self.getter = getter
+
+    def __get__(self,instance,target):
+        return self.getter(target)
+
 
 def _tablemaker(db):
     def make_sa_table(*args, **kwargs):
@@ -166,6 +173,11 @@ class EngineConnector(object):
 class Model(object):
     """Baseclass for custom user models.
     """
+    _deleted = False
+    _engine = None
+    _session = None
+    _query = None
+    db = None
 
     def __iter__(self):
         """Returns an iterable that supports .next()
@@ -177,6 +189,44 @@ class Model(object):
 
     def __repr__(self):
         return '<%s>' % self.__class__.__name__
+
+    @property
+    def deleted(self):
+        return self._deleted
+
+    @classproperty
+    def engine(cls):
+        if Model._engine is None:
+            Model._engine = cls.db.engine if cls.db is not None else None
+        return Model._engine
+
+    @classproperty
+    def session(cls):
+        if cls._session is None:
+            cls._session = cls.db.session if cls.db is not None else None
+        return cls._session
+
+    @classproperty
+    def query(cls):
+        return cls.session.query(cls) if cls.session is not None else None
+
+    def save(self):
+        self.session.add(self)
+        return self.session.commit() and True
+
+    def delete(self):
+        if not self.deleted:
+            self.session.delete(self)
+            self._deleted = True
+            return self.session.commit() and True
+
+    @classmethod
+    def create(cls,*args,**kwargs):
+        return cls(*args,**kwargs)
+
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
 
 
 class DebugQueryTuple(tuple):
