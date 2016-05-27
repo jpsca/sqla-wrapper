@@ -208,7 +208,7 @@ class Model(object):
 
     @classproperty
     def query(cls):
-        return cls.session.query(cls) if cls.session is not None else None
+        return cls._query(cls) if cls.db.session is not None else None
 
     def save(self):
         self.session.add(self)

@@ -101,6 +101,7 @@ class SQLAlchemy(object):
 
         
         self.Model = self.make_declarative_base(model_class, metadata)
+        self.Model._query = self.session.query
         self.Model.db = self
 
         self.app_path = ''
