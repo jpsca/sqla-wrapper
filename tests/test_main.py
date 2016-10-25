@@ -4,7 +4,7 @@ import mock
 import pytest
 
 from sqlalchemy_wrapper import SQLAlchemy
-
+from sqlalchemy_wrapper.helpers import _BoundDeclarativeMeta
 
 URI1 = 'sqlite://'
 URI2 = 'sqlite://'
@@ -219,3 +219,22 @@ def test_get_engine():
 
     assert SQLAlchemy().get_engine(app1) == db.engine
     assert SQLAlchemy().get_engine(app2) is None
+
+
+def test_custom_metaclass():
+
+    class _CustomMeta(_BoundDeclarativeMeta):
+
+        def __init__(self, name, bases, dic):
+            _BoundDeclarativeMeta.__init__(self, name, bases, dic)
+            if hasattr(self, 'id'):
+                setattr(self, 'test', 1)
+
+    db = SQLAlchemy(URI1, metaclass=_CustomMeta)
+
+    class Model(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+
+    db.create_all()
+
+    assert Model.test == 1
