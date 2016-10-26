@@ -71,7 +71,7 @@ class SQLAlchemy(object):
     def __init__(self, uri='sqlite://', app=None, echo=False,
                  pool_size=None, pool_timeout=None, pool_recycle=None,
                  convert_unicode=True, isolation_level=None,
-                 record_queries=False, metadata=None,
+                 record_queries=False, metadata=None, metaclass=None,
                  query_cls=BaseQuery, model_class=Model, **session_options):
         self.uri = uri
         self.record_queries = record_queries
@@ -94,7 +94,7 @@ class SQLAlchemy(object):
         session_options.setdefault('bind', self.engine)
         self.session = self._create_scoped_session(**session_options)
 
-        self.Model = self.make_declarative_base(model_class, metadata)
+        self.Model = self.make_declarative_base(model_class, metadata, metaclass)
         self.Model.db = self
         self.Model.query = self.session.query
 
@@ -115,11 +115,11 @@ class SQLAlchemy(object):
         ])
         return self.apply_driver_hacks(options)
 
-    def make_declarative_base(self, model_class, metadata=None):
+    def make_declarative_base(self, model_class, metadata=None, metaclass=None):
         """Creates the declarative base."""
         return declarative_base(
             cls=model_class, name='Model',
-            metadata=metadata, metaclass=_BoundDeclarativeMeta
+            metadata=metadata, metaclass=metaclass if metaclass else _BoundDeclarativeMeta
         )
 
     def apply_driver_hacks(self, options):
