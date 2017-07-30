@@ -55,7 +55,7 @@ class SQLAlchemy(object):
 
     .. sourcecode:: python
 
-        db = SQLAlchemy()
+        db = SQLAlchemy('sqlite://')
 
         app = Flask(__name__)
         db.init_app(app)
