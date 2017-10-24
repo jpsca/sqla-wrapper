@@ -17,3 +17,4 @@ htmlcov
 __pycache__
 docs/_themes/lucuma/static/.webassets-cache
 wheel
+venv

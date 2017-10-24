@@ -120,6 +120,22 @@ def test_query():
     assert len(data) == 1
 
 
+def test_flask_sqlalchemy_query():
+    db = SQLAlchemy(URI1)
+    ToDo = create_test_model(db)
+    db.create_all()
+
+    db.add(ToDo('First', 'The text'))
+    db.add(ToDo('Second', 'The text'))
+    db.flush()
+
+    titles = ' '.join(x.title for x in ToDo.query.all())
+    assert titles == 'First Second'
+
+    data = ToDo.query.filter(ToDo.title == 'First').all()
+    assert len(data) == 1
+
+
 def test_api():
     db = SQLAlchemy()
     assert db.metadata == db.Model.metadata

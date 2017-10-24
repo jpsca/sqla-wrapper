@@ -4,7 +4,7 @@ import threading
 try:
     from sqlalchemy.engine.url import make_url
     from sqlalchemy.ext.declarative import declarative_base
-    from sqlalchemy.orm import scoped_session, sessionmaker
+    from sqlalchemy.orm import scoped_session, sessionmaker, exc, class_mapper
     from sqlalchemy.schema import MetaData
 except ImportError:  # pragma: no cover
     raise ImportError(
@@ -96,7 +96,8 @@ class SQLAlchemy(object):
 
         self.Model = self.make_declarative_base(model_class, metadata, metaclass)
         self.Model.db = self
-        self.Model.query = self.session.query
+        self.Model.query_class = query_cls
+        self.Model.query = _QueryProperty(self)
 
         self.app_path = ''
         if app is not None:
@@ -315,3 +316,16 @@ def monkeypatch_flask_debugtoolbar():
     flask_debugtoolbar.panels.sqlalchemy.SQLAlchemy = SQLAlchemy
     flask_debugtoolbar.panels.sqlalchemy.get_debug_queries = get_debug_queries
     flask_debugtoolbar.panels.sqlalchemy.sqlalchemy_available = True
+
+
+class _QueryProperty(object):
+    def __init__(self, sa):
+        self.sa = sa
+
+    def __get__(self, obj, type):
+        try:
+            mapper = class_mapper(type)
+            if mapper:
+                return type.query_class(mapper, session=self.sa.session())
+        except exc.UnmappedClassError:
+            return None
