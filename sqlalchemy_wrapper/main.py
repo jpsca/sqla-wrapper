@@ -69,7 +69,7 @@ class SQLAlchemy(object):
     """
 
     def __init__(self, uri='sqlite://', app=None, echo=False,
-                 pool_size=None, pool_timeout=None, pool_recycle=None,
+                 pool_size=None, pool_timeout=None, pool_recycle=None, poolclass=None,
                  convert_unicode=True, isolation_level=None,
                  record_queries=False, metadata=None, metaclass=None,
                  query_cls=BaseQuery, model_class=Model, **session_options):
@@ -81,6 +81,7 @@ class SQLAlchemy(object):
             pool_size=pool_size,
             pool_timeout=pool_timeout,
             pool_recycle=pool_recycle,
+            poolclass=poolclass,
             convert_unicode=convert_unicode,
             isolation_level=isolation_level,
         )
