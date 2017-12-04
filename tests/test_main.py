@@ -3,6 +3,7 @@ from datetime import datetime
 import mock
 import pytest
 
+from sqlalchemy import pool
 from sqlalchemy_wrapper import SQLAlchemy
 from sqlalchemy_wrapper.helpers import _BoundDeclarativeMeta
 
@@ -238,3 +239,14 @@ def test_custom_metaclass():
     db.create_all()
 
     assert Model.test == 1
+
+
+def test_custom_poolclass():
+
+    class _CustomPool(pool.StaticPool):
+        _do_return_conn = mock.MagicMock()
+
+    db = SQLAlchemy(URI1, poolclass=_CustomPool)
+    db.create_all()
+
+    _CustomPool._do_return_conn.assert_called_once()
