@@ -254,4 +254,5 @@ def test_custom_poolclass():
 
 def test_mysql_apply_driver_hacks():
     with mock.patch('sqlalchemy.dialects.mysql.mysqldb.MySQLDialect_mysqldb.dbapi'):
-        SQLAlchemy('mysql://', poolclass=pool.Pool)
+        with mock.patch('sqlalchemy.util.langhelpers.compat.inspect_getargspec'):
+            SQLAlchemy('mysql://', poolclass=pool.Pool)
