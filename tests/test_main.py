@@ -250,9 +250,3 @@ def test_custom_poolclass():
     db.create_all()
 
     _CustomPool._do_return_conn.assert_called_once()
-
-
-def test_mysql_apply_driver_hacks():
-    with mock.patch('sqlalchemy.dialects.mysql.mysqldb.MySQLDialect_mysqldb.dbapi'):
-        with mock.patch('sqlalchemy.util.langhelpers.compat.inspect_getargspec'):
-            SQLAlchemy('mysql://', poolclass=pool.Pool)
