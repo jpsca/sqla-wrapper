@@ -6,7 +6,7 @@ try:
     from sqlalchemy.ext.declarative import declarative_base
     from sqlalchemy.orm import scoped_session, sessionmaker
     from sqlalchemy.schema import MetaData
-    from sqlalchemy.util.langhelpers import get_cls_kwargs
+    from sqlalchemy.util import get_cls_kwargs
 except ImportError:  # pragma: no cover
     raise ImportError(
         'Unable to load the sqlalchemy package.'
