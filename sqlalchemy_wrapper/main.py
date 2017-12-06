@@ -6,6 +6,7 @@ try:
     from sqlalchemy.ext.declarative import declarative_base
     from sqlalchemy.orm import scoped_session, sessionmaker
     from sqlalchemy.schema import MetaData
+    from sqlalchemy.util import get_cls_kwargs
 except ImportError:  # pragma: no cover
     raise ImportError(
         'Unable to load the sqlalchemy package.'
@@ -135,7 +136,9 @@ class SQLAlchemy(object):
         """
         if self.info.drivername == 'mysql':
             self.info.query.setdefault('charset', 'utf8')
-            options.setdefault('pool_size', 10)
+            poolclass = options.get('poolclass')
+            if poolclass is None or 'pool_size' in get_cls_kwargs(poolclass):
+                options.setdefault('pool_size', 10)
             options.setdefault('pool_recycle', 7200)
 
         elif self.info.drivername == 'sqlite':
