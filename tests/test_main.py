@@ -5,7 +5,7 @@ import pytest
 
 from sqlalchemy import pool
 from sqlalchemy_wrapper import SQLAlchemy
-from sqlalchemy_wrapper.helpers import _BoundDeclarativeMeta
+from sqlalchemy_wrapper.helpers import _BoundDeclarativeMeta, BaseQuery
 
 URI1 = 'sqlite://'
 URI2 = 'sqlite://'
@@ -250,3 +250,26 @@ def test_custom_poolclass():
     db.create_all()
 
     _CustomPool._do_return_conn.assert_called_once()
+
+
+def test_reconfigure(tmpdir):
+    db = SQLAlchemy(URI1, echo=False)
+
+    class CustomQuery(BaseQuery):
+        some_attr = 1
+
+    class Model(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+
+    db.create_all()
+    db.add(Model())
+    db.commit()
+
+    tmp_db_file = tmpdir.mkdir('test_reconfigure').join('db.sqlite')
+    uri = 'sqlite:///%s' % tmp_db_file.strpath.replace('\\', '/')
+    db.reconfigure(uri=uri, echo=True, query_cls=CustomQuery)
+
+    assert not Model.__table__.exists(db.engine)
+    assert (uri, True) == db.connector._connected_for
+    assert isinstance(db.query(Model), CustomQuery)
+    assert db.query(Model).some_attr == 1

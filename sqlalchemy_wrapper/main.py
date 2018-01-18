@@ -117,6 +117,28 @@ class SQLAlchemy(object):
         ])
         return self.apply_driver_hacks(options)
 
+    def reconfigure(self, uri=None, echo=False,
+                    pool_size=None, pool_timeout=None, pool_recycle=None, poolclass=None,
+                    convert_unicode=True, isolation_level=None, **session_options):
+
+        if uri is not None:
+            self.uri = uri
+            self.info = make_url(uri)
+
+        self.options = self._cleanup_options(
+            echo=echo,
+            pool_size=pool_size,
+            pool_timeout=pool_timeout,
+            pool_recycle=pool_recycle,
+            poolclass=poolclass,
+            convert_unicode=convert_unicode,
+            isolation_level=isolation_level,
+        )
+
+        self.session.remove()
+        session_options.setdefault('bind', self.engine)
+        self.session.configure(**session_options)
+
     def make_declarative_base(self, model_class, metadata=None, metaclass=None):
         """Creates the declarative base."""
         return declarative_base(
