@@ -4,7 +4,7 @@ import threading
 try:
     from sqlalchemy.engine.url import make_url
     from sqlalchemy.ext.declarative import declarative_base
-    from sqlalchemy.orm import scoped_session, sessionmaker
+    from sqlalchemy.orm import scoped_session, sessionmaker, Session
     from sqlalchemy.schema import MetaData
     from sqlalchemy.util import get_cls_kwargs
 except ImportError:  # pragma: no cover
@@ -21,7 +21,6 @@ from .helpers import (
 
 
 class SQLAlchemy(object):
-
     """This class is used to instantiate a SQLAlchemy connection to
     a database.
 
@@ -69,32 +68,16 @@ class SQLAlchemy(object):
 
     """
 
-    def __init__(self, uri='sqlite://', app=None, echo=False,
-                 pool_size=None, pool_timeout=None, pool_recycle=None, poolclass=None,
-                 convert_unicode=True, isolation_level=None,
-                 record_queries=False, metadata=None, metaclass=None,
-                 query_cls=BaseQuery, model_class=Model, **session_options):
-        self.uri = uri
+    def __init__(self, uri='sqlite://', app=None, record_queries=False,
+                 metadata=None, metaclass=None, model_class=Model, **options):
         self.record_queries = record_queries
-        self.info = make_url(uri)
-        self.options = self._cleanup_options(
-            echo=echo,
-            pool_size=pool_size,
-            pool_timeout=pool_timeout,
-            pool_recycle=pool_recycle,
-            poolclass=poolclass,
-            convert_unicode=convert_unicode,
-            isolation_level=isolation_level,
-        )
-
         self.connector = None
         self._engine_lock = threading.Lock()
 
-        session_options.setdefault('autoflush', True)
-        session_options.setdefault('autocommit', False)
-        session_options.setdefault('query_cls', query_cls)
-        session_options.setdefault('bind', self.engine)
-        self.session = self._create_scoped_session(**session_options)
+        self.options = {}
+        self.session_options = {}
+        self._update_options(uri=uri, **options)
+        self.session = self._create_scoped_session(**self.session_options)
 
         self.Model = self.make_declarative_base(model_class, metadata, metaclass)
         self.Model.db = self
@@ -109,35 +92,28 @@ class SQLAlchemy(object):
         if connection_stack and record_queries:
             monkeypatch_flask_debugtoolbar()
 
-    def _cleanup_options(self, **kwargs):
-        options = dict([
-            (key, val)
-            for key, val in kwargs.items()
-            if val is not None
-        ])
-        return self.apply_driver_hacks(options)
-
-    def reconfigure(self, uri=None, echo=False,
-                    pool_size=None, pool_timeout=None, pool_recycle=None, poolclass=None,
-                    convert_unicode=True, isolation_level=None, **session_options):
-
+    def _update_options(self, uri=None, **options):
         if uri is not None:
             self.uri = uri
             self.info = make_url(uri)
 
-        self.options = self._cleanup_options(
-            echo=echo,
-            pool_size=pool_size,
-            pool_timeout=pool_timeout,
-            pool_recycle=pool_recycle,
-            poolclass=poolclass,
-            convert_unicode=convert_unicode,
-            isolation_level=isolation_level,
-        )
+        for arg in get_cls_kwargs(Session):
+            if arg in options:
+                self.session_options[arg] = options.pop(arg)
 
+        options.setdefault('echo', False)
+        options.setdefault('convert_unicode', True)
+        self.options = self.apply_driver_hacks(options)
+
+        self.session_options.setdefault('autoflush', True)
+        self.session_options.setdefault('autocommit', False)
+        self.session_options.setdefault('query_cls', BaseQuery)
+        self.session_options.setdefault('bind', self.engine)
+
+    def reconfigure(self, **kwargs):
         self.session.remove()
-        session_options.setdefault('bind', self.engine)
-        self.session.configure(**session_options)
+        self._update_options(**kwargs)
+        self.session.configure(**self.session_options)
 
     def make_declarative_base(self, model_class, metadata=None, metaclass=None):
         """Creates the declarative base."""
