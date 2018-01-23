@@ -97,6 +97,7 @@ class SQLAlchemy(object):
             self.uri = uri
             self.info = make_url(uri)
 
+        self.session_options.pop('bind', None)
         for arg in get_cls_kwargs(Session):
             if arg in options:
                 self.session_options[arg] = options.pop(arg)
