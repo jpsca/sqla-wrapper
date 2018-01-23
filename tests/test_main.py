@@ -6,6 +6,7 @@ import pytest
 from sqlalchemy import pool
 from sqlalchemy_wrapper import SQLAlchemy
 from sqlalchemy_wrapper.helpers import _BoundDeclarativeMeta, BaseQuery
+from sqlalchemy.exc import OperationalError
 
 URI1 = 'sqlite://'
 URI2 = 'sqlite://'
@@ -269,7 +270,9 @@ def test_reconfigure(tmpdir):
     uri = 'sqlite:///%s' % tmp_db_file.strpath.replace('\\', '/')
     db.reconfigure(uri=uri, echo=True, query_cls=CustomQuery)
 
-    assert not Model.__table__.exists(db.engine)
+    with pytest.raises(OperationalError):
+        db.query(Model).count()
+
     assert (uri, True) == db.connector._connected_for
     assert isinstance(db.query(Model), CustomQuery)
     assert db.query(Model).some_attr == 1
