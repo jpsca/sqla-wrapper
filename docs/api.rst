@@ -3,10 +3,10 @@
 API
 =============================================
 
-.. module:: sqlalchemy_wrapper
+.. module:: sqla_wrapper
 
 This part of the documentation documents all the public classes and
-functions in SQLAlchemy-Wrapper.
+functions in SQLA-Wrapper.
 
 
 Configuration

@@ -3,12 +3,12 @@
 Declaring models
 =============================================
 
-Generally SQLAlchemy-Wrapper behaves like a properly configured declarative base from the :mod:`~sqlalchemy.ext.declarative` extension. As such we recommend reading the `SQLAlchemy docs <http://docs.sqlalchemy.org/en/latest/orm/tutorial.html>`_ for a full reference. However the most common use cases are also documented here.
+Generally SQLA-Wrapper behaves like a properly configured declarative base from the :mod:`~sqlalchemy.ext.declarative` extension. As such we recommend reading the `SQLAlchemy docs <http://docs.sqlalchemy.org/en/latest/orm/tutorial.html>`_ for a full reference. However the most common use cases are also documented here.
 
 Things to keep in mind:
 
 -   The base class for all your models is called `db.Model`. It's stored on the SQLAlchemy instance you have to create. See :ref:`quickstart` for more details.
--   Some parts that are required in SQLAlchemy are optional in SQLAlchemy-Wrapper. For instance the table name is automatically set for you (unless overridden) by pluralizing the class name with the `inflection <http://inflection.readthedocs.org>`_ library. So, for example, a ``UserEmail`` model gets a table named ``user_emails``.
+-   Some parts that are required in SQLAlchemy are optional in SQLA-Wrapper. For instance the table name is automatically set for you (unless overridden) by pluralizing the class name with the `inflection <http://inflection.readthedocs.org>`_ library. So, for example, a ``UserEmail`` model gets a table named ``user_emails``.
 
 
 Simple Example

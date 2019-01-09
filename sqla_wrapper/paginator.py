@@ -1,16 +1,12 @@
-# coding=utf-8
 """
-    ==========
-    Paginator
-    ==========
+Paginator
 
-    A helper class for pagination of any iterable, like a SQLAlchemy query
-    result or a list.
+A helper class for simple pagination of any iterable, like a SQLAlchemy query
+result or even a list.
 
 """
 from math import ceil
 
-from ._compat import xrange, string_types
 
 DEFAULT_PER_PAGE = 10
 
@@ -20,7 +16,7 @@ def sanitize_page_number(page):
     integer and check that the final value is positive.
     If the value is not valid returns 1.
     """
-    if isinstance(page, string_types) and page.isdigit():
+    if isinstance(page, str) and page.isdigit():
         page = int(page)
     if isinstance(page, int) and (page > 0):
         return page
@@ -174,24 +170,26 @@ class Paginator(object):
         return self.iter_pages()
 
     def iter_pages(self, left_edge=2, left_current=3, right_current=4, right_edge=2):
-        """Iterates over the page numbers in the pagination.  The four
+        """Iterates over the page numbers in the pagination. The four
         parameters control the thresholds how many numbers should be produced
-        from the sides:
+        from the sides::
 
-        .. code::
-
-            1..left_edge
-            None
-            (current - left_current), current, (current + right_current)
-            None
-            (num_pages - right_edge)..num_pages
+            [
+                1..left_edge
+                None
+                (current - left_current), current, (current + right_current)
+                None
+                (num_pages - right_edge)..num_pages
+            ]
 
         Example:
 
         .. sourcecode:: python
 
-            >>> pg = Paginator(range(1, 20), page=10)
-            >>> [p for p in pg.iter_pages(left_edge=2, left_current=2, right_current=5, right_edge=2)]
+            >>> pg = Paginator(range(1, 199), page=10)
+            >>> list(pg.iter_pages(
+            ...     left_edge=2, left_current=2, right_current=5, right_edge=2
+            ... ))
             [1, 2, None, 8, 9, 10, 11, 12, 13, 14, 15, None, 19, 20]
 
         Skipped page numbers are represented as ``None``.
@@ -233,16 +231,14 @@ class Paginator(object):
 
         """
         last = 0
-        for num in xrange(1, self.num_pages + 1):
+        for num in range(1, self.num_pages + 1):
             is_active_page = (
                 num <= left_edge
                 or (
-                    (num >= self.page - left_current) and
-                    (num < self.page + right_current)
+                    (num >= self.page - left_current)
+                    and (num <= self.page + right_current)
                 )
-                or (
-                    (num > self.num_pages - right_edge)
-                )
+                or (num > self.num_pages - right_edge)
             )
             if is_active_page:
                 if last + 1 != num:

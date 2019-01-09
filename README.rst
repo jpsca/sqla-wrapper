@@ -1,17 +1,16 @@
 ===========================
-SQLAlchemy-Wrapper |travis|
+SQLA-wrapper |travis|
 ===========================
 
-.. |travis| image:: https://travis-ci.org/jpscaletti/sqlalchemy-wrapper.png
+.. |travis| image:: https://travis-ci.org/jpscaletti/sqla-wrapper.png
    :alt: Build Status
-   :target: https://travis-ci.org/jpscaletti/sqlalchemy-wrapper
+   :target: https://travis-ci.org/jpscaletti/sqla-wrapper
 
 A friendly wrapper for SQLAlchemy.
 
-
 .. sourcecode:: python
 
-    from sqlalchemy_wrapper import SQLAlchemy
+    from sqla_wrapper import SQLAlchemy
 
     db = SQLAlchemy('sqlite:///:memory:')
 
@@ -20,57 +19,72 @@ A friendly wrapper for SQLAlchemy.
         ...
 
     db.create_all()
-    todos = db.query(ToDo).all()
+    
+    db.add(Todo(...))
+    db.commit()
+
+    todos = ToDo.query.all()
 
 
 Read the complete documentation here: http://sqlawrapper.lucuma.co
 
-SQLAlchemy-Wrapper was born as a framework-independent fork of `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_. Read about the goals of the project in the `About SQLAlchemy-Wrapper <http://sqlawrapper.lucuma.co/about.html>`_ section of the documentation.
+Since 2.0, only Python 3.6 or later are supported.
+Please use the `1.9.1` version if your project runs on a previous Python version.
 
-Works with Python 2.7, 3.3+ and pypy.
-
-Contributing
+SQLAlchemy
 ======================
 
-#. Check for `open issues <https://github.com/jpscaletti/sqlalchemy-wrapper/issues>`_ or open
-   a fresh issue to start a discussion around a feature idea or a bug.
-#. Fork the `SQLAlchemy-Wrapper repository on Github <https://github.com/jpscaletti/sqlalchemy-wrapper>`_
-   to start making your changes.
-#. Write a test which shows that the bug was fixed or that the feature works
-   as expected.
-#. Send a pull request and bug the maintainer until it gets merged and published.
-   :) Make sure to add yourself to ``AUTHORS``.
+The things you need to know compared to plain SQLAlchemy are:
+
+1.  The :class:`SQLAlchemy` gives you access to the following things:
+
+    -   All the functions and classes from :mod:`sqlalchemy` and
+        :mod:`sqlalchemy.orm`
+    -   All the functions from a preconfigured scoped session (called ``_session``).
+    -   The :attr:`~SQLAlchemy.metadata` and :attr:`~SQLAlchemy.engine`
+    -   The methods :meth:`SQLAlchemy.create_all` and :meth:`SQLAlchemy.drop_all`
+        to create and drop tables according to the models.
+    -   a :class:`Model` baseclass that is a configured declarative base.
+
+2.  All the functions from the session are available directly in the class, so you
+    can do ``db.add``,  ``db.commit``,  ``db.remove``, etc.
+
+3.  The :class:`Model` declarative base class behaves like a regular
+    Python class but has a ``query`` attribute attached that can be used to
+    query the model.
+
+4.  The :class:`Model` class also auto generates ``_tablename__`` attributes, if you
+    don't define one, based on the underscored and **pluralized** name of your classes.
+
+5.  You have to commit the session and configure your app to remove it at
+    the end of the request.
 
 
 Run the tests
 ======================
 
-We use some external dependencies, listed in ``requirements_tests.txt``::
+You'll need `poetry` to install de development dependencies.
 
-    $  pip install -r requirements-tests.txt
-    $  python setup.py install
+  poetry install
+
+This command will automnatically create a virtual environment to run the project in.
+Read more in the `Poetry site <https://poetry.eustace.io/>`_
 
 To run the tests in your current Python version do::
 
-    $  make test
+    pytest tests
 
 To run them in every supported Python version do::
 
-    $  tox
+    tox
 
 It's also neccesary to run the coverage report to make sure all lines of code
 are touch by the tests::
 
-    $  make coverage
+    make coverage
 
-Our test suite `runs continuously on Travis CI <https://travis-ci.org/jpscaletti/sqlalchemy-wrapper>`_ with every update.
+Our test suite `runs continuously on Travis CI <https://travis-ci.org/jpscaletti/sqla-wrapper>`_ with every update.
 
 
-
-:copyright: 2012-2015 by `Juan-Pablo Scaletti <http://jpscaletti.com>`_.
-:license: BSD, see LICENSE for more details.
-
-Some of the code was extracted and adapted from `Flask-SQLAlchemy <http://flask-sqlalchemy.pocoo.org/>`_
-
-:copyright: 2010-2014 by Armin Ronacher.
-:license: BSD, see LICENSE for more details.
+:copyright: 2013-2019 by `Juan-Pablo Scaletti <http://jpscaletti.com>`_.
+:license: MIT, see LICENSE for more details.

@@ -1,7 +1,4 @@
-# coding=utf-8
-from __future__ import print_function
-
-from sqlalchemy_wrapper import SQLAlchemy, Paginator
+from sqla_wrapper import SQLAlchemy, Paginator
 
 
 def create_test_model():
@@ -17,13 +14,13 @@ def create_test_model():
 
     db.create_all()
 
-    for i in range(1, 26):
+    for _i in range(1, 26):
         item = Item()
         db.add(item)
     db.commit()
 
     item = db.query(Item).first()
-    for j in range(1, 26):
+    for _j in range(1, 26):
         db.add(Part(item=item))
     db.commit()
 
@@ -43,10 +40,10 @@ def test_list_pagination():
     assert p.total == 490
     assert p.num_pages == 25
     assert p.next_num == 2
-    assert list(p.pages) == [1, 2, 3, 4, None, 24, 25]
+    assert list(p.pages) == [1, 2, 3, 4, 5, None, 24, 25]
 
     p.page = 10
-    assert list(p.pages) == [1, 2, None, 7, 8, 9, 10, 11, 12, 13, None, 24, 25]
+    assert list(p.pages) == [1, 2, None, 7, 8, 9, 10, 11, 12, 13, 14, None, 24, 25]
     assert list(p) == list(range(181, 201))
 
 
@@ -62,10 +59,10 @@ def test_abstract_list_pagination():
     assert p.total == 490
     assert p.num_pages == 25
     assert p.next_num == 2
-    assert list(p.pages) == [1, 2, 3, 4, None, 24, 25]
+    assert list(p.pages) == [1, 2, 3, 4, 5, None, 24, 25]
 
     p.page = 10
-    assert list(p.pages) == [1, 2, None, 7, 8, 9, 10, 11, 12, 13, None, 24, 25]
+    assert list(p.pages) == [1, 2, None, 7, 8, 9, 10, 11, 12, 13, 14, None, 24, 25]
 
 
 def test_paginated_query():

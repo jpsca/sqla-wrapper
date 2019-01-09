@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 import os
 
@@ -33,14 +32,14 @@ source_suffix = ['.rst']
 master_doc = 'index'
 
 # General information about the project.
-project = u'SQLAlchemy-Wrapper'
-module = u'sqlalchemy_wrapper'
-copyright = u'by Juan-Pablo Scaletti'
-author = u'Juan-Pablo Scaletti'
-description = u'A friendly wrapper for SQLAlchemy'
-license = u'Code under a BSD License'
+project = 'SQLA-Wrapper'
+module = 'sqla_wrapper'
+copyright = 'by Juan-Pablo Scaletti'
+author = 'Juan-Pablo Scaletti'
+description = 'A friendly wrapper for SQLAlchemy'
+license = 'MIT'
 author_url = 'http://jpscaletti.com'
-github = 'https://github.com/jpscaletti/sqlalchemy-wrapper'
+github = 'https://github.com/jpscaletti/sqla-wrapper'
 project_url = 'http://sqlawrapper.lucuma.co/'
 analytics_code = 'UA-1495972-20'
 
@@ -55,7 +54,6 @@ release = '1.5'
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
 language = 'en'
-locale_dirs = ['../_themes/_locale']
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -65,7 +63,7 @@ locale_dirs = ['../_themes/_locale']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = '_build _themes es'.split()
+exclude_patterns = '_build _themes'.split()
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -102,12 +100,12 @@ todo_include_todos = False
 html_theme = 'lucuma'
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = ['../_themes']
+html_theme_path = ['_themes']
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -142,8 +140,8 @@ html_file_suffix = '.html'
 
 # Language to be used for generating the HTML full-text search index.
 # Sphinx supports the following languages:
-#   'da', 'de', 'en', 'es', 'fi', 'fr', 'hu', 'it', 'ja'
-#   'nl', 'no', 'pt', 'ro', 'ru', 'sv', 'tr'
+#   'da', 'de', 'en', 'es', 'fi', 'fr', 'h', 'it', 'ja'
+#   'nl', 'no', 'pt', 'ro', 'r', 'sv', 'tr'
 html_search_language = language
 
 # A dictionary with options for the search language support, empty by default.
@@ -191,7 +189,7 @@ latex_documents = [
     (
         master_doc,
         '{}.tex'.format(project),
-        u'{} Documentation'.format(project),
+        '{} Documentation'.format(project),
         author, 'manual',
     ),
 ]
@@ -220,7 +218,7 @@ latex_use_parts = True
 man_pages = [
     (
         master_doc, module,
-        u'{} Documentation'.format(project),
+        '{} Documentation'.format(project),
         [author], 1
     )
 ]
@@ -237,7 +235,7 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc, project,
-        u'{} Documentation'.format(project),
+        '{} Documentation'.format(project),
         author, project, description,
         'Miscellaneous',
     ),

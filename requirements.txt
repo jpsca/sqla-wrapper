@@ -1,4 +1,0 @@
-# This file collects all required third-party applications that are needed
-# to run this project.
-inflection>=0.2.0
-SQLAlchemy>=0.8

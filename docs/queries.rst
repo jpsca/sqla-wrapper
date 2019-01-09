@@ -1,5 +1,5 @@
 .. _queries:
-.. currentmodule:: sqlalchemy_wrapper
+.. currentmodule:: sqla_wrapper
 
 Select, Insert, Delete and other Queries
 =============================================
@@ -54,7 +54,7 @@ Querying Records
 ----------------------------------------------
 
 So how do we get data back out of our database? For this
-SQLAlchemy-Wrapper provides a :attr:`~SQLALchemy.query` attribute. When you call it whith your :class:`Model` class you will get back a new query object over all records. You can then use methods like
+SQLA-Wrapper provides a :attr:`~SQLALchemy.query` attribute. When you call it whith your :class:`Model` class you will get back a new query object over all records. You can then use methods like
 :func:`~sqlalchemy.orm.query.Query.filter` to filter the records before you fire the select with :func:`~sqlalchemy.orm.query.Query.all` or :func:`~sqlalchemy.orm.query.Query.first`.
 
 If you want to go by primary key you can also use :func:`~sqlalchemy.orm.query.Query.get`.
@@ -67,14 +67,6 @@ The following queries assume following entries in the database:
 2           peter       peter@example.org
 3           guest       guest@example.com
 =========== =========== =====================
-
-.. deactivated::
-
-    See a live demo right below:
-
-    .. raw:: html
-
-        <iframe src="https://codepicnic.com/consoles/sqlalchemy-wrapper-1428695354/embed"></iframe>
 
 Retrieve a user by username:
 
@@ -134,7 +126,7 @@ Queries in Views
 ----------------------------------------------
 
 If you write a view function it's often very handy to return a 404
-error (or some other error) for missing entries. Because this is a very common idiom, SQLAlchemy-Wrapper provides a helper for this exact purpose.
+error (or some other error) for missing entries. Because this is a very common idiom, SQLA-Wrapper provides a helper for this exact purpose.
 
 Instead of :meth:`~sqlalchemy.orm.query.Query.get` one can use :meth:`~Query.get_or_error` and instead of :meth:`~sqlalchemy.orm.query.Query.first`, :meth:`~Query.first_or_error`.
 This will raise the error you give to it instead of returning `None`:
