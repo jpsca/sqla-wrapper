@@ -1,7 +1,7 @@
 :orphan:
 
 =============================================
-SQLAlchemy-Wrapper
+SQLA-Wrapper
 =============================================
 
 .. container:: lead
@@ -9,7 +9,7 @@ SQLAlchemy-Wrapper
     A friendly wrapper for SQLAlchemy.
 
 
-SQLAlchemy is great but it is difficult to setup, specially for beginners.
+SQLAlchemy is great can be difficult to setup.
 
 So, *instead* of having to write something like this:
 
@@ -21,6 +21,7 @@ So, *instead* of having to write something like this:
 
     engine = create_engine('sqlite:///:memory:')
     Session = sessionmaker(bind=engine)
+    session = 
     Model = declarative_base()
 
     class ToDo(Model):
@@ -31,11 +32,11 @@ So, *instead* of having to write something like this:
     session = Session()
     todos = session.query(ToDo).all()
 
-with SQLAlchemy-Wrapper you can write it like this:
+with SQLA-Wrapper you can write it like this:
 
 .. sourcecode:: python
 
-    from sqlalchemy_wrapper import SQLAlchemy
+    from sqla_wrapper import SQLAlchemy
 
     db = SQLAlchemy('sqlite:///:memory:')
 
@@ -49,29 +50,9 @@ with SQLAlchemy-Wrapper you can write it like this:
 
 It can also :ref:`paginate <pagination>` the results for you.
 
-
-Using it with Flask-DebugToolbar
-----------------------------------
-
-SQLAlchemy-Wrapper is fully compatible with Flask-DebugToolbar, but it needs an extra step for it to work propperly.
-
-In order to see the queries on the Flask debug toolbar, you **must activate first the query recording using the argument record_queries**:
-
-.. sourcecode:: python
-
-        db = SQLAlchemy(SQLALCHEMY_URI, app=app, record_queries=True)
-
-(In Flask-SQLAlchemy this is done automatically if DEBUG is True... *I'll probably do something similar soon*)
-
-
 ----
 
-SQLAlchemy-Wrapper was born as a framework-independent fork of `Flask-SQLAlchemy <https://pythonhosted.org/Flask-SQLAlchemy/>`_.
-Read about the goals of the project in the :ref:`about` section.
-
-Tested with Python 2.7, 3.3+ and pypy.
+Since 2.0, only Python 3.6 or later are supported.
+Please use the `1.9.1` version if your project runs on a previous Python version.
 
 .. include:: contents.rst.inc
-
-
-

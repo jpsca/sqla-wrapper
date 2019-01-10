@@ -44,7 +44,7 @@
      {%- endfor %}
     </div>
 
-    {%- for key, entries in genindexentries %}
+{#     {%- for key, entries in genindexentries %}
     <h2 id="{{ key }}">{{ key }}</h2>
     <table style="width: 100%" class="indextable genindextable"><tr>
       {%- for column in entries|slice(2) if column %}
@@ -62,7 +62,7 @@
       </dl></td>
       {%- endfor %}
     </tr></table>
-    {% endfor %}
+    {% endfor %} #}
   </div>
 </div>
 {% endblock %}

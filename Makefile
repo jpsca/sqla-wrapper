@@ -13,26 +13,14 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 	find . -name '__pycache__' -exec rm -rf {} +
 
-lint:
-	flake8 sqlalchemy_wrapper tests --ignore=E501
-
 test:
-	py.test -x tests/
+	pytest -x sqla_wrapper tests
 
-test-all:
-	tox
+flake:
+	flake8 sqla_wrapper tests
+
+testcov:
+	pytest --cov sqla_wrapper sqla_wrapper tests
 
 coverage:
-	py.test -x --cov-config .coveragerc --cov sqlalchemy_wrapper --cov-report html tests/
-	open htmlcov/index.html
-
-publish: clean
-	python setup.py sdist bdist_wheel
-	twine upload dist/*
-
-build: clean
-	python setup.py sdist bdist_wheel
-	ls -l dist
-
-wheel: clean
-	pip wheel --wheel-dir=wheel .
+	pytest --cov-report html --cov sqla_wrapper sqla_wrapper tests

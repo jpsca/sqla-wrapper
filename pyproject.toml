@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "sqla-wrapper"
+version = "2.0.0"
+description = "A framework-independent wrapper for SQLAlchemy that makes it really easy to use."
+authors = [
+    "Juan-Pablo Scaletti <juanpablo@jpscaletti.com>"
+]
+license = "MIT"
+
+readme = "README.rst"
+
+homepage = "http://sqlawrapper.lucuma.co/"
+repository = "https://github.com/jpscaletti/sqla-wrapper"
+documentation = "http://sqlawrapper.lucuma.co/"
+
+keywords = ["sqlalchemy", "wrapper"]
+
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Environment :: Web Environment',
+    'Intended Audience :: Developers',
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+]
+
+# Requirements
+[tool.poetry.dependencies]
+python = "^3.6"
+inflection = "^0.2"
+sqlalchemy = "^0.8|^1"
+
+[tool.poetry.dev-dependencies]
+mock = "^2.0"
+pytest = "^4"
+pytest-cov = "^2"
+tox = "^3"
+sphinx = "^1.8"

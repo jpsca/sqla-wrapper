@@ -1,11 +1,21 @@
 language: python
+
 python:
+  - "3.7"
   - "3.6"
-  - "3.5"
-  - "3.4"
-  - "3.3"
+
+cache:
+  pip: true
+  directories:
+    - "$HOME/.cache/pypoetry"
+
+before_install:
+  - pip install pip -U
+  - pip install poetry
+
 install:
-    - python setup.py install
-    - pip install -r requirements-tests.txt
-script: py.test tests
+  - poetry install -v
+
+script: pytest -x tests
+
 sudo: false

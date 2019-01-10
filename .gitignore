@@ -7,14 +7,10 @@ docs/_build/
 dist
 *.egg*
 
-.idea
-*.sublime-*
-*.nja
-
 .cache
 .coverage
 .tox
-htmlcov
+covreport
 __pycache__
-docs/_themes/lucuma/static/.webassets-cache
+.webassets-cache
 wheel

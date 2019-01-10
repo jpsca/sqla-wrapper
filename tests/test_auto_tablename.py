@@ -1,15 +1,6 @@
-# coding=utf-8
-from sqlalchemy_wrapper import SQLAlchemy
-from sqlalchemy_wrapper.helpers import _get_table_name
 from sqlalchemy.ext.declarative import AbstractConcreteBase, declared_attr
 
-
-def test_get_table_name():
-    assert _get_table_name('Document') == 'documents'
-    assert _get_table_name('ToDo') == 'to_dos'
-    assert _get_table_name('UserTestCase') == 'user_test_cases'
-    assert _get_table_name('URL') == 'urls'
-    assert _get_table_name('HTTPRequest') == 'http_requests'
+from sqla_wrapper import SQLAlchemy
 
 
 def test_jti_custom_tablename():
@@ -38,7 +29,7 @@ def test_jti_custom_tablename():
     assert Person.__tablename__ == 'jti_custom_people'
     assert Engineer.__tablename__ == 'jti_custom_engineers'
     assert Teacher.__tablename__ == 'jti_custom_teachers'
-    db.session.expunge_all()
+    db.expunge_all()
 
 
 def test_jti_auto_tablename():
@@ -66,7 +57,7 @@ def test_jti_auto_tablename():
     assert JaPerson.__tablename__ == 'ja_people'
     assert JaEngineer.__tablename__ == 'ja_engineers'
     assert JaTeacher.__tablename__ == 'jti_auto_teachers'
-    db.session.expunge_all()
+    db.expunge_all()
 
 
 def test_sti_custom_tablename():
@@ -101,7 +92,7 @@ def test_sti_custom_tablename():
     assert Employee.__tablename__ == 'sti_custom_employee'
     assert Manager.__tablename__ == 'sti_custom_employee'
     assert Engineer.__tablename__ == 'sti_custom_employee'
-    db.session.expunge_all()
+    db.expunge_all()
 
 
 def test_sti_auto_tablename():
@@ -135,7 +126,7 @@ def test_sti_auto_tablename():
     assert SaEmployee.__tablename__ == 'sa_employees'
     assert SaManager.__tablename__ == 'sa_employees'
     assert SaEngineer.__tablename__ == 'sa_employees'
-    db.session.expunge_all()
+    db.expunge_all()
 
 
 def test_cti_custom_tablename():
@@ -157,7 +148,7 @@ def test_cti_custom_tablename():
 
     assert Person.__tablename__ == 'cti_custom_people'
     assert Engineer.__tablename__ == 'cti_custom_engineers'
-    db.session.expunge_all()
+    db.expunge_all()
 
 
 def test_cti_auto_tablename():
@@ -186,7 +177,7 @@ def test_cti_auto_tablename():
     assert Person.__tablename__ == 'people'
     assert Engineer.__tablename__ == 'engineers'
     assert Teacher.__tablename__ == 'cti_auto_teachers'
-    db.session.expunge_all()
+    db.expunge_all()
 
 
 def test_acti_custom_tablename():
@@ -219,7 +210,7 @@ def test_acti_custom_tablename():
 
     assert Manager.__tablename__ == 'acti_custom_managers'
     assert Engineer.__tablename__ == 'acti_custom_engineers'
-    db.session.expunge_all()
+    db.expunge_all()
 
 
 def test_acti_auto_tablename():
@@ -252,24 +243,7 @@ def test_acti_auto_tablename():
 
     assert Manager.__tablename__ == 'acti_auto_managers'
     assert AaEngineer.__tablename__ == 'aa_engineers'
-    db.session.expunge_all()
-
-
-def test_mixin_no_tablename():
-    """Test for a tablename defined in a mixin.
-    """
-    db = SQLAlchemy('sqlite://')
-
-    class BaseMixin(object):
-        @declared_attr
-        def id(cls):
-            return db.Column(db.Integer, primary_key=True)
-
-    class MEngineer(BaseMixin, db.Model):
-        name = db.Column(db.String(50))
-
-    assert MEngineer.__tablename__ == 'm_engineers'
-    db.session.expunge_all()
+    db.expunge_all()
 
 
 def test_mixin_tablename():
@@ -288,7 +262,24 @@ def test_mixin_tablename():
         name = db.Column(db.String(50))
 
     assert Engineer.__tablename__ == 'mixin_tablename'
-    db.session.expunge_all()
+    db.expunge_all()
+
+
+def test_mixin_no_tablename():
+    """Test for a tablename NOT defined in a mixin.
+    """
+    db = SQLAlchemy('sqlite://')
+
+    class BaseMixin(object):
+        @declared_attr
+        def id(cls):
+            return db.Column(db.Integer, primary_key=True)
+
+    class MEngineer(BaseMixin, db.Model):
+        name = db.Column(db.String(50))
+
+    assert MEngineer.__tablename__ == 'm_engineers'
+    db.expunge_all()
 
 
 def test_mixin_overwritten_tablename():
@@ -308,7 +299,7 @@ def test_mixin_overwritten_tablename():
         name = db.Column(db.String(50))
 
     assert Engineer.__tablename__ == 'mixin_overwritten_tablename'
-    db.session.expunge_all()
+    db.expunge_all()
 
 
 def test_declared_attr_mixin_tablename():
@@ -329,7 +320,7 @@ def test_declared_attr_mixin_tablename():
         name = db.Column(db.String(50))
 
     assert Engineer.__tablename__ == 'declared_attr_mixin_tablename'
-    db.session.expunge_all()
+    db.expunge_all()
 
 
 def test_declared_attr_mixin_overwritten_tablename():
@@ -351,4 +342,4 @@ def test_declared_attr_mixin_overwritten_tablename():
         name = db.Column(db.String(50))
 
     assert Engineer.__tablename__ == 'declared_attr_mixin_overwritten_engineers'
-    db.session.expunge_all()
+    db.expunge_all()

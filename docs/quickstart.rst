@@ -3,20 +3,20 @@
 Quickstart
 ========================
 
-.. currentmodule:: sqlalchemy_wrapper
+.. currentmodule:: sqla_wrapper
 
-SQLAlchemy-Wrapper makes incredibly easy to start using SQLAlchemy and readily extends for complex scenarios. For the complete guide, checkout out the API documentation on the :class:`SQLAlchemy` class.
+SQLA-Wrapper makes incredibly easy to start using SQLAlchemy and readily extends for complex scenarios. For the complete guide, checkout out the API documentation on the :class:`SQLAlchemy` class.
 
 
 .. sourcecode:: bash
 
-    pip install sqlalchemy_wrapper
+    pip install sqla_wrapper
 
 The SQLAlchemy class is used to instantiate a SQLAlchemy connection to a database.
 
 .. sourcecode:: python
 
-    from sqlalchemy_wrapper import SQLAlchemy
+    from sqla_wrapper import SQLAlchemy
 
     db = SQLAlchemy(_uri_to_database_)
 
@@ -33,13 +33,6 @@ Once created, that object then contains all the functions and helpers from both 
         profile = db.relationship(Profile, backref=db.backref('user'))
 
 
-If you are using Flask or other framework that uses the ``after_request`` and ``on_exception`` decorators, you have to commit the session, but you don’t have to remove it at the end of the request, SQLAlchemy-Wrapper does that for you (this works with Bottle’s and webpy’s hooks too).
-
-.. note::
-
-    In any other scenario **you have to** call ``db.session.remove()`` after each response or a memory leak will happen.
-
-
 .. include:: connection-uri.rst.inc
 
 
@@ -51,7 +44,7 @@ For the common case of having one Flask application all you have to do is to cre
 .. sourcecode:: python
 
     from flask import Flask
-    from sqlalchemy_wrapper import SQLAlchemy
+    from sqla_wrapper import SQLAlchemy
 
     app = Flask(__name__)
     db = SQLAlchemy('sqlite://', app=app)
@@ -61,7 +54,7 @@ or
 .. sourcecode:: python
 
     from flask import Flask
-    from sqlalchemy_wrapper import SQLAlchemy
+    from sqla_wrapper import SQLAlchemy
 
     db = SQLAlchemy()
     app = Flask(__name__)
@@ -176,23 +169,32 @@ It behaves like a regular query object so we can ask it for all posts that are a
     [<Post 'Hello Python!'>]
 
 
-.. admonition:: Do not forget
-
-    You should read the `SQLAlchemy documentation <http://docs.sqlalchemy.org/en/latest/orm/basic_relationships.html>`_ too.
-
-
 Road to Enlightenment
 ----------------------------------------------
 
-:class:`SQLAlchemy` gives you access to the following things:
+You should read the `SQLAlchemy documentation <http://docs.sqlalchemy.org/en/latest/orm/basic_relationships.html>`_.
 
--   all the functions and classes from :mod:`sqlalchemy` and :mod:`sqlalchemy.orm`
--   a preconfigured scoped session called `session`
--   the :attr:`~SQLAlchemy.metadata`
--   the :attr:`~SQLAlchemy.engine`
--   a :meth:`SQLAlchemy.create_all` and :meth:`SQLAlchemy.drop_all` methods to create and drop tables according to the models.
--   a :meth:`SQLAlchemy.query`, :meth:`SQLAlchemy.add`, :meth:`SQLAlchemy.delete`, :meth:`SQLAlchemy.flush`, :meth:`SQLAlchemy.commit` and , :meth:`SQLAlchemy.rollback` methods, as proxy for the ones in :meth:`SQLAlchemy.session`.
--   a :class:`Model` base class that is a configured declarative base.
+The things you need to know compared to plain SQLAlchemy are:
 
+1.  The :class:`SQLAlchemy` gives you access to the following things:
 
+    -   All the functions and classes from :mod:`sqlalchemy` and
+        :mod:`sqlalchemy.orm`
+    -   All the functions from a preconfigured scoped session (called ``_session``).
+    -   The :attr:`~SQLAlchemy.metadata` and :attr:`~SQLAlchemy.engine`
+    -   The methods :meth:`SQLAlchemy.create_all` and :meth:`SQLAlchemy.drop_all`
+        to create and drop tables according to the models.
+    -   a :class:`Model` baseclass that is a configured declarative base.
 
+2.  All the functions from the session are available directly in the class, so you
+    can do ``db.add``,  ``db.commit``,  ``db.remove``, etc.
+
+3.  The :class:`Model` declarative base class behaves like a regular
+    Python class but has a ``query`` attribute attached that can be used to
+    query the model.
+
+4.  The :class:`Model` class also auto generates ``_tablename__`` attributes, if you
+    don't define one, based on the underscored and **pluralized** name of your classes.
+
+5.  You have to commit the session and configure your app to remove it at
+    the end of the request.

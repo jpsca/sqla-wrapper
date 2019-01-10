@@ -1,3 +1,0 @@
-include *.py *.txt *.rst Makefile
-recursive-include sqlalchemy_wrapper *
-recursive-include tests *
