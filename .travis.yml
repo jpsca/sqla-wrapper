@@ -1,8 +1,11 @@
 language: python
 
-python:
-  - "3.7"
-  - "3.6"
+matrix:
+  include:
+    - python: 3.6
+    - python: 3.7
+      dist: xenial
+      sudo: true
 
 cache:
   pip: true
@@ -17,5 +20,3 @@ install:
   - poetry install -v
 
 script: pytest -x tests
-
-sudo: false
