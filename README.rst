@@ -23,7 +23,8 @@ A friendly wrapper for SQLAlchemy.
     db.add(Todo(...))
     db.commit()
 
-    todos = ToDo.query.all()
+    # Sorry, we don't support the `Model.query` syntax
+    todos = db.query(ToDO).all()
 
 
 Read the complete documentation here: http://sqlawrapper.lucuma.co
