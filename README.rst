@@ -24,7 +24,7 @@ A friendly wrapper for SQLAlchemy.
     db.commit()
 
     # Sorry, we don't support the `Model.query` syntax
-    todos = db.query(ToDO).all()
+    todos = db.query(ToDo).all()
 
 
 Read the complete documentation here: http://sqlawrapper.lucuma.co
