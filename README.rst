@@ -27,7 +27,7 @@ A friendly wrapper for SQLAlchemy.
     todos = db.query(ToDo).all()
 
 
-Read the complete documentation here: http://sqlawrapper.lucuma.co
+Read the complete documentation here: https://jpscaletti.com/sqla-wrapper
 
 Since 2.0, only Python 3.6 or later are supported.
 Please use the `1.9.1` version if your project runs on a previous Python version.

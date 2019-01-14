@@ -9,9 +9,9 @@ license = "MIT"
 
 readme = "README.rst"
 
-homepage = "http://sqlawrapper.lucuma.co/"
+homepage = "https://jpscaletti.com/sqla-wrapper/"
 repository = "https://github.com/jpscaletti/sqla-wrapper"
-documentation = "http://sqlawrapper.lucuma.co/"
+documentation = "https://jpscaletti.com/sqla-wrapper/"
 
 keywords = ["sqlalchemy", "wrapper"]
 
