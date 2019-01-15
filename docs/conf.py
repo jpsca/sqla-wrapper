@@ -40,7 +40,7 @@ description = 'A friendly wrapper for SQLAlchemy'
 license = 'MIT'
 author_url = 'http://jpscaletti.com'
 github = 'https://github.com/jpscaletti/sqla-wrapper'
-project_url = 'http://sqlawrapper.lucuma.co/'
+project_url = 'https://jpscaletti.com/sqla-wrapper/'
 analytics_code = 'UA-1495972-20'
 
 # The short X.Y version.
