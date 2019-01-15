@@ -37,24 +37,24 @@ SQLAlchemy
 
 The things you need to know compared to plain SQLAlchemy are:
 
-1.  The :class:`SQLAlchemy` gives you access to the following things:
+1.  The ``SQLAlchemy`` gives you access to the following things:
 
-    -   All the functions and classes from :mod:`sqlalchemy` and
-        :mod:`sqlalchemy.orm`
+    -   All the functions and classes from ``sqlalchemy`` and
+        ``sqlalchemy.orm``
     -   All the functions from a preconfigured scoped session (called ``_session``).
-    -   The :attr:`~SQLAlchemy.metadata` and :attr:`~SQLAlchemy.engine`
-    -   The methods :meth:`SQLAlchemy.create_all` and :meth:`SQLAlchemy.drop_all`
+    -   The ``~SQLAlchemy.metadata`` and ``~SQLAlchemy.engine``
+    -   The methods ``SQLAlchemy.create_all`` and ``SQLAlchemy.drop_all``
         to create and drop tables according to the models.
-    -   a :class:`Model` baseclass that is a configured declarative base.
+    -   a ``Model`` baseclass that is a configured declarative base.
 
 2.  All the functions from the session are available directly in the class, so you
     can do ``db.add``,  ``db.commit``,  ``db.remove``, etc.
 
-3.  The :class:`Model` declarative base class behaves like a regular
+3.  The ``Model`` declarative base class behaves like a regular
     Python class but has a ``query`` attribute attached that can be used to
     query the model.
 
-4.  The :class:`Model` class also auto generates ``_tablename__`` attributes, if you
+4.  The ``Model`` class also auto generates ``_tablename__`` attributes, if you
     don't define one, based on the underscored and **pluralized** name of your classes.
 
 5.  You have to commit the session and configure your app to remove it at
