@@ -5,7 +5,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "sqla-wrapper"
-version = "2.0.0"
+version = "2.0.1"
 description = "A framework-independent wrapper for SQLAlchemy that makes it really easy to use."
 authors = [
     "Juan-Pablo Scaletti <juanpablo@jpscaletti.com>"
@@ -34,11 +34,11 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.6"
 inflection = "*"
-sqlalchemy = "^1"
+sqlalchemy = "^1.0"
 
 [tool.poetry.dev-dependencies]
 mock = "^2.0"
-pytest = "^4"
-pytest-cov = "^2"
-tox = "^3"
+pytest = "^4.0"
+pytest-cov = "^2.0"
+tox = "^3.0"
 sphinx = "^1.8"
