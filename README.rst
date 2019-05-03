@@ -8,6 +8,18 @@ SQLA-wrapper |travis|
 
 A friendly wrapper for SQLAlchemy.
 
+Installation
+======================
+
+Install the package using Pypi::
+
+    pip install sqla-wrapper
+
+There is another package on Pypi called ``SQLAlchemy-Wrapper`` which is deprecated (do not use it!). Use ``sqla-wrapper`` instead.
+
+Basic usage
+======================
+
 .. sourcecode:: python
 
     from sqla_wrapper import SQLAlchemy
@@ -64,9 +76,9 @@ The things you need to know compared to plain SQLAlchemy are:
 Run the tests
 ======================
 
-You'll need `poetry` to install de development dependencies.
+You'll need `poetry` to install de development dependencies::
 
-  poetry install
+    poetry install
 
 This command will automnatically create a virtual environment to run the project in.
 Read more in the `Poetry site <https://poetry.eustace.io/>`_
