@@ -88,7 +88,6 @@ class SQLAlchemy(SessionProxyMixin):
                 session_options[arg] = options.pop(arg)
 
         options.setdefault('echo', False)
-        options.setdefault('convert_unicode', True)
         self.engine_options = options
 
         session_options.setdefault('autoflush', True)

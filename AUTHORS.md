@@ -1,11 +1,9 @@
-Development Lead
-```````````````````````````
+## Development Lead
 
 - Juan-Pablo Scaletti (jpscaletti)
 
 
-Patches and Suggestions
-```````````````````````````
+## Patches and Suggestions
 
 - Steven Loria (sloria)
 - Pedro Baumann (ondoheer)
