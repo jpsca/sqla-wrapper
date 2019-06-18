@@ -14,7 +14,7 @@ clean-build:
 	rm -rf dist/
 	rm -rf *.egg-info
 	rm -rf pip-wheel-metadata
-	rm *.egg-info
+	rm -rf *.egg-info
 
 clean-pyc:
 	find . -name '*.pyc' -exec rm -f {} +

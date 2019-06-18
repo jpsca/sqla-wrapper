@@ -12,14 +12,16 @@ data = {
     "title": "SQLA-wrapper",
     "name": "sqla_wrapper",
     "pypi_name": "sqla-wrapper",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "author": "Juan-Pablo Scaletti",
     "author_email": "juanpablo@jpscaletti.com",
     "description": "A framework-independent wrapper for SQLAlchemy that makes it really easy to use.",
     "copyright": "2013",
     "repo_name": "jpscaletti/sqla-wrapper",
     "home_url": "https://jpscaletti.com/sqla-wrapper",
-    "docs_url": "https://jpscaletti.com/sqla-wrapper",
+    "project_urls": {
+        "Documentation": "http://sqlawrapper.lucuma.co",
+    },
     "development_status": "5 - Production/Stable",
     "minimal_python": 3.6,
     "install_requires": [
@@ -53,6 +55,7 @@ exclude = [
     ".venv",
     ".venv/*",
 
+    "LICENSE.txt",
     "CONTRIBUTING.md",
     "docs",
     "docs/*",
