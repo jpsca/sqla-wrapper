@@ -24,16 +24,13 @@ clean-pyc:
 	find . -name '.pytest_cache' -exec rm -rf {} +
 
 test:
-	pytest -x .
+	pytest -x sqla_wrapper tests
 
 flake:
-	flake8 --config=setup.cfg .
+	flake8 --config=setup.cfg sqla_wrapper tests
 
 coverage:
-	pytest --cov-report html --cov sqla_wrapper .
+	pytest --cov-report html --cov sqla_wrapper sqla_wrapper tests
 
 install:
-	pip install -e .
-	pip install .[testing]
-	pip install .[development]
-	
+	pip install -e .[dev]

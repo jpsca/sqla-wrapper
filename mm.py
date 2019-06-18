@@ -78,7 +78,8 @@ def do_the_thing():
         save_current_nav()
 
     copier.copy(
-        "gh:jpscaletti/mastermold.git",
+        # "gh:jpscaletti/mastermold.git",
+        "../mastermold",  # Path to the local copy of Master Mold
         ".",
         data=data,
         exclude=exclude,
