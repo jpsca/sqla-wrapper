@@ -1,6 +1,10 @@
 
 
 class SessionProxyMixin(object):
+    @property
+    def session(self):
+        """Proxy for ``self._session``."""
+        return self._session  # pragma:no cover
 
     @property
     def query(self):
@@ -82,6 +86,10 @@ class SessionProxyMixin(object):
     def refresh(self, *args, **kwargs):
         """Proxy for ``self._session.refresh()``."""
         return self._session.refresh(*args, **kwargs)  # pragma:no cover
+
+    def remove(self, *args, **kwargs):
+        """Proxy for ``self._session.remove()``."""
+        return self._session.remove(*args, **kwargs)  # pragma:no cover
 
     def rollback(self, *args, **kwargs):
         """Proxy for ``self._session.rollback()``."""
