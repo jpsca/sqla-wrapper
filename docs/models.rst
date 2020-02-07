@@ -8,7 +8,7 @@ Generally SQLA-Wrapper behaves like a properly configured declarative base from 
 Things to keep in mind:
 
 -   The base class for all your models is called `db.Model`. It's stored on the SQLAlchemy instance you have to create. See :ref:`quickstart` for more details.
--   Some parts that are required in SQLAlchemy are optional in SQLA-Wrapper. For instance the table name is automatically set for you (unless overridden) by pluralizing the class name with the `inflection <http://inflection.readthedocs.org>`_ library. So, for example, a ``UserEmail`` model gets a table named ``user_emails``.
+-   Some parts that are required in SQLAlchemy are optional in SQLA-Wrapper. For instance the table name is automatically set for you (unless overridden) by pluralizing the class name with the `inflection <http://inflection.readthedocs.org>`_ library. So, for example, a ``User`` model gets a table named ``users``, and a ``UserEmail`` model gets a table named ``user_emails``.
 
 
 Simple Example

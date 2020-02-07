@@ -1,9 +1,9 @@
-## Development Lead
+## Core developers
 
 - Juan-Pablo Scaletti (jpscaletti)
 
 
-## Patches and Suggestions
+## Improvements
 
 - Steven Loria (sloria)
 - Pedro Baumann (ondoheer)

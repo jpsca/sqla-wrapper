@@ -3,24 +3,7 @@
 Pagination
 =============================================
 
-All the results can be easily paginated
-
-.. sourcecode:: python
-
-    >>> users = db.query(User).paginate(page=2, per_page=20)
-    >>> print(list(users))
-    [User(21), User(22), User(23), ... , User(40)]
-
-
-The paginator object it's an iterable that returns only the results for that page, so you use it in your templates in the same way than the original result:
-
-.. sourcecode:: html+jinja
-
-    {% for item in paginated_items %}
-        <li>{{ item.name }}</li>
-    {% endfor %}
-
-You can also use it standalone with any iterable
+The paginator can be used with a query result.
 
 .. sourcecode:: python
 
@@ -30,14 +13,21 @@ You can also use it standalone with any iterable
     pnumbers = Paginator(range(100), page=1, per_page=10)
     pempty = Paginator([])
 
-You can even fake the total number of items by using a ``total`` parameter:
+The paginator object it's an iterable that returns only the results for that page, so you use it in your templates in the same way than the original result:
+
+.. sourcecode:: html+jinja
+
+    {% for item in paginated_items %}
+        <li>{{ item.name }}</li>
+    {% endfor %}
+
+Actually, it works with any iterable. You can even fake the total number of items by using a ``total`` parameter:
 
 .. sourcecode:: python
 
     >>> items = Paginator([], total=300)
     >>> print(items.num_pages)
     30
-
 
 Rendering the page numbers
 ----------------------------------------------

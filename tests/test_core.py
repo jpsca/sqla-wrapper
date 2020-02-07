@@ -2,8 +2,9 @@ from datetime import datetime
 
 import mock
 from sqlalchemy import pool
+from sqlalchemy.orm import Query
 
-from sqla_wrapper import SQLAlchemy, BaseQuery, DefaultMeta
+from sqla_wrapper import SQLAlchemy, DefaultMeta
 
 
 URI1 = 'sqlite://'
@@ -202,7 +203,7 @@ def test_reconfigure():
     db.add(Model())
     db.commit()
 
-    class CustomQuery(BaseQuery):
+    class CustomQuery(Query):
         some_attr = 1
 
     db.reconfigure(query_cls=CustomQuery)

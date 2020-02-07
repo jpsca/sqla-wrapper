@@ -6,32 +6,29 @@ __pycache__
 
 # Distribution / packaging
 .Python
+*.egg
+*.egg-info/
+*.log
+.cache
+.eggs/
+.env
+.installed.cfg
+.mypy_cache/*
+.tox
+.venv
+_build/*
 build/
+covreport
 develop-eggs/
 dist/
 downloads/
 eggs/
-.eggs/
 lib/
 lib64/
+MANIFEST
 parts/
+pip-wheel-metadata
 sdist/
+site/*
 var/
 wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Environments
-.env
-.venv
-covreport
-pip-wheel-metadata
-.tox
-
-# Documentation
-*/_build/*
-*/site/*
-*/.mypy_cache/*
-.cache

@@ -4,7 +4,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker, Session
 from sqlalchemy.util import get_cls_kwargs
 
-from .base_query import BaseQuery
 from .model import Model, DefaultMeta
 from .session_proxy import SessionProxyMixin
 
@@ -51,7 +50,7 @@ class SQLAlchemy(SessionProxyMixin):
 
     .. sourcecode:: python
 
-        db.query(User).all()
+        db.query(User.id, User.email).all()
         db.query(User).filter_by(login == 'tiger').first()
         # etc.
 
@@ -70,7 +69,6 @@ class SQLAlchemy(SessionProxyMixin):
                  model_class=Model, scopefunc=None, **options):
         self.url = url
         self.info = make_url(url)
-        self.scopefunc = scopefunc
 
         self.Model = self._make_declarative_base(model_class, metadata, metaclass)
         self._update_options(options)
@@ -92,7 +90,6 @@ class SQLAlchemy(SessionProxyMixin):
 
         session_options.setdefault('autoflush', True)
         session_options.setdefault('autocommit', False)
-        session_options.setdefault('query_cls', BaseQuery)
         self.session_options = session_options
 
     def _make_declarative_base(self, model_class, metadata=None, metaclass=None):

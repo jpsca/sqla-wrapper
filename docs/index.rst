@@ -9,30 +9,9 @@ SQLA-Wrapper
     A friendly wrapper for SQLAlchemy.
 
 
-SQLAlchemy is great can be difficult to setup.
+SQLAlchemy is great can be difficult to set up.
 
-So, *instead* of having to write something like this:
-
-.. sourcecode:: python
-
-    from sqlalchemy import create_engine
-    from sqlalchemy.ext.declarative import declarative_base
-    from sqlalchemy.orm import sessionmaker, Column, Integer
-
-    engine = create_engine('sqlite:///:memory:')
-    Session = sessionmaker(bind=engine)
-    session = 
-    Model = declarative_base()
-
-    class ToDo(Model):
-        id = Column(Integer, primary_key=True)
-        ...
-
-    Model.metadata.create_all(engine)
-    session = Session()
-    todos = session.query(ToDo).all()
-
-with SQLA-Wrapper you can write it like this:
+With SQLA-Wrapper you can quickly start like:
 
 .. sourcecode:: python
 
@@ -40,19 +19,34 @@ with SQLA-Wrapper you can write it like this:
 
     db = SQLAlchemy('sqlite:///:memory:')
 
-    class ToDo(db.Model):
+    class User(db.Model):
         id = db.Column(db.Integer, primary_key=True)
         ...
 
     db.create_all()
-    todos = db.query(ToDo).all()
+    todos = db.query(User.id, User.title).all()
 
+*instead* of having to write something like:
 
-It can also :ref:`paginate <pagination>` the results for you.
+.. sourcecode:: python
+    # Who's going to remember all of this?
+    from sqlalchemy import create_engine
+    from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy.orm import sessionmaker, Column, Integer
+
+    engine = create_engine('sqlite:///:memory:')
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    Model = declarative_base()
+
+    class User(Model):
+        id = Column(Integer, primary_key=True)
+        ...
+
+    Model.metadata.create_all(engine)
+    session = Session()
+    todos = session.query(User).all()
 
 ----
-
-Since 2.0, only Python 3.6 or later are supported.
-Please use the `1.9.1` version if your project runs on a previous Python version.
 
 .. include:: contents.rst.inc

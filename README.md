@@ -2,17 +2,54 @@
 
 A friendly wrapper for SQLAlchemy.
 
+Docs: https://jpscaletti.com/sqla-wrapper
+
+## Why?
+
+SQLAlchemy is great can be difficult to set up. With SQLA-Wrapper you can quickly start like:
+
+```python
+from sqla_wrapper import SQLAlchemy
+
+db = SQLAlchemy('sqlite:///:memory:')
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ...
+
+db.create_all()
+todos = db.query(User.id, User.title).all()
+```
+
+*instead* of having to write something like:
+
+```python
+# Who's going to remember all of this?
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, Column, Integer
+
+engine = create_engine('sqlite:///:memory:')
+Session = sessionmaker(bind=engine)
+session = Session()
+Model = declarative_base()
+
+class User(Model):
+    id = Column(Integer, primary_key=True)
+    ...
+
+Model.metadata.create_all(engine)
+session = Session()
+todos = session.query(User).all()
+```
 
 ## Installation
 
 Install the package using Pypi:
 
 ```bash
-pip install sqla-wrapper
+python -m pip install sqla-wrapper
 ```
-
-There is another package on Pypi called `SQLAlchemy-Wrapper` which is
-deprecated (do not use it\!). Use `sqla-wrapper` instead.
 
 
 ## Basic usage
@@ -22,29 +59,24 @@ from sqla_wrapper import SQLAlchemy
 
 db = SQLAlchemy('sqlite:///:memory:')
 
-class ToDo(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ...
 
 db.create_all()
 
-db.add(Todo(...))
+db.add(User(...))
 db.commit()
 
-# Sorry, we don't support the `Model.query` syntax yet
-todos = db.query(ToDo).all()
+todos = db.query(User).all()
 ```
 
-Read the complete documentation here: https://jpscaletti.com/sqla-wrapper
-
-Since 2.0, only Python 3.6 or later are supported. Please use the 1.9.1 version if your project runs on a previous Python version.
-
-Our test suite [runs continuously on Travis CI](https://travis-ci.org/jpscaletti/sqla-wrapper) with every update.
+**NOTE: The `Model.query()` syntax of Flask-SQLAlchemy is a bad practice and thus is NOT supported. Use `db.query(Model)` instead.**. 
 
 
-## SQLAlchemy
+## Compared to SQLAlchemy
 
-The things you need to know compared to plain SQLAlchemy are:
+Compared to plain SQLAlchemy, you need to know that:
 
 1.  The `SQLAlchemy` gives you access to the following things:
       - All the functions and classes from `sqlalchemy` and
@@ -65,8 +97,3 @@ The things you need to know compared to plain SQLAlchemy are:
     name of your classes.
 5.  You have to commit the session and configure your app to remove it
     at the end of the request.
-
----
-
-Copyright 2013 by [Juan-Pablo Scaletti](http://jpscaletti.com).
-
