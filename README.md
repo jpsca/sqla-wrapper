@@ -1,4 +1,4 @@
-# SQLA-wrapper [![Build Status](https://travis-ci.org/jpscaletti/sqla-wrapper.png)](https://travis-ci.org/jpscaletti/sqla-wrapper)
+# SQLA-wrapper [![Build Status](https://travis-ci.org/jpscaletti/sqla-wrapper.png)](https://travis-ci.org/jpscaletti/sqla-wrapper) [![Coverage Status](https://coveralls.io/repos/github/jpscaletti/sqla-wrapper/badge.svg?branch=master)](https://coveralls.io/github/jpscaletti/sqla-wrapper?branch=master)
 
 A friendly wrapper for SQLAlchemy.
 
