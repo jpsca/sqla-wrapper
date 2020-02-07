@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Pagination &#8212; SQLA-Wrapper  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within SQLA-Wrapper  documentation"
+          href="_static/opensearch.xml"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Select, Insert, Delete and other Queries" href="queries.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pagination">
+<span id="id1"></span><h1>Pagination<a class="headerlink" href="#pagination" title="Permalink to this headline">¶</a></h1>
+<p>The paginator can be used with a query result.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqla_wrapper</span> <span class="kn">import</span> <span class="n">Paginator</span>
+
+<span class="n">pusers</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">),</span> <span class="n">page</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">pnumbers</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">pempty</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">([])</span>
+</pre></div>
+</div>
+<p>The paginator object it’s an iterable that returns only the results for that page, so you use it in your templates in the same way than the original result:</p>
+<div class="highlight-html+jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">item</span> <span class="k">in</span> <span class="nv">paginated_items</span> <span class="cp">%}</span>
+    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">item.name</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>Actually, it works with any iterable. You can even fake the total number of items by using a <code class="docutils literal notranslate"><span class="pre">total</span></code> parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">items</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">([],</span> <span class="n">total</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">items</span><span class="o">.</span><span class="n">num_pages</span><span class="p">)</span>
+<span class="go">30</span>
+</pre></div>
+</div>
+<div class="section" id="rendering-the-page-numbers">
+<h2>Rendering the page numbers<a class="headerlink" href="#rendering-the-page-numbers" title="Permalink to this headline">¶</a></h2>
+<p>Below your results is common that you want to render the list of pages for quick navigation.</p>
+<p>However, <em>all page numbers</em> are sometimes too many to display.</p>
+<p>The <code class="xref py py-attr docutils literal notranslate"><span class="pre">pages</span></code> property is an iterator that returns the page numbers, but sometimes not all of them: if there are more than 11 pages, the result will be similar to one of these, depending of what page you are currently on:</p>
+<div class="figure align-center">
+<img alt="_images/paginator1.png" src="_images/paginator1.png" />
+</div>
+<div class="figure align-center">
+<img alt="_images/paginator2.png" src="_images/paginator2.png" />
+</div>
+<div class="figure align-center">
+<img alt="_images/paginator3.png" src="_images/paginator3.png" />
+</div>
+<p>Skipped page numbers are represented as <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>This is one way how you could render such a pagination in your templates:</p>
+<div class="highlight-html+jinja notranslate"><div class="highlight"><pre><span></span> <span class="cp">{%</span> <span class="k">macro</span> <span class="nv">render_paginator</span><span class="o">(</span><span class="nv">paginator</span><span class="o">,</span> <span class="nv">endpoint</span><span class="o">)</span> <span class="cp">%}</span>
+   <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Showing <span class="cp">{{</span> <span class="nv">paginator.showing</span> <span class="cp">}}</span> or <span class="cp">{{</span> <span class="nv">paginator.total</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+   <span class="p">&lt;</span><span class="nt">ol</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;paginator&quot;</span><span class="p">&gt;</span>
+   <span class="cp">{%</span>- <span class="k">if</span> <span class="nv">paginator.has_prev</span> <span class="cp">%}</span>
+     <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">url_for</span><span class="o">(</span><span class="nv">endpoint</span><span class="o">,</span> <span class="nv">page</span><span class="o">=</span><span class="nv">paginator.prev_num</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+      <span class="na">rel</span><span class="o">=</span><span class="s">&quot;me prev&quot;</span><span class="p">&gt;</span>«<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+   <span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span>
+     <span class="p">&lt;</span><span class="nt">li</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;disabled&quot;</span><span class="p">&gt;&lt;</span><span class="nt">span</span><span class="p">&gt;</span>«<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+   <span class="cp">{%</span>- <span class="k">endif</span> <span class="cp">%}</span>
+
+<span class="hll">   <span class="cp">{%</span>- <span class="k">for</span> <span class="nv">page</span> <span class="k">in</span> <span class="nv">paginator.pages</span> <span class="cp">%}</span>
+</span><span class="hll">     <span class="cp">{%</span> <span class="k">if</span> <span class="nv">page</span> <span class="cp">%}</span>
+</span>       <span class="cp">{%</span> <span class="k">if</span> <span class="nv">page</span> <span class="o">!=</span> <span class="nv">paginator.page</span> <span class="cp">%}</span>
+         <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">url_for</span><span class="o">(</span><span class="nv">endpoint</span><span class="o">,</span> <span class="nv">page</span><span class="o">=</span><span class="nv">page</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+          <span class="na">rel</span><span class="o">=</span><span class="s">&quot;me&quot;</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">page</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+       <span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span>
+         <span class="p">&lt;</span><span class="nt">li</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;current&quot;</span><span class="p">&gt;&lt;</span><span class="nt">span</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">page</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+       <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="hll">     <span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span>
+</span>       <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">ellipsis</span><span class="p">&gt;</span>…<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+<span class="hll">     <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</span><span class="hll">   <span class="cp">{%</span>- <span class="k">endfor</span> <span class="cp">%}</span>
+</span>
+   <span class="cp">{%</span>- <span class="k">if</span> <span class="nv">paginator.has_next</span> <span class="cp">%}</span>
+     <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">url_for</span><span class="o">(</span><span class="nv">endpoint</span><span class="o">,</span> <span class="nv">page</span><span class="o">=</span><span class="nv">paginator.next_num</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+      <span class="na">rel</span><span class="o">=</span><span class="s">&quot;me next&quot;</span><span class="p">&gt;</span>»<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+   <span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span>
+     <span class="p">&lt;</span><span class="nt">li</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;disabled&quot;</span><span class="p">&gt;&lt;</span><span class="nt">span</span><span class="p">&gt;</span>»<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+   <span class="cp">{%</span>- <span class="k">endif</span> <span class="cp">%}</span>
+   <span class="p">&lt;/</span><span class="nt">ol</span><span class="p">&gt;</span>
+ <span class="cp">{%</span> <span class="k">endmacro</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>How many items are displayed on which part can be controlled using the parameters of <code class="xref py py-func docutils literal notranslate"><span class="pre">iter_pages()</span></code>, that returns a custom iterable, similar to <code class="docutils literal notranslate"><span class="pre">pages</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pg</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">page</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pg</span><span class="o">.</span><span class="n">iter_pages</span><span class="p">(</span><span class="n">left_edge</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">left_current</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">right_current</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right_edge</span><span class="o">=</span><span class="mi">2</span><span class="p">)]</span>
+<span class="go">[1, 2, None, 8, 9, 10, 11, 12, 13, 14, 15, None, 19, 20]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">SQLA-Wrapper</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Declaring models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="queries.html">Select, Insert, Delete and other Queries</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pagination</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rendering-the-page-numbers">Rendering the page numbers</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="queries.html" title="previous chapter">Select, Insert, Delete and other Queries</a></li>
+      <li>Next: <a href="api.html" title="next chapter">API</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2013-2020 by Juan-Pablo Scaletti.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/pagination.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

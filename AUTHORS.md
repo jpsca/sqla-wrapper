@@ -2,8 +2,7 @@
 
 - Juan-Pablo Scaletti (jpscaletti)
 
-
-## Improvements
+## Contributors
 
 - Steven Loria (sloria)
 - Pedro Baumann (ondoheer)
