@@ -19,9 +19,6 @@ data = {
         "Documentation": "https://jpscaletti.com/sqla-wrapper/",
     },
     "extra_classifiers": [
-        'Programming Language :: Python :: 3.6"',
-        'Programming Language :: Python :: 3.7"',
-        'Topic :: Software Development :: Libraries :: Python Modules"',
     ],
     "development_status": "5 - Production/Stable",
     "minimal_python": 3.6,
@@ -43,6 +40,17 @@ data = {
 }
 
 
+exclude = [
+    "hecto.yml",
+    "README.md",
+    ".git",
+    ".git/*",
+    ".venv",
+    ".venv/*",
+    "CHANGELOG.md.md",
+]
+
+
 def do_the_thing():
     import hecto
 
@@ -51,6 +59,7 @@ def do_the_thing():
         "../mastermold",  # Path to the local copy of Master Mold
         ".",
         data=data,
+        exclude=exclude,
         force=False,
     )
 
