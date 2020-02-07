@@ -28,10 +28,10 @@ data = {
     ],
     "testing_requires": [
         "pytest",
+        "pytest-cov",
         "mock",
     ],
     "development_requires": [
-        "pytest-cov",
         "tox",
         "sphinx",
     ],
