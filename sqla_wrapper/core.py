@@ -69,19 +69,16 @@ class SQLAlchemy(SessionProxyMixin):
                  model_class=Model, scopefunc=None, **options):
         self.url = url
         self.info = make_url(url)
-
         self.Model = self._make_declarative_base(model_class, metadata, metaclass)
-        self.reset(scopefunc, **options)
 
-    def reset(self, scopefunc=None, **options):
-        self._update_options(options)
-        self.engine = sqlalchemy.create_engine(self.url, **self.engine_options)
+        self._set_session_options(options)
+        self.engine = sqlalchemy.create_engine(url, **self.engine_options)
         self.Session = sessionmaker(bind=self.engine, **self.session_options)
         self._session = scoped_session(self.Session, scopefunc)
 
         _include_sqlalchemy(self)
 
-    def _update_options(self, options):
+    def _set_session_options(self, options):
         session_options = {}
 
         for arg in get_cls_kwargs(Session):
@@ -121,7 +118,6 @@ class SQLAlchemy(SessionProxyMixin):
     def reconfigure(self, **kwargs):
         """Updates the session options."""
         self._session.remove()
-        self.engine.dispose()
         self.session_options.update(**kwargs)
         self._session.configure(**self.session_options)
 

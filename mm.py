@@ -7,7 +7,7 @@ data = {
     "title": "SQLA-wrapper",
     "name": "sqla_wrapper",
     "pypi_name": "sqla-wrapper",
-    "version": "3.0.0",
+    "version": "3.0.3",
     "author": "Juan-Pablo Scaletti",
     "author_email": "juanpablo@jpscaletti.com",
     "description": "A framework-independent wrapper for SQLAlchemy that makes it really easy to set up.",
