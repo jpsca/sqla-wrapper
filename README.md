@@ -14,6 +14,7 @@ from sqla_wrapper import SQLAlchemy
 db = SQLAlchemy('sqlite:///:memory:')
 
 class User(db.Model):
+    __tablename__ "users"
     id = db.Column(db.Integer, primary_key=True)
     ...
 
@@ -35,6 +36,7 @@ session = Session()
 Model = declarative_base()
 
 class User(Model):
+    __tablename__ "users"
     id = Column(Integer, primary_key=True)
     ...
 
@@ -60,6 +62,7 @@ from sqla_wrapper import SQLAlchemy
 db = SQLAlchemy('sqlite:///:memory:')
 
 class User(db.Model):
+    __tablename__ "users"
     id = db.Column(db.Integer, primary_key=True)
     ...
 
@@ -71,29 +74,42 @@ db.commit()
 todos = db.query(User).all()
 ```
 
-**NOTE: The `Model.query()` syntax of Flask-SQLAlchemy is a bad practice and thus is NOT supported. Use `db.query(Model)` instead.**. 
-
-
 ## Compared to SQLAlchemy
 
 Compared to plain SQLAlchemy, you need to know that:
 
-1.  The `SQLAlchemy` gives you access to the following things:
-      - All the functions and classes from `sqlalchemy` and
-        `sqlalchemy.orm`
-      - All the functions from a preconfigured scoped session (called
-        `_session`).
-      - The `~SQLAlchemy.metadata` and `~SQLAlchemy.engine`
-      - The methods `SQLAlchemy.create_all` and `SQLAlchemy.drop_all` to
-        create and drop tables according to the models.
-      - a `Model` baseclass that is a configured declarative base.
-2.  All the functions from the session are available directly in the
-    class, so you can do `db.add`, `db.commit`, `db.remove`, etc.
-3.  The `Model` declarative base class behaves like a regular Python
-    class but has a `query` attribute attached that can be used to query
-    the model.
-4.  The `Model` class also auto generates `_tablename__` attributes, if
-    you don't define one, based on the underscored and **pluralized**
-    name of your classes.
-5.  You have to commit the session and configure your app to remove it
-    at the end of the request.
+The `SQLAlchemy` gives you access to the following things:
+
+- All the functions and classes from `sqlalchemy` and `sqlalchemy.orm`
+- All the functions from a preconfigured scoped session (called `_session`).
+- The `~SQLAlchemy.metadata` and `~SQLAlchemy.engine`
+- The methods `SQLAlchemy.create_all` and `SQLAlchemy.drop_all` to create and drop tables according to the models.
+- A `Model` baseclass that is a configured declarative base. This model has a few utility methods:
+
+```python
+class Model(Object):
+    @classmethod
+    def exists(cls, **attrs):
+        """Returns whether an object with these attributes exists."""
+
+    @classmethod
+    def create(cls, **attrs):
+        """Create and persist a new record for the model."""
+
+    @classmethod
+    def create_or_first(cls, **attrs):
+        """Tries to create a new record, and if it fails
+        because already exists, return the first it founds."""
+
+    @classmethod
+    def first(cls, **attrs):
+        """Returns the first object found with these attributes."""
+    
+    def save(self):
+        """Saves the updated model to the current entity db and commits."""
+
+    def delete(self):
+        """Removes the model from the current session and commits."""
+```
+
+This model class also generates a default __repr__ for your models, based on their class names an primary keys.
