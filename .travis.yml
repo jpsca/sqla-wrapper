@@ -4,13 +4,14 @@ language: python
 python:
   - '3.6'
   - '3.7'
-  - '3.8-dev'
+  - '3.8'
+  # - 'nightly'
 
-matrix:
-  allow_failures:
-    - python: '3.8-dev'
- 
+# matrix:
+#   allow_failures:
+#     - python: 'nightly'
+
 before_install: pip install -U pip coveralls
-install: pip install .[testing]
-script: pytest --cov sqla_wrapper sqla_wrapper tests
+install: pip install .[test]
+script: pytest --cov sqla_wrapper --cov tests .
 after_success: coveralls

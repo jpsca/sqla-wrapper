@@ -1,6 +1,4 @@
-
-
-class SessionProxyMixin(object):
+class SessionProxy:
     @property
     def session(self):
         """Proxy for ``self._session``."""
