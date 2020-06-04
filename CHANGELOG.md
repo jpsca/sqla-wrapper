@@ -23,3 +23,5 @@
         Removes the object from the current session and commits.
 
 - Now the base Model class generates a smart default __repr__ based on the class name and the primary key(s).
+
+- Removes the paginator because it was outside of the scope of the package.
