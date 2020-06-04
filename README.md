@@ -2,11 +2,9 @@
 
 A friendly wrapper for SQLAlchemy.
 
-Docs: https://jpscaletti.com/sqla-wrapper
-
 ## Why?
 
-SQLAlchemy is great can be difficult to set up. With SQLA-Wrapper you can quickly start like:
+SQLAlchemy is great, but can be difficult to set up. With SQLA-Wrapper you can quickly start like:
 
 ```python
 from sqla_wrapper import SQLAlchemy
