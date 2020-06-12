@@ -34,6 +34,15 @@ def get_default_model_class(db):
             return cls.query().filter_by(**attrs).first()
 
         @classmethod
+        def first_or_error(cls, **attrs):
+            """Returns the first object found with these attributes
+            or raises a `ValuError` if it doesn't find one."""
+            obj = cls.first(**attrs)
+            if obj is None:
+                raise ValueError
+            return obj
+
+        @classmethod
         def query(cls):
             return db.session.query(cls)
 

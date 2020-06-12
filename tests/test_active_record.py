@@ -1,3 +1,6 @@
+import pytest
+
+
 def get_test_model(db):
     class Note(db.Model):
         id = db.Column(db.Integer, primary_key=True)
@@ -14,6 +17,13 @@ def test_create(db):
     snote = db.query(Note).first()
     assert snote.title == "Remember"
     assert snote.text == "Write tests."
+
+
+def test_fist_or_error(db):
+    Note = get_test_model(db)
+    assert Note.first() is None
+    with pytest.raises(ValueError):
+        Note.first_or_error()
 
 
 def test_save(db):
