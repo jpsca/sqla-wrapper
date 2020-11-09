@@ -1,17 +1,10 @@
----
 dist: bionic
 language: python
 python:
-  - '3.6'
-  - '3.7'
-  - '3.8'
-  # - 'nightly'
+  - "3.6"
+  - "3.7"
+  - "3.8"
 
-# matrix:
-#   allow_failures:
-#     - python: 'nightly'
-
-before_install: pip install -U pip coveralls
+before_install: pip install -U pip
 install: pip install .[test]
-script: pytest --cov sqla_wrapper --cov tests .
-after_success: coveralls
+script: pytest -x tests .
