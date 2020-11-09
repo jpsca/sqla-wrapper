@@ -1,4 +1,4 @@
-from sqla_wrapper import SQLAlchemy, Paginator
+from sqla_wrapper import SQLAlchemy, Paginator, sanitize_page_number
 
 
 def create_test_model():
@@ -25,6 +25,15 @@ def create_test_model():
     db.commit()
 
     return db, Item, Part
+
+
+def test_sanitize_page_number():
+    assert sanitize_page_number("1") == 1
+    assert sanitize_page_number("-1") == 1
+    assert sanitize_page_number("0") == 1
+    assert sanitize_page_number("3") == 3
+    assert sanitize_page_number("asas") == 1
+    assert sanitize_page_number(None) == 1
 
 
 def test_list_pagination():
