@@ -20,13 +20,12 @@ def get_default_model_class(db):
 
         @classmethod
         def create_or_first(cls, **attrs):
-            """Tries to create a new record, and if it fails
-            because already exists, return the first it founds."""
+            """Tries to find a record with these attributes and creates
+                        one if it doesn't find one."""
             try:
+                return cls.first_or_error(**attrs)
+            except ValueError:
                 return cls.create(**attrs)
-            except IntegrityError:
-                db.session.rollback()
-                return cls.first(**attrs)
 
         @classmethod
         def first(cls, **attrs):
