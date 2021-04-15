@@ -21,7 +21,7 @@ def get_default_model_class(db):
         @classmethod
         def create_or_first(cls, **attrs):
             """Tries to find a record with these attributes and creates
-                        one if it doesn't find one."""
+            one if it doesn't find one."""
             try:
                 return cls.first_or_error(**attrs)
             except ValueError:
