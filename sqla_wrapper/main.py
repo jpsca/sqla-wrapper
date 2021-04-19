@@ -4,6 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, scoped_session, sessionmaker
 from sqlalchemy.util import get_cls_kwargs
 
+from .routing import get_routing_class
 from .default_model import get_default_model_class
 from .default_meta import DefaultMeta
 from .session_proxy import SessionProxy
@@ -15,7 +16,7 @@ class SQLAlchemy(SessionProxy):
     to interact with them.
 
     ```python
-    db = SQLAlchemy(_uri_to_database_)
+    db = SQLAlchemy({"default": <uri to database>}})
 
     class User(db.Model):
         login = Column(String(80), unique=True)
@@ -67,7 +68,7 @@ class SQLAlchemy(SessionProxy):
 
     def __init__(
         self,
-        url="sqlite://",
+        databases=None,
         *,
         metadata=None,
         metaclass=None,
@@ -75,13 +76,13 @@ class SQLAlchemy(SessionProxy):
         scopefunc=None,
         **options
     ):
-        self.url = url
-        self.info = make_url(url)
+        self.databases = databases
         self.Model = self._make_declarative_base(model_class, metadata, metaclass)
 
         self._set_session_options(options)
-        self.engine = sa.create_engine(url, **self.engine_options)
-        self.Session = sessionmaker(bind=self.engine, **self.session_options)
+        self.engines = {k: sa.create_engine(v, self.engine_options) for k, v in self.databases.items()}
+        self.RoutingSession = get_routing_class(self.engines)
+        self.Session = sessionmaker(class_=self.RoutingSession, **self.session_options)
         self._session = scoped_session(self.Session, scopefunc)
 
         _include_sqlalchemy(self)
@@ -114,14 +115,16 @@ class SQLAlchemy(SessionProxy):
         """Proxy for ``Model.metadata``."""
         return self.Model.metadata
 
-    def create_all(self, *args, **kwargs):
+    def create_all(self, engine='default', *args, **kwargs):
         """Creates all tables."""
-        kwargs.setdefault("bind", self.engine)
+        _engine = self.engines[engine]
+        kwargs.setdefault("bind", _engine)
         self.Model.metadata.create_all(*args, **kwargs)
 
-    def drop_all(self, *args, **kwargs):
+    def drop_all(self, engine='default', *args, **kwargs):
         """Drops all tables."""
-        kwargs.setdefault("bind", self.engine)
+        _engine = self.engines[engine]
+        kwargs.setdefault("bind", _engine)
         self.Model.metadata.drop_all(*args, **kwargs)
 
     def reconfigure(self, **kwargs):
@@ -131,7 +134,7 @@ class SQLAlchemy(SessionProxy):
         self._session.configure(**self.session_options)
 
     def __repr__(self):
-        return "<SQLAlchemy('{}')>".format(self.url)
+        return "<SQLAlchemy('{}')>".format(str(self.databases))
 
 
 def _include_sqlalchemy(obj):

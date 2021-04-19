@@ -32,3 +32,10 @@ sdist/
 site/*
 var/
 wheels/
+
+#Intelij Idea stuff
+.idea/
+
+.vscode/
+
+.DS_Store
