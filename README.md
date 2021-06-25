@@ -1,4 +1,10 @@
-# SQLA-wrapper [![Build Status](https://travis-ci.org/jpsca/sqla-wrapper.png)](https://travis-ci.org/jpsca/sqla-wrapper) [![Coverage Status](https://coveralls.io/repos/github/jpsca/sqla-wrapper/badge.svg?branch=master)](https://coveralls.io/github/jpsca/sqla-wrapper?branch=master)
+**WARNING**: [SQLalchemy v2.0](https://docs.sqlalchemy.org/en/14/glossary.html#term-2.0-style) will be a significant shift for a wide variety of important SQLAlchemy usage patterns in both the Core and ORM components.
+
+As a consequence, this library is going to change and version 5 (the next one) will not be backwards compatible and will require SQLAlchemy 1.4 or later.
+
+----
+
+# SQLA-wrapper
 
 A friendly wrapper for SQLAlchemy.
 
@@ -102,7 +108,7 @@ class Model(Object):
     @classmethod
     def first(cls, **attrs):
         """Returns the first object found with these attributes."""
-    
+
     def save(self):
         """Saves the updated model to the current entity db and commits."""
 
