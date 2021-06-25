@@ -1,59 +1,61 @@
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
-from .representable import Representable
 
-
-def get_default_model_class(db):
-    class Model(Representable):
+def get_default_model_class(dbs):
+    class Model:
         """Baseclass for custom user models."""
 
         @classmethod
-        def exists(cls, **attrs):
-            """Returns whether an object with these attributes exists."""
-            equery = cls.query().filter_by(**attrs).exists()
-            return bool(db.session.query(equery).scalar())
+        def all(cls, **attrs):
+            """Returns all the object found with these attributes."""
+            return dbs.execute(select(cls).filter_by(**attrs)).scalars().all()
 
         @classmethod
         def create(cls, **attrs):
-            """Create and persist a new record for the model, and returns it."""
-            return cls(**attrs).save()
-
-        @classmethod
-        def create_or_first(cls, **attrs):
-            """Tries to find a record with these attributes and creates
-            one if it doesn't find one."""
-            try:
-                return cls.first_or_error(**attrs)
-            except ValueError:
-                return cls.create(**attrs)
+            """Create and commits a new record for the model."""
+            obj = cls(**attrs)
+            dbs.add(obj)
+            dbs.commit()
+            return obj
 
         @classmethod
         def first(cls, **attrs):
             """Returns the first object found with these attributes."""
-            return cls.query().filter_by(**attrs).first()
+            return dbs.execute(select(cls).filter_by(**attrs)).scalars().first()
 
         @classmethod
-        def first_or_error(cls, **attrs):
-            """Returns the first object found with these attributes
-            or raises a `ValuError` if it doesn't find one."""
+        def first_or_create(cls, **attrs):
+            """Tries to find a record, and if none exists
+            it tries to creates a new one.
+            """
             obj = cls.first(**attrs)
-            if obj is None:
-                raise ValueError
-            return obj
+            if obj:
+                return obj
+            return cls.create_or_first(**attrs)
 
         @classmethod
-        def query(cls):
-            return db.session.query(cls)
+        def create_or_first(cls, **attrs):
+            """Tries to create a new record, and if it fails
+            because already exists, return the first it founds.
+            """
+            try:
+                return cls.create(**attrs)
+            except IntegrityError:
+                dbs.rollback()
+                return cls.first(**attrs)
 
-        def save(self):
-            """Adds the updated object to the current session and commits."""
-            db.session.add(self)
-            db.session.commit()
+        def update(self, **attrs):
+            """Updates the record with the contents of the attrs dict
+            and commits."""
+            for name in attrs:
+                setattr(self, name, attrs[name])
+            dbs.commit()
             return self
 
         def delete(self):
             """Removes the object from the current session and commits."""
-            db.session.delete(self)
-            db.session.commit()
+            dbs.delete(self)
+            dbs.commit()
 
     return Model

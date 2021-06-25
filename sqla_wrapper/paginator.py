@@ -1,7 +1,7 @@
 """
 Paginator
 
-A helper class for simple pagination of any iterable, like a SQLAlchemy query
+A helper class for simple pagination of any iterable, like a query
 result or even a list.
 
 """
@@ -23,7 +23,7 @@ def sanitize_page_number(page):
     return 1
 
 
-class Paginator(object):
+class Paginator:
     """Helper class for paginate data.
     You can construct it from any SQLAlchemy query object or other iterable.
     """
