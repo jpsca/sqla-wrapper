@@ -6,7 +6,8 @@ Includes:
 
 - A `SQLAlchemy` class, that does all the SQLAlchemy setup and gives you:
     - A preconfigured scoped session.
-    - A model baseclass with helper methods, that also cam auto-fill the `__tablename__` attribute for you.
+    - A model baseclass with some helper methods.
+
 - A `sa` helper module, that imports all the functions and classes from `sqlalchemy`and `sqlalchemy.orm`,
 so you don't need to repeat those imports everywhere.
 
@@ -26,15 +27,18 @@ class Base(db.Model):
     pass
 
 class User(Base):
+    __tablename__ = "users"
     id = sa.Column(sa.Integer, primary_key=True)
-    …
+    login = sa.Column(sa.String(80), unique=True)
+    password = sa.Column(sa.String(80))
+    deleted = sa.Column(sa.DateTime)
 
 db.create_all()
 dbs = db.session
 
 users = dbs.execute(
     sa.select(User)
-    .where(deleted == False)
+    .where(deleted == None)
 ).scalars().all()
 ```
 
@@ -112,16 +116,9 @@ class Model:
         """Removes the model from the current session and commits."""
 ```
 
-### Table names
-
-Like always, you can specify a table name in your models using `__tablename__`. But if you don't, the `Model` base class will do it for you pluralizing the class name (thank you to the excellent `inflection` library.)
-
-This also works as expected skipping abstract and/or inherited classes that should not have their own tables.
-
-
 ## sa module
 
-This library includes a `sa` module from whicj you can import any of the functions or classes from `sqlalchemy` and `sqlalchemy.orm`.
+This library includes a `sa` module from which you can import any of the functions or classes from `sqlalchemy` and `sqlalchemy.orm`.
 
 Instead of doing:
 
@@ -131,6 +128,7 @@ from sqlalchemy.orm import relationship
 from .base import Base, dbs
 
 class Tag(Base):
+    __tablename__ = "tags"
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     created_at = Column(DateTime, nullable=False)
@@ -150,6 +148,7 @@ You can use:
 from .base import Base, dbs, sa
 
 class Tag(Base):
+    __tablename__ = "tags"
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, nullable=False)
     created_at = sa.Column(sa.DateTime, nullable=False)

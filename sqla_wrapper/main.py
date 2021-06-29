@@ -2,7 +2,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import registry, scoped_session, sessionmaker
 
 from .active_record_mixin import get_active_record_mixin
-from .tablename_mixin import TablenameMixin
 
 
 class SQLAlchemy:
@@ -27,9 +26,14 @@ class SQLAlchemy:
         db = SQLAlchemy(database_uri)
         # or SQLAlchemy(dialect=, name= [, user=] [, password=] [, host=] [, port=])
 
-        class User(db.Model):
+        class Base(db.Model):
+            pass
+
+        class User(Base):
+            __tablename__ = "users"
+            id = Column(Integer, primary_key=True)
             login = Column(String(80), unique=True)
-            passw_hash = Column(String(80))
+            deleted = Column(DateTime)
         ```
 
         **IMPORTANT**
@@ -110,12 +114,12 @@ class SQLAlchemy:
 
     def _get_base_model_class(self):
         ActiveRecordMixin = get_active_record_mixin(self.session)
-        Base = self.registry.generate_base()
+        DeclarativeBase = self.registry.generate_base()
         attrs = {
             "__doc__": "Baseclass for custom user models.",
             "__abstract__": True,
         }
-        return type("Model", (TablenameMixin, ActiveRecordMixin, Base), attrs)
+        return type("Model", (ActiveRecordMixin, DeclarativeBase), attrs)
 
     def __repr__(self):
         return f"<SQLAlchemy('{self.url}')>"

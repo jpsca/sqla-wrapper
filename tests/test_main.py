@@ -1,10 +1,11 @@
 import pytest
-from sqlalchemy import Column, Integer, select
+from sqlalchemy import *  # noqa
 from sqla_wrapper import SQLAlchemy
 
 
 def _create_test_model(db):
     class ToDo(db.Model):
+        __tablename__ = "todos"
         id = Column(Integer, primary_key=True)
 
     return ToDo
@@ -23,7 +24,7 @@ def test_setup_with_params_full():
         port=123,
         name="test",
     )
-    assert db.url == "postgresql://scott:tiger@localhost:123/test"
+    assert db.url == "postgresql+psycopg2://scott:tiger@localhost:123/test"
 
 
 def test_setup_with_some_params():
@@ -65,18 +66,3 @@ def test_drop_all(db):
 
     with pytest.raises(Exception):
         db.session.execute(select(ToDo)).all()
-
-
-def test_auto_tablename(db):
-    class HTTPRequest(db.Model):
-        id = Column(Integer, primary_key=True)
-
-    assert HTTPRequest.__tablename__ == "http_requests"
-
-
-def test_manual_tablename(db):
-    class HTTPRequest(db.Model):
-        __tablename__ = "loremipsum"
-        id = Column(Integer, primary_key=True)
-
-    assert HTTPRequest.__tablename__ == "loremipsum"

@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, String, Text
 
 def get_test_model(db):
     class Note(db.Model):
+        __tablename__ = "notes"
         id = Column(Integer, primary_key=True)
         title = Column(String(60), nullable=False, unique=True)
         text = Column(Text)
