@@ -1,19 +1,12 @@
-**NOTE**: [SQLalchemy v2.0](https://docs.sqlalchemy.org/en/14/glossary.html#term-2.0-style) [SQLalchemy v2.0](https://docs.sqlalchemy.org/en/14/glossary.html#term-2.0-style) will be a significant shift for a wide variety of important SQLAlchemy usage patterns in both the Core and ORM components.
-
-As a consequence, version 5 is no longer compatible with previous versions and requires SQLAlchemy 1.4 (the first one compatible with the new changes) or later
-
-----
-
 # SQLA-wrapper
 
-A friendly wrapper for SQLAlchemy.
+A friendly wrapper for [SQLAlchemy 2](https://docs.sqlalchemy.org/en/14/glossary.html#term-2.0-style) (v1.4 or later)
 
-Included:
+Includes:
 
 - A `SQLAlchemy` class, that does all the SQLAlchemy setup and gives you:
     - A preconfigured scoped session.
     - A model baseclass with helper methods, that also cam auto-fill the `__tablename__` attribute for you.
-- A `Paginator` helper class, for simple pagination of query results (using `offset` and `limit`,) or any iterable.
 - A `sa` helper module, that imports all the functions and classes from `sqlalchemy`and `sqlalchemy.orm`,
 so you don't need to repeat those imports everywhere.
 
@@ -54,16 +47,15 @@ Install the package using Pypi:
 pip install sqla-wrapper
 ```
 
-
 ## SQLAlchemy class
 
 Compared to plain SQLAlchemy, the `SQLAlchemy` class gives you access to the following things:
 
 - `db.engine`: An engine created with the `future=True` argument
-- `db.registry`: A registry instance
-- `db.Model`: A baseclass that is a configured declarative base with a few extra methods (see below)
-- `db.create_all()` and `db.drop_all()` methods to create and drop tables according to the models.
 - `db.session`: A preconfigured scoped session
+- `db.Model`: A baseclass that is a configured declarative base with a few extra methods (see below)
+- `db.registry`: A registry instance
+- `db.create_all()` and `db.drop_all()` methods to create and drop tables according to the models.
 
 ### Using it in a web application
 
@@ -127,15 +119,9 @@ Like always, you can specify a table name in your models using `__tablename__`. 
 This also works as expected skipping abstract and/or inherited classes that should not have their own tables.
 
 
-## Paginator helper class
+## sa module
 
-...
-
-
-## sa module helper
-
-This library includes a `sa` module that imports all the functions and classes from `sqlalchemy` and `sqlalchemy.orm`,
-so you don't need to repeat those imports everywhere.
+This library includes a `sa` module from whicj you can import any of the functions or classes from `sqlalchemy` and `sqlalchemy.orm`.
 
 Instead of doing:
 
@@ -176,4 +162,3 @@ class Tag(Base):
             sa.select(cls).order_by(cls.published_at.desc())
         ).scalars().all()
 ```
-

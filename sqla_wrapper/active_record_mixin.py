@@ -1,11 +1,11 @@
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import declarative_mixin
 
 
-def get_default_model_class(dbs):
-    class Model:
-        """Baseclass for custom user models."""
-
+def get_active_record_mixin(dbs):  # noqa: C901
+    @declarative_mixin
+    class ActiveRecordMixin:
         @classmethod
         def all(cls, **attrs):
             """Returns all the object found with these attributes."""
@@ -58,4 +58,4 @@ def get_default_model_class(dbs):
             dbs.delete(self)
             dbs.commit()
 
-    return Model
+    return ActiveRecordMixin
