@@ -1,3 +1,5 @@
+from typing import Any, Optional
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import registry, scoped_session, sessionmaker
 
@@ -56,16 +58,16 @@ class SQLAlchemy:
 
     def __init__(
         self,
-        url=None,
+        url: Optional[str] = None,
         *,
-        dialect=None,
-        name=None,
-        user=None,
-        password=None,
-        host=None,
-        port=None,
-        engine_options=None,
-        session_options=None,
+        dialect: str = "sqlite",
+        name: Optional[str] = None,
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[str] = None,
+        engine_options: Optional[dict[str, Any]] = None,
+        session_options: Optional[dict[str, Any]] = None,
     ):
         self.url = url or self._make_url(
             dialect=dialect,
@@ -88,17 +90,26 @@ class SQLAlchemy:
         self.registry = registry()
         self.Model = self._get_base_model_class()
 
-    def create_all(self, **kwargs):
+    def create_all(self, **kw):
         """Creates all tables."""
-        kwargs.setdefault("bind", self.engine)
-        self.registry.metadata.create_all(**kwargs)
+        kw.setdefault("bind", self.engine)
+        self.registry.metadata.create_all(**kw)
 
-    def drop_all(self, **kwargs):
+    def drop_all(self, **kw):
         """Drops all tables."""
-        kwargs.setdefault("bind", self.engine)
-        self.registry.metadata.drop_all(**kwargs)
+        kw.setdefault("bind", self.engine)
+        self.registry.metadata.drop_all(**kw)
 
-    def _make_url(self, dialect, *, user=None, password=None, host=None, port=None, name=None):
+    def _make_url(
+        self,
+        dialect: str,
+        *,
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[str] = None,
+        name: Optional[str] = None,
+    ) -> str:
         url_parts = [f"{dialect}://"]
         if user:
             url_parts.append(user)
