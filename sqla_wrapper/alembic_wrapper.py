@@ -45,7 +45,7 @@ class Alembic(object):
         mkdir: bool = True,
         context: Optional[dict[str, Any]] = None,
         **options,
-    ):
+    ) -> None:
         self.db = db
         self.script_path = script_path = Path(script_path).absolute()
         options["script_location"] = str(script_path)
@@ -82,7 +82,7 @@ class Alembic(object):
         revisions = self.script_directory.get_revisions(current_heads)
         return revisions[0] if revisions else None
 
-    def get_log(self, start: str = "base", end: str = "heads") -> List[Script]:
+    def history(self, start: str = "base", end: str = "heads") -> List[Script]:
         """Get the list of revisions in the order they will run."""
         if start == "current":
             start = self.current()
@@ -174,7 +174,7 @@ class Alembic(object):
 
     # Private
 
-    def _run_migrations_online(self, fn: Callable, **kw):
+    def _run_migrations_online(self, fn: Callable, **kw) -> None:
         env = EnvironmentContext(self.config, self.script_directory)
         with self.db.engine.connect() as connection:
             env.configure(

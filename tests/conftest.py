@@ -7,7 +7,7 @@ import pytest
 from sqla_wrapper import SQLAlchemy
 
 
-@pytest.fixture
+@pytest.fixture()
 def db():
     return SQLAlchemy("sqlite://")
 

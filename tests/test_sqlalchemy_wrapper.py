@@ -66,3 +66,24 @@ def test_drop_all(db):
 
     with pytest.raises(Exception):
         db.session.execute(select(ToDo)).all()
+
+
+def test_single_table_inhertance(db):
+    class Person(db.Model):
+        __tablename__ = "persons"
+        id = Column(Integer, primary_key=True)
+        type = Column(String(50))
+        __mapper_args__ = {
+            "polymorphic_identity": "person",
+            "polymorphic_on": type,
+        }
+
+    class Engineer(Person):
+        engineer_name = Column(String(30))
+        __mapper_args__ = {"polymorphic_identity": "engineer"}
+
+    class Manager(Person):
+        manager_name = Column(String(30))
+        __mapper_args__ = {"polymorphic_identity": "manager"}
+
+    db.create_all()

@@ -6,7 +6,9 @@ Includes:
 
 - A `SQLAlchemy` class, that does all the SQLAlchemy setup and gives you:
     - A preconfigured scoped session.
-    - A model baseclass with some helper methods.
+    - A model baseclass including some helper methods.
+
+- An `Alembic` class,
 
 - A `sa` helper module, that imports all the functions and classes from `sqlalchemy`and `sqlalchemy.orm`,
 so you don't need to repeat those imports everywhere.

@@ -3,56 +3,60 @@ from typing import Any, Optional
 from sqlalchemy import create_engine
 from sqlalchemy.orm import registry, scoped_session, sessionmaker
 
-from .active_record_mixin import get_active_record_mixin
+from .base_model_class import BaseModel
 
 
 class SQLAlchemy:
-    """This class is used to easily instantiate a SQLAlchemy connection to
-    a database, to provide a base class for your models, and to get a session
-    to interact with them.
+    """Create a SQLAlchemy connection
 
-    The string form of the URL is `dialect[+driver]://user:password@host/dbname[?key=value..]`,
+    This class creates an engine, a base class for your models, and a scoped session.
+
+    The string form of the URL is
+    `dialect[+driver]://user:password@host/dbname[?key=value..]`,
     where dialect is a database name such as mysql, postgresql, etc., and driver the
     name of a DBAPI, such as psycopg2, pyodbc, etc.
 
-    Instead of the connection URL you can also specify dialect (plus optional driver), user, password,
-    host, port, and database name as separate arguments.
+    Instead of the connection URL you can also specify dialect (plus optional driver),
+    user, password, host, port, and database name as separate arguments.
 
-    Please review the [Database URLs](https://docs.sqlalchemy.org/en/14/core/engines.html#database-urls)
-    section of the SQLAlchemy documentation, for general guidelines in composing URL strings.
-    In particular, special characters, such as those often part of passwords, must be URL encoded to be properly parsed.
+    Please review the
+    [Database URLs](https://docs.sqlalchemy.org/en/14/core/engines.html#database-urls)
+    section of the SQLAlchemy documentation, for general guidelines in composing
+    URL strings. In particular, special characters, such as those often part of
+    passwords, must be URL-encoded to be properly parsed.
 
     Example:
 
-        ```python
-        db = SQLAlchemy(database_uri)
-        # or SQLAlchemy(dialect=, name= [, user=] [, password=] [, host=] [, port=])
+    ```python
+    db = SQLAlchemy(database_uri)
+    # or SQLAlchemy(dialect=, name= [, user=] [, password=] [, host=] [, port=])
 
-        class Base(db.Model):
-            pass
+    class Base(db.Model):
+        pass
 
-        class User(Base):
-            __tablename__ = "users"
-            id = Column(Integer, primary_key=True)
-            login = Column(String(80), unique=True)
-            deleted = Column(DateTime)
-        ```
+    class User(Base):
+        __tablename__ = "users"
+        id = Column(Integer, primary_key=True)
+        login = Column(String(80), unique=True)
+        deleted = Column(DateTime)
 
-        **IMPORTANT**
+    ```
 
-        In a web application or a multithreaded environment you need to call
-        ``session.remove()`` when a request/thread ends. Use your framework's
-        ``after_request`` hook, to do that. For example, in `Flask`:
+    **IMPORTANT**
 
-        ```python
-        app = Flask(…)
-        db = SQLAlchemy(…)
+    In a web application or a multithreaded environment you need to call
+    ``session.remove()`` when a request/thread ends. Use your framework's
+    ``after_request`` hook, to do that. For example:
 
-        @app.teardown_appcontext
-        def shutdown(response=None):
-            db.session.remove()
-            return response
-        ```
+    ```python
+    app = Flask(…)
+    db = SQLAlchemy(…)
+
+    @app.teardown_appcontext
+    def shutdown(response=None):
+        db.session.remove()
+        return response
+    ```
 
     """
 
@@ -68,7 +72,7 @@ class SQLAlchemy:
         port: Optional[str] = None,
         engine_options: Optional[dict[str, Any]] = None,
         session_options: Optional[dict[str, Any]] = None,
-    ):
+    ) -> None:
         self.url = url or self._make_url(
             dialect=dialect,
             host=host,
@@ -88,15 +92,23 @@ class SQLAlchemy:
         self.session = scoped_session(session_factory)
 
         self.registry = registry()
-        self.Model = self._get_base_model_class()
+        self.Model = self.registry.generate_base(cls=BaseModel, name="Model")
+        self.Model._dbs = self.session
 
-    def create_all(self, **kw):
-        """Creates all tables."""
+    def create_all(self, **kw) -> None:
+        """Creates all tables.
+
+        Only tables that do not already exist are created. Existing tables are
+        not modified.
+        """
         kw.setdefault("bind", self.engine)
         self.registry.metadata.create_all(**kw)
 
-    def drop_all(self, **kw):
-        """Drops all tables."""
+    def drop_all(self, **kw) -> None:
+        """Drop all the database tables.
+        Note that this is a destructive operation; data stored in the
+        database will be deleted when this method is called.
+        """
         kw.setdefault("bind", self.engine)
         self.registry.metadata.drop_all(**kw)
 
@@ -123,14 +135,5 @@ class SQLAlchemy:
             url_parts.append(f"/{name}")
         return "".join(url_parts)
 
-    def _get_base_model_class(self):
-        ActiveRecordMixin = get_active_record_mixin(self.session)
-        DeclarativeBase = self.registry.generate_base()
-        attrs = {
-            "__doc__": "Baseclass for custom user models.",
-            "__abstract__": True,
-        }
-        return type("Model", (ActiveRecordMixin, DeclarativeBase), attrs)
-
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<SQLAlchemy('{self.url}')>"
