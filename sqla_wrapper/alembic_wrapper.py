@@ -2,11 +2,14 @@ import shutil
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Union
 
-from alembic import autogenerate, util
-from alembic.config import Config
-from alembic.runtime.environment import EnvironmentContext
-from alembic.script import ScriptDirectory
-from alembic.script.base import Script
+try:
+    from alembic import autogenerate, util
+    from alembic.config import Config
+    from alembic.runtime.environment import EnvironmentContext
+    from alembic.script import ScriptDirectory
+    from alembic.script.base import Script
+except ImportError:
+    pass
 
 from .sqlalchemy_wrapper import SQLAlchemy
 
@@ -83,14 +86,14 @@ class Alembic(object):
         revisions = self.script_directory.get_revisions(current_heads)
         return revisions[0] if revisions else None
 
-    def history(self, *, start: str = "base", end: str = "head") -> List[Script]:
+    def history(self, *, start: Optional[str] = "base", end: Optional[str] = "head") -> List[Script]:
         """Get the list of revisions in chronological order."""
         if start == "current":
-            start = self.current()
-            start = start.revision if start else None
+            current = self.current()
+            start = current.revision if current else None
         if end == "current":
-            end = self.current()
-            end = end.revision if end else None
+            current = self.current()
+            end = current.revision if current else None
 
         return list(self.script_directory.walk_revisions(start, end))[::-1]
 

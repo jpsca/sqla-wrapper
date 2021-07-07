@@ -3,7 +3,7 @@ from typing import Any, Optional
 from sqlalchemy import create_engine
 from sqlalchemy.orm import registry, scoped_session, sessionmaker
 
-from .base_model_class import BaseModel
+from .base_model_class import get_base_model
 
 
 class SQLAlchemy:
@@ -92,8 +92,8 @@ class SQLAlchemy:
         self.session = scoped_session(session_factory)
 
         self.registry = registry()
+        BaseModel = get_base_model(self.session)
         self.Model = self.registry.generate_base(cls=BaseModel, name="Model")
-        self.Model._dbs = self.session
 
     def create_all(self, **kw) -> None:
         """Creates all tables.
