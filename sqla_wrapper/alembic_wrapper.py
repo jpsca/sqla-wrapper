@@ -42,7 +42,7 @@ class Alembic(object):
         db: SQLAlchemy,
         *,
         script_path: StrPath = "db/migrations",
-        mkdir: bool = True,
+        init: bool = True,
         context: Optional[dict[str, Any]] = None,
         **options,
     ) -> None:
@@ -51,13 +51,14 @@ class Alembic(object):
         options["script_location"] = str(script_path)
         self.config = self._get_config(options)
 
-        if mkdir:
-            self.mkdir(script_path)
+        if init:
+            self.init(script_path)
 
         self.script_directory = ScriptDirectory.from_config(self.config)
         self.context = context or {}
 
-    def mkdir(self, script_path: Path) -> None:
+    def init(self, script_path: Path) -> None:
+        """Creates a new migration folder."""
         script_path.mkdir(exist_ok=True)
         src_path = (
             Path(self.config.get_template_directory()) / "generic" / TEMPLATE_FILE
@@ -76,14 +77,14 @@ class Alembic(object):
         env = EnvironmentContext(self.config, self.script_directory)
         with self.db.engine.connect() as connection:
             env.configure(connection=connection, **self.context)
-            env = env.get_context()
-            current_heads = env.get_current_heads()
+            migration_context = env.get_context()
+            current_heads = migration_context.get_current_heads()
 
         revisions = self.script_directory.get_revisions(current_heads)
         return revisions[0] if revisions else None
 
-    def history(self, start: str = "base", end: str = "heads") -> List[Script]:
-        """Get the list of revisions in the order they will run."""
+    def history(self, *, start: str = "base", end: str = "head") -> List[Script]:
+        """Get the list of revisions in chronological order."""
         if start == "current":
             start = self.current()
             start = start.revision if start else None
@@ -93,31 +94,105 @@ class Alembic(object):
 
         return list(self.script_directory.walk_revisions(start, end))[::-1]
 
-    def stamp(self, target: str = "head") -> None:
-        """Set the current database revision without running migrations."""
+    def stamp(
+        self, target: str = "head", *, sql: bool = False, purge: bool = False
+    ) -> None:
+        """Set the given revision in the revision table. Don't run any
+        migrations.
+
+        Arguments:
+            - target: str
+                The target revision; "head" by default.
+            - sql: bool
+                Don't emit SQL to the database, dump to the standard output instead.
+            - purge: bool
+                Delete all entries in the version table before stamping.
+
+        """
 
         def do_stamp(revision, context):
             return self.script_directory._stamp_revs(target, revision)
 
-        self._run_migrations_online(do_stamp)
+        run = self.run_offline if sql else self.run_online
+        run(
+            do_stamp,
+            destination_rev=target,
+            purge=purge,
+        )
 
-    def upgrade(self, target: str = "head") -> None:
-        """Run migrations to upgrade database."""
+    def upgrade(self, target: str = "head", *, sql: bool = False, **kwargs) -> None:
+        """Run migrations to upgrade database.
+
+        Arguments:
+            - target: str
+                Revision target or "from:to" range if `sql=True`. "head" by default.
+            - sql: bool
+                Don't emit SQL to database, dump to standard output instead.
+            - **kwargs:
+                Optional arguments. If these are passed, they are sent directly
+                to the `upgrade()` functions within each revision file.
+                To use, modify the `script.py.mako`template file
+                so that the `upgrade()` functions can accept arguments.
+
+        """
+        starting_rev = None
+        if ":" in target:
+            if not sql:
+                raise ValueError("range target not allowed")
+            starting_rev, target = target.split(":")
+        elif sql:
+            raise ValueError("sql=True requires target=from:to")
 
         def do_upgrade(revision, context):
             return self.script_directory._upgrade_revs(target, revision)
 
-        self._run_migrations_online(do_upgrade)
+        run = self.run_offline if sql else self.run_online
+        run(
+            do_upgrade,
+            kwargs=kwargs,
+            starting_rev=starting_rev,
+            destination_rev=target,
+        )
 
-    def downgrade(self, target: int = -1) -> None:
-        """Run migrations to downgrade database."""
-        target = int(target)
-        target = -target if target > 0 else target
+    def downgrade(self, target: str = "-1", *, sql: bool = False, **kwargs) -> None:
+        """Run migrations to downgrade database.
+
+        Arguments:
+            - target: str
+                Revision target as an integer relative to the current
+                state (e.g.: "-1"), or as a "from:to" range if `sql=True`.
+                "-1" by default.
+            - sql: bool
+                Don't emit SQL to database, dump to standard output instead.
+            - **kwargs:
+                Optional arguments. If these are passed, they are sent directly
+                to the `downgrade()` functions within each revision file.
+                To use, modify the `script.py.mako` template file
+                so that the `downgrade()` functions can accept arguments.
+
+        """
+
+        starting_rev = None
+        if isinstance(target, str) and ":" in target:
+            if not sql:
+                raise ValueError("range target not allowed")
+            starting_rev, target = target.split(":")
+        elif sql:
+            raise ValueError("sql=True requires target=from:to")
+        else:
+            itarget = int(target)
+            target = str(-itarget if itarget > 0 else itarget)
 
         def do_downgrade(revision, context):
-            return self.script_directory._downgrade_revs(str(target), revision)
+            return self.script_directory._downgrade_revs(target, revision)
 
-        self._run_migrations_online(do_downgrade)
+        run = self.run_offline if sql else self.run_online
+        run(
+            do_downgrade,
+            kwargs=kwargs,
+            starting_rev=starting_rev,
+            destination_rev=target,
+        )
 
     def revision(
         self,
@@ -126,7 +201,8 @@ class Alembic(object):
         empty: bool = False,
         parent: str = "head",
     ) -> Script:
-        """Create a new revision.  By default, auto-generate operations by comparing models and database.
+        """Create a new revision.  By default, auto-generate operations
+        by comparing models and database.
 
         Arguments:
             - message: str
@@ -159,7 +235,7 @@ class Alembic(object):
                 revision_context.run_autogenerate(revision, context)
             return []
 
-        self._run_migrations_online(do_revision)
+        self.run_online(do_revision)
 
         result = list(revision_context.generate_scripts())
         return result[0]
@@ -172,19 +248,39 @@ class Alembic(object):
         """
         return util.rev_id()
 
-    # Private
-
-    def _run_migrations_online(self, fn: Callable, **kw) -> None:
+    def run_online(
+        self, fn: Callable, *, kwargs: Optional[Dict] = None, **envargs
+    ) -> None:
+        """Emit the SQL to the database."""
         env = EnvironmentContext(self.config, self.script_directory)
         with self.db.engine.connect() as connection:
             env.configure(
                 connection=connection,
-                target_metadata=self.db.registry.metadata,
                 fn=fn,
-                **self.context,
+                target_metadata=self.db.registry.metadata,
+                **envargs,
             )
+            kwargs = kwargs or {}
             with env.begin_transaction():
-                env.run_migrations(**kw)
+                env.run_migrations(**kwargs)
+
+    def run_offline(
+        self, fn: Callable, *, kwargs: Optional[Dict] = None, **envargs
+    ) -> None:
+        """Don't emit SQL to the database, dump to standard output instead."""
+        env = EnvironmentContext(self.config, self.script_directory)
+        env.configure(
+            url=self.db.url,
+            fn=fn,
+            target_metadata=self.db.registry.metadata,
+            as_sql=True,
+            **envargs,
+        )
+        kwargs = kwargs or {}
+        with env.begin_transaction():
+            env.run_migrations(**kwargs)
+
+    # Private
 
     def _get_config(self, options: Dict[str, str]) -> Config:
         options.setdefault("file_template", DEFAULT_FILE_TEMPLATE)
