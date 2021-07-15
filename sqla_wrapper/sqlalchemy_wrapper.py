@@ -1,9 +1,10 @@
 from typing import Any, Optional
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import registry, scoped_session, sessionmaker
+from sqlalchemy.orm import registry, scoped_session, sessionmaker, Session
 
-from .base_model_class import get_base_model
+from .base_model import BaseModel
+from .ttransaction import TestTransaction
 
 
 class SQLAlchemy:
@@ -82,17 +83,16 @@ class SQLAlchemy:
             port=port,
         )
         engine_options = engine_options or {}
-        engine_options["future"] = True
+        engine_options.setdefault("future", True)
         self.engine = create_engine(self.url, **engine_options)
 
         session_options = session_options or {}
-        session_options["bind"] = self.engine
-        session_options["future"] = True
-        session_factory = sessionmaker(**session_options)
-        self.session = scoped_session(session_factory)
+        session_options.setdefault("bind", self.engine)
+        session_options.setdefault("future", True)
+        self.session_factory = sessionmaker(**session_options)
+        self.session = scoped_session(self.session_factory)
 
         self.registry = registry()
-        BaseModel = get_base_model(self.session)
         self.Model = self.registry.generate_base(cls=BaseModel, name="Model")
 
     def create_all(self, **kw) -> None:
@@ -106,11 +106,15 @@ class SQLAlchemy:
 
     def drop_all(self, **kw) -> None:
         """Drop all the database tables.
+
         Note that this is a destructive operation; data stored in the
         database will be deleted when this method is called.
         """
         kw.setdefault("bind", self.engine)
         self.registry.metadata.drop_all(**kw)
+
+    def test_transaction(self, savepoint: bool = False) -> TestTransaction:
+        return TestTransaction(self, savepoint=savepoint)
 
     def _make_url(
         self,

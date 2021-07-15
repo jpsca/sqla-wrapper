@@ -1,84 +1,65 @@
-from sqlalchemy import Column, Integer, String, Text
+def test_create(dbs, TestModelA):
+    TestModelA.create(dbs, title="Remember")
+    dbs.commit()
+    obj = TestModelA.first(dbs)
+    assert obj.title == "Remember"
 
 
-def get_test_model(db):
-    class Note(db.Model):
-        __tablename__ = "notes"
-        id = Column(Integer, primary_key=True)
-        title = Column(String(60), nullable=False, unique=True)
-        text = Column(Text)
+def test_all(dbs, TestModelA):
+    TestModelA.create(dbs, title="Lorem")
+    TestModelA.create(dbs, title="Ipsum")
+    dbs.commit()
 
-    db.create_all()
-    return Note
+    obj_list = TestModelA.all(dbs)
+    assert len(obj_list) == 2
 
 
-def test_create(db):
-    Note = get_test_model(db)
-    Note.create(title="Remember", text="Write tests.")
-    snote = Note.first()
-    assert snote.title == "Remember"
-    assert snote.text == "Write tests."
+def test_create_or_first_using_create(dbs, TestModelA):
+    obj1 = TestModelA.create_or_first(dbs, title="Lorem Ipsum")
+    assert obj1
+    dbs.commit()
+
+    obj2 = TestModelA.create_or_first(dbs, title="Lorem Ipsum")
+    assert obj1 == obj2
+
+def test_create_or_first_using_first(dbs, TestModelA):
+    obj1 = TestModelA.create(dbs, title="Lorem Ipsum")
+    assert obj1
+    dbs.commit()
+
+    obj2 = TestModelA.create_or_first(dbs, title="Lorem Ipsum")
+    assert obj1 == obj2
 
 
-def test_all(db):
-    Note = get_test_model(db)
-    Note.create(title="Lorem")
-    Note.create(title="Ipsum")
+def test_first_or_create_using_first(dbs, TestModelA):
+    obj1 = TestModelA.create(dbs, title="Lorem Ipsum")
+    assert obj1
+    dbs.commit()
 
-    note_list = Note.all()
-    assert len(note_list) == 2
-
-
-def test_create_or_first_using_create(db):
-    Note = get_test_model(db)
-    note1 = Note.create_or_first(title="Lorem Ipsum")
-    note2 = Note.create_or_first(title="Lorem Ipsum")
-
-    assert note1
-    assert note1 == note2
+    obj2 = TestModelA.first_or_create(dbs, title="Lorem Ipsum")
+    assert obj1 == obj2
 
 
-def test_create_or_first_using_first(db):
-    Note = get_test_model(db)
-    note1 = Note.create(title="Lorem Ipsum")
-    note2 = Note.create_or_first(title="Lorem Ipsum")
+def test_first_or_create_using_create(dbs, TestModelA):
+    assert TestModelA.first_or_create(dbs, id=1, title="Lorem Ipsum")
+    dbs.commit()
 
-    assert note1
-    assert note1 == note2
-
-
-def test_first_or_create_using_first(db):
-    Note = get_test_model(db)
-    note1 = Note.create(title="Lorem Ipsum")
-    note2 = Note.first_or_create(title="Lorem Ipsum")
-
-    assert note1
-    assert note1 == note2
+    obj = TestModelA.first_or_create(dbs, title="Lorem Ipsum")
+    assert obj and obj.id == 1
 
 
-def test_first_or_create_using_create(db):
-    Note = get_test_model(db)
-    note1 = Note.first_or_create(title="Lorem Ipsum")
-    note2 = Note.first_or_create(title="Lorem Ipsum")
+def test_update(dbs, TestModelA):
+    obj = TestModelA.create(dbs, title="Remember")
+    obj.update(dbs, title="lorem ipsum")
 
-    assert note1
-    assert note1 == note2
-
-
-def test_update(db):
-    Note = get_test_model(db)
-    note = Note.create(title="Remember", text="Write tests.")
-    note.update(title="lorem", text="ipsum")
-
-    snote = Note.first()
-    assert snote.title == "lorem"
-    assert snote.text == "ipsum"
+    updated = TestModelA.first(dbs)
+    assert updated.title == "lorem ipsum"
 
 
-def test_delete(db):
-    Note = get_test_model(db)
-    note = Note.create(title="Remember")
-
-    assert Note.first()
-    note.delete()
-    assert Note.first() is None
+def test_delete(dbs, TestModelA):
+    obj = TestModelA.create(dbs, title="Remember")
+    dbs.commit()
+    assert TestModelA.first(dbs)
+    obj.delete(dbs)
+    dbs.commit()
+    assert TestModelA.first(dbs) is None

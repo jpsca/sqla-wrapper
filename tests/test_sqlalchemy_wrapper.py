@@ -3,14 +3,6 @@ from sqlalchemy import *  # noqa
 from sqla_wrapper import SQLAlchemy
 
 
-def _create_test_model(db):
-    class ToDo(db.Model):
-        __tablename__ = "todos"
-        id = Column(Integer, primary_key=True)
-
-    return ToDo
-
-
 def test_repr(db):
     assert db.url in str(db)
 
@@ -43,10 +35,7 @@ def test_setup_with_params_minimal():
 
 
 def test_setup_with_sqlite_path():
-    db = SQLAlchemy(
-        dialect="sqlite",
-        name="relpath/to/database.db"
-    )
+    db = SQLAlchemy(dialect="sqlite", name="relpath/to/database.db")
     assert db.url == "sqlite:///relpath/to/database.db"
 
 
@@ -60,7 +49,10 @@ def test_setup_with_driver_options():
 
 
 def test_drop_all(db):
-    ToDo = _create_test_model(db)
+    class ToDo(db.Model):
+        __tablename__ = "todos"
+        id = Column(Integer, primary_key=True)
+
     db.create_all()
     db.drop_all()
 
