@@ -22,6 +22,7 @@ def test_create_or_first_using_create(dbs, TestModelA):
     obj2 = TestModelA.create_or_first(dbs, title="Lorem Ipsum")
     assert obj1 == obj2
 
+
 def test_create_or_first_using_first(dbs, TestModelA):
     obj1 = TestModelA.create(dbs, title="Lorem Ipsum")
     assert obj1

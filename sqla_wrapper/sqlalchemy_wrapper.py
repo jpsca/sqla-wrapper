@@ -1,7 +1,7 @@
 from typing import Any, Optional
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import registry, scoped_session, sessionmaker, Session
+from sqlalchemy.orm import registry, scoped_session, sessionmaker
 
 from .base_model import BaseModel
 from .ttransaction import TestTransaction

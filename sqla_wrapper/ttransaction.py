@@ -12,10 +12,11 @@ class TestTransaction:
         self.session = db.session_factory(bind=self.connection)
 
         if savepoint:
-            self.nested = self.connection.begin_nested()
             # if the database supports SAVEPOINT (SQLite needs a
             # special config for this to work), starting a savepoint
             # will allow tests to also use rollback within tests
+            self.nested = self.connection.begin_nested()
+
             @event.listens_for(self.session, "after_transaction_end")
             def end_savepoint(session, transaction):
                 if not self.nested.is_active:

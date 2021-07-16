@@ -28,7 +28,6 @@ def test_independence_3(dbs, TestModelB):
     assert dbs.execute(stmt).scalar() == 2
 
 
-
 def test_rollback(dbs, TestModelB):
     stmt = select(func.count("*")).select_from(TestModelB)
     assert dbs.execute(stmt).scalar() == 1
