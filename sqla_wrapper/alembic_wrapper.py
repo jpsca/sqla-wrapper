@@ -7,7 +7,7 @@ try:
     from alembic.config import Config
     from alembic.runtime.environment import EnvironmentContext
     from alembic.script import ScriptDirectory
-    from alembic.script.base import Script
+    from alembic.script.revision import Revision
 except ImportError:
     pass
 
@@ -46,7 +46,7 @@ class Alembic(object):
         *,
         script_path: StrPath = "db/migrations",
         init: bool = True,
-        context: Optional[dict[str, Any]] = None,
+        context: Optional[Dict[str, Any]] = None,
         **options,
     ) -> None:
         self.db = db
@@ -70,12 +70,12 @@ class Alembic(object):
         if not dest_path.exists():
             shutil.copy(src_path, script_path)
 
-    def head(self) -> Optional[Script]:
+    def head(self) -> Optional[Revision]:
         """Get the latest revision."""
         heads = self.script_directory.get_revisions("heads")
         return heads[0] if heads else None
 
-    def current(self) -> Optional[Script]:
+    def current(self) -> Optional[Revision]:
         """Get the current revision."""
         env = EnvironmentContext(self.config, self.script_directory)
         with self.db.engine.connect() as connection:
@@ -86,7 +86,7 @@ class Alembic(object):
         revisions = self.script_directory.get_revisions(current_heads)
         return revisions[0] if revisions else None
 
-    def history(self, *, start: Optional[str] = "base", end: Optional[str] = "head") -> List[Script]:
+    def history(self, *, start: Optional[str] = "base", end: Optional[str] = "head") -> List[Revision]:
         """Get the list of revisions in chronological order."""
         if start == "current":
             current = self.current()
@@ -203,7 +203,7 @@ class Alembic(object):
         *,
         empty: bool = False,
         parent: str = "head",
-    ) -> Script:
+    ) -> Revision:
         """Create a new revision.  By default, auto-generate operations
         by comparing models and database.
 

@@ -29,6 +29,16 @@ def test_setup_with_some_params():
     assert db.url == "postgresql://postgres@localhost/test"
 
 
+def test_setup_with_password():
+    db = SQLAlchemy(
+        dialect="postgresql",
+        user="postgres",
+        password="postgres",
+        name="dbtest",
+    )
+    assert db.url == "postgresql://postgres:postgres@127.0.0.1/dbtest"
+
+
 def test_setup_with_params_minimal():
     db = SQLAlchemy(dialect="sqlite")
     assert db.url == "sqlite://"

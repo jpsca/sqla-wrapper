@@ -1,4 +1,3 @@
-import os
 import shutil
 from pathlib import Path
 from tempfile import mkdtemp
@@ -31,9 +30,9 @@ def dst() -> Optional[Path]:
 def _db() -> SQLAlchemy:
     db = SQLAlchemy(
         dialect="postgresql",
-        user=os.getenv("POSTGRES_USER", None),
-        password=os.getenv("POSTGRES_PASSWORD", None),
-        name=os.getenv("POSTGRES_DB", "dbtest"),
+        user="postgres",
+        password="postgres",
+        name="dbtest",
     )
     return db
 

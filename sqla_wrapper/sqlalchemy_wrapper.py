@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import registry, scoped_session, sessionmaker
@@ -71,8 +71,8 @@ class SQLAlchemy:
         password: Optional[str] = None,
         host: Optional[str] = None,
         port: Optional[str] = None,
-        engine_options: Optional[dict[str, Any]] = None,
-        session_options: Optional[dict[str, Any]] = None,
+        engine_options: Optional[Dict[str, Any]] = None,
+        session_options: Optional[Dict[str, Any]] = None,
     ) -> None:
         self.url = url or self._make_url(
             dialect=dialect,
@@ -131,10 +131,16 @@ class SQLAlchemy:
             url_parts.append(user)
             if password:
                 url_parts.append(f":{password}")
+            url_parts.append("@")
+
+        if not host and not dialect.startswith("sqlite"):
+            host = "127.0.0.1"
+
         if host:
-            url_parts.append(f"@{host}")
+            url_parts.append(f"{host}")
             if port:
                 url_parts.append(f":{port}")
+
         if name:
             url_parts.append(f"/{name}")
         return "".join(url_parts)
