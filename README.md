@@ -1,14 +1,15 @@
 # SQLA-wrapper
 
-A friendly wrapper for [SQLAlchemy 2](https://docs.sqlalchemy.org/en/14/glossary.html#term-2.0-style) (v1.4 or later)
+A friendly wrapper for [SQLAlchemy v2](https://docs.sqlalchemy.org/en/14/glossary.html#term-2.0-style) (v1.4 or later)
 
 Includes:
 
-- A `SQLAlchemy` class, that does all the SQLAlchemy setup and gives you:
+- A `SQLAlchemy` wrapper, that does all the SQLAlchemy setup and gives you:
     - A preconfigured scoped session.
     - A model baseclass including some helper methods.
+    - A helper for performant testing with a real database
 
-- An `Alembic` class,
+- An `Alembic` wrapper that loads the config from your application instead of an ini file.
 
 - A `sa` helper module, that imports all the functions and classes from `sqlalchemy`and `sqlalchemy.orm`,
 so you don't need to repeat those imports everywhere.
@@ -93,26 +94,18 @@ class Model:
         """Returns the first object found with these attributes."""
 
     @classmethod
-    def create_or_first(cls, **attrs):
-        """Tries to create a new record, and if it fails
-        because already exists, return the first it founds."""
-
-    @classmethod
-<<<<<<< HEAD
-    def first(cls, **attrs):
-        """Returns the first object found with these attributes."""
-
-    def save(self):
-        """Saves the updated model to the current entity db and commits."""
-=======
     def first_or_create(cls, **attrs):
         """Tries to find a record, and if none exists
         it tries to creates a new one."""
 
+    @classmethod
+    def create_or_first(cls, **attrs):
+        """Tries to create a new record, and if it fails
+        because already exists, return the first it founds."""
+
     def update(self, **attrs):
         """Updates the record with the contents of the attrs dict
         and commits."""
->>>>>>> 3169e6c (Update README and version)
 
     def delete(self):
         """Removes the model from the current session and commits."""
