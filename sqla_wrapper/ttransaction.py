@@ -11,7 +11,7 @@ class TestTransaction:
         self.trans = self.connection.begin()
         self.session = db.session_factory(bind=self.connection)
 
-        if savepoint:
+        if savepoint:  # pragma: no branch
             # if the database supports SAVEPOINT (SQLite needs a
             # special config for this to work), starting a savepoint
             # will allow tests to also use rollback within tests
@@ -27,8 +27,8 @@ class TestTransaction:
         self.trans.rollback()
         self.connection.close()
 
-    def __enter__(self):
+    def __enter__(self):  # pragma: no cover
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb):  # pragma: no cover
         self.close()

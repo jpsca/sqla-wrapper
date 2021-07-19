@@ -8,10 +8,11 @@ try:
     from alembic.runtime.environment import EnvironmentContext
     from alembic.script import ScriptDirectory
     from alembic.script.revision import Revision
-except ImportError:
+except ImportError:  # pragma: no cover
     pass
 
 from .sqlalchemy_wrapper import SQLAlchemy
+from .cli import click_cli, pyceo_cli
 
 
 StrPath = Union[str, Path]
@@ -60,75 +61,59 @@ class Alembic(object):
         self.script_directory = ScriptDirectory.from_config(self.config)
         self.context = context or {}
 
-    def init(self, script_path: Path) -> None:
-        """Creates a new migration folder."""
-        script_path.mkdir(exist_ok=True)
-        src_path = (
-            Path(self.config.get_template_directory()) / "generic" / TEMPLATE_FILE
-        )
-        dest_path = script_path / TEMPLATE_FILE
-        if not dest_path.exists():
-            shutil.copy(src_path, script_path)
-
-    def head(self) -> Optional[Revision]:
-        """Get the latest revision."""
-        heads = self.script_directory.get_revisions("heads")
-        return heads[0] if heads else None
-
-    def current(self) -> Optional[Revision]:
-        """Get the current revision."""
-        env = EnvironmentContext(self.config, self.script_directory)
-        with self.db.engine.connect() as connection:
-            env.configure(connection=connection, **self.context)
-            migration_context = env.get_context()
-            current_heads = migration_context.get_current_heads()
-
-        revisions = self.script_directory.get_revisions(current_heads)
-        return revisions[0] if revisions else None
-
-    def history(self, *, start: Optional[str] = "base", end: Optional[str] = "head") -> List[Revision]:
-        """Get the list of revisions in chronological order."""
-        if start == "current":
-            current = self.current()
-            start = current.revision if current else None
-        if end == "current":
-            current = self.current()
-            end = current.revision if current else None
-
-        return list(self.script_directory.walk_revisions(start, end))[::-1]
-
-    def stamp(
-        self, target: str = "head", *, sql: bool = False, purge: bool = False
-    ) -> None:
-        """Set the given revision in the revision table. Don't run any
-        migrations.
+    def revision(
+        self,
+        message: str,
+        *,
+        empty: bool = False,
+        parent: str = "head",
+    ) -> Revision:
+        """Create a new revision.
+        Auto-generate operations by comparing models and database.
 
         Arguments:
-            - target: str
-                The target revision; "head" by default.
-            - sql: bool
-                Don't emit SQL to the database, dump to the standard output instead.
-            - purge: bool
-                Delete all entries in the version table before stamping.
+            - message: str
+                Revision message.
+            - empty: bool
+                Generate just an empty migration file, not the operations.
+            - parent: str
+                Parent revision of this new revision.
 
         """
-
-        def do_stamp(revision, context):
-            return self.script_directory._stamp_revs(target, revision)
-
-        run = self.run_offline if sql else self.run_online
-        run(
-            do_stamp,
-            destination_rev=target,
-            purge=purge,
+        revision_context = autogenerate.RevisionContext(
+            self.config,
+            self.script_directory,
+            {
+                "message": message,
+                "sql": False,
+                "head": [parent],
+                "splice": False,
+                "branch_label": None,
+                "version_path": self.script_directory.dir,
+                "rev_id": self._rev_id(),
+                "depends_on": None,
+            },
         )
+
+        def do_revision(revision, context):
+            if empty:
+                revision_context.run_no_autogenerate(revision, context)
+            else:
+                revision_context.run_autogenerate(revision, context)
+            return []
+
+        self._run_online(do_revision)
+
+        result = list(revision_context.generate_scripts())
+        return result[0]
 
     def upgrade(self, target: str = "head", *, sql: bool = False, **kwargs) -> None:
         """Run migrations to upgrade database.
 
         Arguments:
             - target: str
-                Revision target or "from:to" range if `sql=True`. "head" by default.
+                Revision target or "from:to" range if `sql=True`. "head"
+                by default.
             - sql: bool
                 Don't emit SQL to database, dump to standard output instead.
             - **kwargs:
@@ -149,7 +134,7 @@ class Alembic(object):
         def do_upgrade(revision, context):
             return self.script_directory._upgrade_revs(target, revision)
 
-        run = self.run_offline if sql else self.run_online
+        run = self._run_offline if sql else self._run_online
         run(
             do_upgrade,
             kwargs=kwargs,
@@ -189,7 +174,7 @@ class Alembic(object):
         def do_downgrade(revision, context):
             return self.script_directory._downgrade_revs(target, revision)
 
-        run = self.run_offline if sql else self.run_online
+        run = self._run_offline if sql else self._run_online
         run(
             do_downgrade,
             kwargs=kwargs,
@@ -197,53 +182,176 @@ class Alembic(object):
             destination_rev=target,
         )
 
-    def revision(
-        self,
-        message: str,
-        *,
-        empty: bool = False,
-        parent: str = "head",
-    ) -> Revision:
-        """Create a new revision.  By default, auto-generate operations
-        by comparing models and database.
+    def _history(
+        self, *, start: Optional[str] = "base", end: Optional[str] = "heads"
+    ) -> List[Revision]:
+        """Get the list of revisions in chronological order.
+        You can optionally specify the range of revisions to return.
 
         Arguments:
-            - message: str
-                description of revision.
-            - empty: bool
-                generate just an empty migration file, not the operations.
-            - parent: str
-                parent revision of this new revision.
+            - start: str:
+                From this revision (including it.)
+            - end: str
+                To this revision (including it.)
 
         """
-        revision_context = autogenerate.RevisionContext(
-            self.config,
-            self.script_directory,
-            {
-                "message": message,
-                "sql": False,
-                "head": [parent],
-                "splice": False,
-                "branch_label": None,
-                "version_path": self.script_directory.dir,
-                "rev_id": self.rev_id(),
-                "depends_on": None,
-            },
+        if start == "current":
+            current = self.current()
+            start = current.revision if current else None
+        if end == "current":
+            current = self.current()
+            end = current.revision if current else None
+
+        return list(self.script_directory.walk_revisions(start, end))[::-1]
+
+    def history(
+        self,
+        *,
+        verbose: bool = False,
+        start: Optional[str] = "base",
+        end: Optional[str] = "heads",
+    ) -> None:
+        """Print the list of revisions in chronological order.
+        You can optionally specify the range of revisions to return.
+
+        Arguments:
+            - verbose: bool
+                If `True`, shows also the path and the docstring
+                of each revision file.
+            - start: str:
+                Optional starting revision (including it.)
+            - end: str
+                Optional end revision (including it.)
+
+        """
+        for rev in self._history(start=start, end=end):
+            if verbose:
+                print("-" * 20)
+            print(rev.cmd_format(
+                verbose=verbose,
+                include_doc=True,
+                include_parents=True,
+            ))
+
+    def stamp(
+        self, target: str = "head", *, sql: bool = False, purge: bool = False
+    ) -> None:
+        """Set the given revision in the revision table. Don't run migrations.
+
+        Arguments:
+            - target: str
+                The target revision; "head" by default.
+            - sql: bool
+                Don't emit SQL to the database, dump to the standard
+                output instead.
+            - purge: bool
+                Delete all entries in the version table before stamping.
+
+        """
+
+        def do_stamp(revision, context):
+            return self.script_directory._stamp_revs(target, revision)
+
+        run = self._run_offline if sql else self._run_online
+        run(
+            do_stamp,
+            destination_rev=target,
+            purge=purge,
         )
 
-        def do_revision(revision, context):
-            if empty:
-                revision_context.run_no_autogenerate(revision, context)
-            else:
-                revision_context.run_autogenerate(revision, context)
-            return []
+    def _currents(self) -> List[Revision]:
+        """Get the latest revisions applied."""
+        env = EnvironmentContext(self.config, self.script_directory)
+        with self.db.engine.connect() as connection:
+            env.configure(connection=connection, **self.context)
+            migration_context = env.get_context()
+            current_heads = migration_context.get_current_heads()
 
-        self.run_online(do_revision)
+        return self.script_directory.get_revisions(current_heads)
 
-        result = list(revision_context.generate_scripts())
-        return result[0]
+    def _current(self) -> Optional[Revision]:
+        revisions = self._currents()
+        return revisions[0] if revisions else None
 
-    def rev_id(self) -> str:
+    def current(self, verbose: bool = False) -> None:
+        """Print the latest revision(s) applied.
+
+        Arguments:
+            - verbose: bool
+                If `True`, shows also the path and the docstring
+                of the revision file.
+
+        """
+        rev = self._current()
+        if rev:
+            print(rev.cmd_format(
+                verbose=verbose,
+                include_doc=True,
+                include_parents=True,
+            ))
+
+    def _heads(self) -> List[Revision]:
+        """Get the list of the latest revision."""
+        return self.script_directory.get_revisions("heads")
+
+    def _head(self) -> Optional[Revision]:
+        """Get the latest revision."""
+        heads = self._heads()
+        return heads[0] if heads else None
+
+    def head(self, verbose: bool = False) -> None:
+        """Print the latest revision(s).
+
+        Arguments:
+            - verbose: bool
+                If `True`, shows also the path and the docstring
+                of the revision file.
+
+        """
+        rev = self._head()
+        if rev:
+            print(rev.cmd_format(
+                verbose=verbose,
+                include_doc=True,
+                include_parents=True,
+            ))
+
+    def init(self, script_path: StrPath) -> None:
+        """Creates a new migration folder
+        with a `script.py.mako` template file. It doesn't fail if the
+        folder or file already exists.
+
+        Arguments:
+            - script_path: str|Path
+                Target folder.
+
+        """
+        script_path = Path(script_path)
+        script_path.mkdir(exist_ok=True)
+        src_path = (
+            Path(self.config.get_template_directory()) / "generic" / TEMPLATE_FILE
+        )
+        dest_path = script_path / TEMPLATE_FILE
+        if not dest_path.exists():
+            shutil.copy(src_path, script_path)
+
+    def get_pyceo_cli(self) -> Any:
+        return pyceo_cli.get_cli(self)
+
+    def get_click_cli(self) -> Any:
+        return click_cli.get_cli(self)
+
+    def _get_config(self, options: Dict[str, str]) -> Config:
+        options.setdefault("file_template", DEFAULT_FILE_TEMPLATE)
+        options.setdefault("version_locations", options["script_location"])
+
+        config = Config()
+        for key, value in options.items():
+            config.set_main_option(key, value)
+
+        return config
+
+    def _rev_id(self) -> str:
         """Generate a unique id for a revision.
 
         By default this uses `alembic.util.rev_id`. Override this
@@ -251,7 +359,7 @@ class Alembic(object):
         """
         return util.rev_id()
 
-    def run_online(
+    def _run_online(
         self, fn: Callable, *, kwargs: Optional[Dict] = None, **envargs
     ) -> None:
         """Emit the SQL to the database."""
@@ -267,7 +375,7 @@ class Alembic(object):
             with env.begin_transaction():
                 env.run_migrations(**kwargs)
 
-    def run_offline(
+    def _run_offline(
         self, fn: Callable, *, kwargs: Optional[Dict] = None, **envargs
     ) -> None:
         """Don't emit SQL to the database, dump to standard output instead."""
@@ -282,15 +390,3 @@ class Alembic(object):
         kwargs = kwargs or {}
         with env.begin_transaction():
             env.run_migrations(**kwargs)
-
-    # Private
-
-    def _get_config(self, options: Dict[str, str]) -> Config:
-        options.setdefault("file_template", DEFAULT_FILE_TEMPLATE)
-        options.setdefault("version_locations", options["script_location"])
-
-        config = Config()
-        for key, value in options.items():
-            config.set_main_option(key, value)
-
-        return config

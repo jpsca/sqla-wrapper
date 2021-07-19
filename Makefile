@@ -12,5 +12,5 @@ coverage:
 
 .PHONY: install
 install:
-	pip install -e .[alembic,test,dev]
+	pip install -e .[test,dev]
 	createdb dbtest || true

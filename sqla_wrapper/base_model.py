@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, List
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -8,11 +8,8 @@ from sqlalchemy.exc import IntegrityError
 class BaseModel:
     __abstract__ = True
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
     @classmethod
-    def all(cls, dbs: Session, **attrs):
+    def all(cls, dbs: Session, **attrs) -> List[Any]:
         """Returns all the object found with these attributes."""
         return dbs.execute(select(cls).filter_by(**attrs)).scalars().all()
 

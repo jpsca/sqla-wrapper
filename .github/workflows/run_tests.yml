@@ -42,5 +42,5 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - run: pip install -U pip wheel
-      - run: pip install -e .[alembic,test]
+      - run: pip install -e .[test]
       - run: make test
