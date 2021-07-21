@@ -14,3 +14,4 @@ coverage:
 install:
 	pip install -e .[test,dev]
 	createdb dbtest || true
+	pre-commit install --hook-type pre-push

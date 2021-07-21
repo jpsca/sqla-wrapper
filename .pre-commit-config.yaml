@@ -1,0 +1,13 @@
+exclude: ^(docs/)
+default_stages: [push]
+fail_fast: true
+repos:
+  - repo: local
+    hooks:
+      - id: flake8
+        name: flake8
+        entry: flake8 --config=setup.cfg sqla_wrapper tests
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
