@@ -8,7 +8,7 @@ lint:
 
 .PHONY: coverage
 coverage:
-	pytest --cov-report html --cov sqla_wrapper sqla_wrapper tests
+	pytest --cov-config=.coveragerc --cov-report html --cov sqla_wrapper sqla_wrapper tests
 
 .PHONY: install
 install:

@@ -4,7 +4,7 @@ def get_cli(alembic):
     @click.group()
     def db():
         """Database migrations operations."""
-        pass
+        pass  # pragma: no cover
 
     @db.command()
     @click.argument("message", default=None)

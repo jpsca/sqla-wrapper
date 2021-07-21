@@ -312,6 +312,17 @@ def test_get_pyceo_cli(db, dst):
     alembic.get_pyceo_cli()
 
 
-def test_get_click_cli(db, dst):
+def test_get_click_cli(db, dst, capsys):
     alembic = Alembic(db, script_path=dst, init=True)
-    alembic.get_click_cli()
+    cli = alembic.get_click_cli()
+
+    cli(args=["--help"], prog_name="cli", standalone_mode=False)
+    stdout, _ = capsys.readouterr()
+    assert "  current  " in stdout
+    assert "  downgrade  " in stdout
+    assert "  head  " in stdout
+    assert "  history  " in stdout
+    assert "  init  " in stdout
+    assert "  revision  " in stdout
+    assert "  stamp  " in stdout
+    assert "  upgrade  " in stdout
