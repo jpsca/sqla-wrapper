@@ -1,60 +1,66 @@
-import pytest
+def test_create(dbs, TestModelA):
+    TestModelA.create(dbs, title="Remember")
+    dbs.commit()
+    obj = TestModelA.first(dbs)
+    assert obj.title == "Remember"
 
 
-def get_test_model(db):
-    class Note(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        title = db.Column(db.String(60), nullable=False, unique=True)
-        text = db.Column(db.Text)
+def test_all(dbs, TestModelA):
+    TestModelA.create(dbs, title="Lorem")
+    TestModelA.create(dbs, title="Ipsum")
+    dbs.commit()
 
-    db.create_all()
-    return Note
-
-
-def test_create(db):
-    Note = get_test_model(db)
-    Note.create(title="Remember", text="Write tests.")
-    snote = db.query(Note).first()
-    assert snote.title == "Remember"
-    assert snote.text == "Write tests."
+    obj_list = TestModelA.all(dbs)
+    assert len(obj_list) == 2
 
 
-def test_fist_or_error(db):
-    Note = get_test_model(db)
-    assert Note.first() is None
-    with pytest.raises(ValueError):
-        Note.first_or_error()
+def test_create_or_first_using_create(dbs, TestModelA):
+    obj1 = TestModelA.create_or_first(dbs, title="Lorem Ipsum")
+    assert obj1
+    dbs.commit()
+
+    obj2 = TestModelA.create_or_first(dbs, title="Lorem Ipsum")
+    assert obj1 == obj2
 
 
-def test_save(db):
-    Note = get_test_model(db)
-    note = Note.create(title="Remember", text="Write tests.")
-    note.title = "TO DO"
-    note.save()
-    snote = db.query(Note).first()
-    assert snote.title == "TO DO"
+def test_create_or_first_using_first(dbs, TestModelA):
+    obj1 = TestModelA.create(dbs, title="Lorem Ipsum")
+    assert obj1
+    dbs.commit()
+
+    obj2 = TestModelA.create_or_first(dbs, title="Lorem Ipsum")
+    assert obj1 == obj2
 
 
-def test_exists(db):
-    Note = get_test_model(db)
-    note = Note.create(title="Remember", text="Write tests.")
+def test_first_or_create_using_first(dbs, TestModelA):
+    obj1 = TestModelA.create(dbs, title="Lorem Ipsum")
+    assert obj1
+    dbs.commit()
 
-    assert not Note.exists(title="meh")
-    assert Note.exists(title=note.title)
-
-
-def test_create_or_first(db):
-    Note = get_test_model(db)
-    note1 = Note.create_or_first(title="Lorem Ipsum")
-    note2 = Note.create_or_first(title="Lorem Ipsum")
-
-    assert note1
-    assert note1 == note2
+    obj2 = TestModelA.first_or_create(dbs, title="Lorem Ipsum")
+    assert obj1 == obj2
 
 
-def test_delete(db):
-    Note = get_test_model(db)
-    note = Note.create(title="Remember")
-    assert db.query(Note).first()
-    note.delete()
-    assert db.query(Note).first() is None
+def test_first_or_create_using_create(dbs, TestModelA):
+    assert TestModelA.first_or_create(dbs, id=1, title="Lorem Ipsum")
+    dbs.commit()
+
+    obj = TestModelA.first_or_create(dbs, title="Lorem Ipsum")
+    assert obj and obj.id == 1
+
+
+def test_update(dbs, TestModelA):
+    obj = TestModelA.create(dbs, title="Remember")
+    obj.update(dbs, title="lorem ipsum")
+
+    updated = TestModelA.first(dbs)
+    assert updated.title == "lorem ipsum"
+
+
+def test_delete(dbs, TestModelA):
+    obj = TestModelA.create(dbs, title="Remember")
+    dbs.commit()
+    assert TestModelA.first(dbs)
+    obj.delete(dbs)
+    dbs.commit()
+    assert TestModelA.first(dbs) is None
