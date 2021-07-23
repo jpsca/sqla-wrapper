@@ -2,14 +2,11 @@ import shutil
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Union
 
-try:
-    from alembic import autogenerate, util
-    from alembic.config import Config
-    from alembic.runtime.environment import EnvironmentContext
-    from alembic.script import ScriptDirectory
-    from alembic.script.revision import Revision
-except ImportError:  # pragma: no cover
-    pass
+from alembic import autogenerate, util
+from alembic.config import Config
+from alembic.runtime.environment import EnvironmentContext
+from alembic.script import ScriptDirectory
+from alembic.script.revision import Revision
 
 from .sqlalchemy_wrapper import SQLAlchemy
 from .cli import click_cli, pyceo_cli
