@@ -1,5 +1,6 @@
 import pytest
 from sqlalchemy import *  # noqa
+
 from sqla_wrapper import SQLAlchemy
 
 

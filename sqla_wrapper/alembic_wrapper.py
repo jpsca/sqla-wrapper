@@ -8,8 +8,8 @@ from alembic.runtime.environment import EnvironmentContext
 from alembic.script import ScriptDirectory
 from alembic.script.revision import Revision
 
-from .sqlalchemy_wrapper import SQLAlchemy
 from .cli import click_cli, pyceo_cli
+from .sqlalchemy_wrapper import SQLAlchemy
 
 
 StrPath = Union[str, Path]
@@ -25,16 +25,16 @@ class Alembic(object):
     for more details about the options.
 
     Arguments:
-        - db: SQLAlchemy
-            A `sqla_wrapper.SQLAlchemy` instance.
-        - script_path: str | Path
-            Path to the migrations folder.
-        - mkdir: bool
-            Whether to create the migrations folder, if it doesn't exists.
-        - context: dict | None
-            ...
-        - **options: dict | None
-            Other alembic options
+    - db:
+        A `sqla_wrapper.SQLAlchemy` instance.
+    - script_path:
+        Path to the migrations folder.
+    - mkdir:
+        Whether to create the migrations folder, if it doesn't exists.
+    - context:
+        ...
+    - **options:
+        Other alembic options
 
     """
 
@@ -69,12 +69,12 @@ class Alembic(object):
         Auto-generate operations by comparing models and database.
 
         Arguments:
-            - message: str
-                Revision message.
-            - empty: bool
-                Generate just an empty migration file, not the operations.
-            - parent: str
-                Parent revision of this new revision.
+        - message:
+            Revision message.
+        - empty:
+            Generate just an empty migration file, not the operations.
+        - parent:
+            Parent revision of this new revision.
 
         """
         revision_context = autogenerate.RevisionContext(
@@ -108,16 +108,16 @@ class Alembic(object):
         """Run migrations to upgrade database.
 
         Arguments:
-            - target: str
-                Revision target or "from:to" range if `sql=True`. "head"
-                by default.
-            - sql: bool
-                Don't emit SQL to database, dump to standard output instead.
-            - **kwargs:
-                Optional arguments. If these are passed, they are sent directly
-                to the `upgrade()` functions within each revision file.
-                To use, modify the `script.py.mako`template file
-                so that the `upgrade()` functions can accept arguments.
+        - target:
+            Revision target or "from:to" range if `sql=True`. "head"
+            by default.
+        - sql:
+            Don't emit SQL to database, dump to standard output instead.
+        - **kwargs:
+            Optional arguments. If these are passed, they are sent directly
+            to the `upgrade()` functions within each revision file.
+            To use, modify the `script.py.mako`template file
+            so that the `upgrade()` functions can accept arguments.
 
         """
         starting_rev = None
@@ -143,17 +143,17 @@ class Alembic(object):
         """Run migrations to downgrade database.
 
         Arguments:
-            - target: str
-                Revision target as an integer relative to the current
-                state (e.g.: "-1"), or as a "from:to" range if `sql=True`.
-                "-1" by default.
-            - sql: bool
-                Don't emit SQL to database, dump to standard output instead.
-            - **kwargs:
-                Optional arguments. If these are passed, they are sent directly
-                to the `downgrade()` functions within each revision file.
-                To use, modify the `script.py.mako` template file
-                so that the `downgrade()` functions can accept arguments.
+        - target:
+            Revision target as an integer relative to the current
+            state (e.g.: "-1"), or as a "from:to" range if `sql=True`.
+            "-1" by default.
+        - sql:
+            Don't emit SQL to database, dump to standard output instead.
+        - **kwargs:
+            Optional arguments. If these are passed, they are sent directly
+            to the `downgrade()` functions within each revision file.
+            To use, modify the `script.py.mako` template file
+            so that the `downgrade()` functions can accept arguments.
 
         """
 
@@ -186,10 +186,10 @@ class Alembic(object):
         You can optionally specify the range of revisions to return.
 
         Arguments:
-            - start: str:
-                From this revision (including it.)
-            - end: str
-                To this revision (including it.)
+        - start:
+            From this revision (including it.)
+        - end:
+            To this revision (including it.)
 
         """
         if start == "current":
@@ -212,13 +212,13 @@ class Alembic(object):
         You can optionally specify the range of revisions to return.
 
         Arguments:
-            - verbose: bool
-                If `True`, shows also the path and the docstring
-                of each revision file.
-            - start: str:
-                Optional starting revision (including it.)
-            - end: str
-                Optional end revision (including it.)
+        - verbose:
+            If `True`, shows also the path and the docstring
+            of each revision file.
+        - start:
+            Optional starting revision (including it.)
+        - end:
+            Optional end revision (including it.)
 
         """
         for rev in self._history(start=start, end=end):
@@ -236,13 +236,13 @@ class Alembic(object):
         """Set the given revision in the revision table. Don't run migrations.
 
         Arguments:
-            - target: str
-                The target revision; "head" by default.
-            - sql: bool
-                Don't emit SQL to the database, dump to the standard
-                output instead.
-            - purge: bool
-                Delete all entries in the version table before stamping.
+        - target:
+            The target revision; "head" by default.
+        - sql:
+            Don't emit SQL to the database, dump to the standard
+            output instead.
+        - purge:
+            Delete all entries in the version table before stamping.
 
         """
 
@@ -274,9 +274,9 @@ class Alembic(object):
         """Print the latest revision(s) applied.
 
         Arguments:
-            - verbose: bool
-                If `True`, shows also the path and the docstring
-                of the revision file.
+        - verbose:
+            If `True`, shows also the path and the docstring
+            of the revision file.
 
         """
         rev = self._current()
@@ -300,9 +300,9 @@ class Alembic(object):
         """Print the latest revision(s).
 
         Arguments:
-            - verbose: bool
-                If `True`, shows also the path and the docstring
-                of the revision file.
+        - verbose:
+            If `True`, shows also the path and the docstring
+            of the revision file.
 
         """
         rev = self._head()
@@ -319,8 +319,8 @@ class Alembic(object):
         folder or file already exists.
 
         Arguments:
-            - script_path: str|Path
-                Target folder.
+        - script_path:
+            Target folder.
 
         """
         script_path = Path(script_path)

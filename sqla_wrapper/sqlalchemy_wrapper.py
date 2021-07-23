@@ -95,23 +95,23 @@ class SQLAlchemy:
         self.registry = registry()
         self.Model = self.registry.generate_base(cls=BaseModel, name="Model")
 
-    def create_all(self, **kw) -> None:
+    def create_all(self, **kwargs) -> None:
         """Creates all tables.
 
         Only tables that do not already exist are created. Existing tables are
         not modified.
         """
-        kw.setdefault("bind", self.engine)
-        self.registry.metadata.create_all(**kw)
+        kwargs.setdefault("bind", self.engine)
+        self.registry.metadata.create_all(**kwargs)
 
-    def drop_all(self, **kw) -> None:
+    def drop_all(self, **kwargs) -> None:
         """Drop all the database tables.
 
         Note that this is a destructive operation; data stored in the
         database will be deleted when this method is called.
         """
-        kw.setdefault("bind", self.engine)
-        self.registry.metadata.drop_all(**kw)
+        kwargs.setdefault("bind", self.engine)
+        self.registry.metadata.drop_all(**kwargs)
 
     def test_transaction(self, savepoint: bool = False) -> TestTransaction:
         return TestTransaction(self, savepoint=savepoint)

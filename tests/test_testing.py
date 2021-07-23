@@ -1,4 +1,4 @@
-from sqlalchemy import select, func
+from sqlalchemy import func, select
 
 
 def test_independence_1(dbs, TestModelB):

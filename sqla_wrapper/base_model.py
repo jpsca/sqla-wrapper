@@ -1,8 +1,8 @@
 from typing import Any, List
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
 
 class BaseModel:
