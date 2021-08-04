@@ -1,0 +1,73 @@
+site_name: SQLA-Wrapper Docs
+site_url: https://sqlawrapper.jpscaletti.com
+repo_url: https://github.com/jpsca/sqla-wrapper
+repo_name: jpsca/sqla-wrapper
+copyright: Copyright &copy; 2013 - 2021 Juan-Pablo Scaletti
+
+nav:
+  - SQLA-Wrapper: index.md
+  - SQLAlchemy wrapper: sqla.md
+  - Model helpers: sqla-model-helpers.md
+  - Testing with a real database: sqla-testing.md
+  - Alembic wrapper: alembic.md
+  - Alembic integrations: alembic-cli.md
+  - sa module: sa.md
+
+theme:
+  name: material
+  language: en
+  custom_dir: overrides
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highligh
+  icon:
+    repo: material/github
+  palette:
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: red
+    accent: pink
+    toggle:
+      icon: material/toggle-switch-off-outline
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: red
+    accent: pink
+    toggle:
+      icon: material/toggle-switch
+      name: Switch to light mode
+
+extra_css:
+  - css/highlight.css
+  # - css/termynal.css
+  - css/common.css
+extra_javascript:
+  # - js/termynal.js
+edit_uri: ""
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - smarty
+  - tables
+  - toc:
+      permalink: "#"
+      toc_depth: 4
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.tasklist
+  - pymdownx.tilde

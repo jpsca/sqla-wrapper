@@ -15,7 +15,7 @@ class BaseModel:
 
     @classmethod
     def create(cls, dbs: Session, **attrs) -> Any:
-        """Create and commits a new record for the model."""
+        """Creates a new object and adds it to the session."""
         obj = cls(**attrs)
         dbs.add(obj)
         dbs.flush()
@@ -28,9 +28,8 @@ class BaseModel:
 
     @classmethod
     def first_or_create(cls, dbs: Session, **attrs) -> Any:
-        """Tries to find a record, and if none exists
-        it tries to creates a new one.
-        """
+        """Tries to find an object, and if none exists
+        it tries to creates a new one."""
         obj = cls.first(dbs, **attrs)
         if obj:
             return obj
@@ -38,9 +37,8 @@ class BaseModel:
 
     @classmethod
     def create_or_first(cls, dbs: Session, **attrs) -> Any:
-        """Tries to create a new record, and if it fails
-        because already exists, return the first it founds.
-        """
+        """Tries to create a new object, and if it fails
+        because already exists, return the first it founds."""
         try:
             return cls.create(dbs, **attrs)
         except IntegrityError:
@@ -48,14 +46,13 @@ class BaseModel:
         return cls.first(dbs, **attrs)
 
     def update(self, dbs, **attrs) -> Any:
-        """Updates the record with the contents of the attrs dict
-        and flushs."""
+        """Updates the object with the values of the attrs dict."""
         for name in attrs:
             setattr(self, name, attrs[name])
         dbs.flush()
         return self
 
     def delete(self, dbs) -> None:
-        """Removes the object from the current session and flushs."""
+        """Removes the object from the current session."""
         dbs.delete(self)
         dbs.flush()
