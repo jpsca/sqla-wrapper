@@ -1,6 +1,5 @@
 ---
 template: home.html
-title: SQLA-Wrapper
 ---
 
 SQLA-Wrapper is a wrapper for SQLAlchemy and Alembic that simplifies many aspects of its setup.

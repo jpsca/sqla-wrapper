@@ -1,5 +1,7 @@
 site_name: SQLA Wrapper
-site_url: https://sqlawrapper.jpscaletti.com
+site_description: A friendly wrapper for modern SQLAlchemy and Alembic
+# site_url: https://sqlawrapper.jpscaletti.com
+site_url: https://jpsca.github.io/sqla-wrapper
 repo_url: https://github.com/jpsca/sqla-wrapper
 repo_name: jpsca/sqla-wrapper
 copyright: Copyright &copy; 2013 - 2021 Juan-Pablo Scaletti
