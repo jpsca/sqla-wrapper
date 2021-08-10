@@ -8,14 +8,14 @@ It works with the [newer 2.0 style query API introduced in SQLAlchemy 1.4](https
 
 ## Includes
 
-- A [`SQLAlchemy` wrapper](/sqlalchemy-wrapper), that does all the SQLAlchemy setup and gives you:
+- A [`SQLAlchemy` wrapper](sqlalchemy-wrapper), that does all the SQLAlchemy setup and gives you:
     - A preconfigured scoped session.
     - A model baseclass including some helper methods.
     - A helper for performant testing with a real database
 
-- An [`Alembic` wrapper](/alembic-wrapper) that loads the config from your application instead of from a separated ini file.
+- An [`Alembic` wrapper](alembic-wrapper) that loads the config from your application instead of from a separated ini file.
 
-- A [`sa` shortcut module](/sa-shortcut-module), that imports all the functions and classes from `sqlalchemy`and `sqlalchemy.orm`,
+- A [`sa` shortcut module](sa-shortcut-module), that imports all the functions and classes from `sqlalchemy`and `sqlalchemy.orm`,
 so you don't need to repeat those imports everywhere.
 
 
