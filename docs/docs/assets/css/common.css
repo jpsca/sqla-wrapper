@@ -1,0 +1,15 @@
+body[data-md-color-scheme="default"] {
+    background-color: #eee;
+}
+.md-header {
+    position: initial;
+    background: var(--md-primary-fg-color);
+    background: linear-gradient(
+        125deg,
+        var(--md-primary-fg-color) 0%,
+        var(--md-accent-fg-color) 99%
+    );
+}
+.md-typeset code {
+    font-size: 0.95em;
+}

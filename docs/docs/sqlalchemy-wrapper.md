@@ -1,10 +1,6 @@
-# SQLAlchemy wrapper
+# SQLAlchemy wrapper class
 
-
-
-## SQLAlchemy class
-
-Compared to plain SQLAlchemy, the `SQLAlchemy` class gives you access to the following things:
+Compared to plain SQLAlchemy, the `SQLAlchemy` wrapper class gives you access to the following things:
 
 - `db.engine`: An engine created with the `future=True` argument
 - `db.session`: A preconfigured scoped session
@@ -12,9 +8,11 @@ Compared to plain SQLAlchemy, the `SQLAlchemy` class gives you access to the fol
 - `db.registry`: A registry instance
 - `db.create_all()` and `db.drop_all()` methods to create and drop tables according to the models.
 
-## Using it in a web application
+## Web applications
 
-In a web application or a multithreaded environment you need to call `db.session.remove()` when a request/thread ends. Use your framework's `on_teardown` hook (whatever the name), to do that. For example, in `Flask`:
+In a web application or a multithreaded environment you need to call `db.session.remove()` when a request/thread ends.
+
+Use your framework's `on_teardown` hook (whatever the name), to do that. For example, in `Flask`:
 
 ```python
 @app.teardown_appcontext

@@ -44,7 +44,7 @@ dbs = db.session
 
 ## Helpers
 
-### Model.all(dbs, **attrs)
+### `Model.all(dbs, **attrs)`
 
 Returns all the object found with these attributes.
 The filtering is done with a simple `.filter_by()` so is limited to the columns of the model.
@@ -57,7 +57,7 @@ users = User.all(dbs, deleted=False)
 users = User.all(dbs, account_id=123, deleted=False)
 ```
 
-### Model.create(dbs, **attrs)
+### `Model.create(dbs, **attrs)`
 
 Creates a new object and adds it to the session. This is a shortcut for:
 
@@ -75,7 +75,7 @@ Examples:
 User.create(n)
 ```
 
-### Model.first(dbs, **attrs)
+### `Model.first(dbs, **attrs)`
 
 Returns the first object found with these attributes.
 
@@ -84,7 +84,7 @@ Examples:
 ```python
 ```
 
-### Model.first_or_create(dbs, **attrs)
+### `Model.first_or_create(dbs, **attrs)`
 
 Tries to find an object, and if none exists, it tries to creates a new one.
 
@@ -93,7 +93,7 @@ Examples:
 ```python
 ```
 
-### Model.create_or_first(dbs, **attrs)
+### `Model.create_or_first(dbs, **attrs)`
 
 Tries to create a new object, and if it fails because already exists, return the first it founds.
 
@@ -102,7 +102,7 @@ Examples:
 ```python
 ```
 
-### obj.update(dbs, **attrs)
+### `obj.update(dbs, **attrs)`
 
 Updates the object with the values of the attrs dict.
 
@@ -111,7 +111,7 @@ Examples:
 ```python
 ```
 
-### obj.delete(dbs)
+### `obj.delete(dbs)`
 
 Removes the object from the current session.
 

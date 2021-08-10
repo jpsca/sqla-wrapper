@@ -1,0 +1,111 @@
+{% extends "main.html" %}
+
+{% block extrahead %}
+{{ super() }}
+<style>
+	[data-md-color-scheme="default"] {
+		--md-primary-fg-color: #fff !important;
+		--md-primary-fg-color--light: hsla(0,0%,100%,0.7) !important;
+		--md-primary-fg-color--dark: rgba(0,0,0,0.07) !important;
+		--md-primary-bg-color: rgba(0,0,0,0.87) !important;
+		--md-primary-bg-color--light: rgba(0,0,0,0.54) !important;
+		--md-typeset-a-color: #ef5552 !important;
+	}
+ 	.md-header {
+		background: none !important;
+		box-shadow: none !important;
+	}
+	.md-header__title,
+	.md-sidebar--secondary {
+		visibility: hidden;
+	}
+	.md-logo img {
+		filter: grayscale(1);
+		opacity: 0.6;
+	}
+	.md-main h1 {
+		display: none !important;
+	}
+	.md-main {
+		margin-top: -40px;
+	}
+
+	.hero__content {
+		align-items: center;
+		justify-content: center;
+		display: flex;
+		padding: 20px 10px;
+	}
+	@media screen and (max-width: 40em) {
+		.hero__content {
+			flex-direction: column;
+		}
+		.hero__image {
+			width: 150px;
+		}
+	}
+	.hero__text {
+		text-align: left;
+		margin-left: 20px;
+	}
+	@media screen and (max-width: 40em) {
+		.hero__text {
+			margin-left: 0;
+			margin-top: 10px;
+			text-align: center;
+		}
+	}
+	.hero h1 {
+		color: currentColor;
+		font-weight: 700;
+		font-size: 60px;
+		line-height: 1;
+		margin: 0 0 0.1em;
+		font-family: 'Convergence', sans-serif;
+	}
+	@media screen and (max-width: 59em) {
+		.hero h1 {
+			font-size: 54px;
+		}
+	}
+	@media screen and (max-width: 40em) {
+		.hero h1 {
+			font-size: 48px;
+			margin-bottom: 0.3em;
+		}
+	}
+	.hero h2 {
+		font-weight: 400;
+		font-size: 2em;
+		line-height: 1.4;
+		margin: 0 0 0.2em;
+	}
+	.hero a {
+		font-weight: bold;
+	}
+	.hero a:hover {
+		text-decoration: underline;
+	}
+</style>
+{% endblock %}
+
+{% block tabs %}
+{{ super() }}
+<div class="hero">
+	<div class="md-grid">
+		<section class="hero__content">
+			<img class="hero__image" src="assets/img/logo.svg">
+			<div class="hero__text">
+				<h1>SQLA-Wrapper</h1>
+				<h2>
+					A friendly wrapper for
+					<a href="https://docs.sqlalchemy.org/en/14/glossary.html#term-2.0-style"
+						>modern SQLAlchemy</a
+					>
+					and&nbsp;<a href="https://alembic.sqlalchemy.org/en/latest/">Alembic.</a>
+				</h2>
+			</div>
+		</section>
+	</div>
+</div>
+{% endblock %}

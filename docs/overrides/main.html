@@ -1,1 +1,6 @@
 {% extends "base.html" %}
+
+{% block extrahead %}
+{{ super() }}
+<meta property="og:image" content="{{ 'assets/img/social.png' | url }}">
+{% endblock %}

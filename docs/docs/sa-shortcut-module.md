@@ -1,4 +1,4 @@
-# sa module
+# `sa` shortcut module
 
 This library includes a `sa` module from which you can import any of the functions or classes from `sqlalchemy` and `sqlalchemy.orm`. It is an optional helper if you prefer not having a "star import" (`from sqlalchemy import *`) in your code.
 

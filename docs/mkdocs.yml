@@ -1,24 +1,30 @@
-site_name: SQLA-Wrapper Docs
+site_name: SQLA Wrapper
 site_url: https://sqlawrapper.jpscaletti.com
 repo_url: https://github.com/jpsca/sqla-wrapper
 repo_name: jpsca/sqla-wrapper
 copyright: Copyright &copy; 2013 - 2021 Juan-Pablo Scaletti
 
 nav:
-  - SQLA-Wrapper: index.md
-  - SQLAlchemy wrapper: sqla.md
-  - Model helpers: sqla-model-helpers.md
-  - Testing with a real database: sqla-testing.md
-  - Alembic wrapper: alembic.md
-  - Alembic integrations: alembic-cli.md
-  - sa module: sa.md
+  - Home: index.md
+  - sqlalchemy-wrapper.md
+  - model-helpers.md
+  - testing-with-a-real-database.md
+  - alembic-wrapper.md
+  - alembic-cli-integrations.md
+  - sa-shortcut-module.md
 
 theme:
   name: material
-  language: en
+  logo: assets/img/logo.svg
+  favicon: assets/img/favicon.svg
+  font:
+    text: Convergence
+    code: Roboto Mono
   custom_dir: overrides
+  language: en
   features:
-    - navigation.sections
+    - navigation.indexes
+    - navigation.tracking
     - navigation.top
     - search.suggest
     - search.highligh
@@ -41,11 +47,11 @@ theme:
       name: Switch to light mode
 
 extra_css:
-  - css/highlight.css
-  # - css/termynal.css
-  - css/common.css
+  - assets/css/highlight.css
+  # - assets/css/termynal.css
+  - assets/css/common.css
 extra_javascript:
-  # - js/termynal.js
+  # - assets/js/termynal.js
 edit_uri: ""
 plugins:
   - search
