@@ -5,46 +5,37 @@ The `db.Model` baseclass is a configured with a few ActiveRecord-like utility me
 ```python
 class Model:
     @classmethod
-    def all(cls, dbs, **attrs):
+    def all(cls, **attrs):
         """Returns all the object found with these attributes."""
 
     @classmethod
-    def create(cls, dbs, **attrs):
+    def create(cls, **attrs):
         """Creates a new object and adds it to the session."""
 
     @classmethod
-    def first(cls, dbs, **attrs):
+    def first(cls, **attrs):
         """Returns the first object found with these attributes."""
 
     @classmethod
-    def first_or_create(cls, dbs, **attrs):
+    def first_or_create(cls, **attrs):
         """Tries to find an object, and if none exists,
         it tries to creates a new one."""
 
     @classmethod
-    def create_or_first(cls, dbs, **attrs):
+    def create_or_first(cls, **attrs):
         """Tries to create a new object, and if it fails
         because already exists, return the first it founds."""
 
-    def update(self, dbs, **attrs):
+    def update(self, **attrs):
         """Updates the object with the values of the attrs dict."""
 
     def delete(self, dbs):
         """Removes the object from the current session."""
 ```
 
-Note that the first argument for each of these methods is your database session from `sqla_wrapper.SQLAlchemy().session`:
-
-```python hl_lines="4"
-from sqla_wrapper import SQLAlchemy
-
-db = SQLAlchemy(DB_URL)
-dbs = db.session
-```
-
 ## Helpers
 
-### `Model.all(dbs, **attrs)`
+### `Model.all(**attrs)`
 
 Returns all the object found with these attributes.
 The filtering is done with a simple `.filter_by()` so is limited to the columns of the model.
@@ -53,11 +44,11 @@ Examples:
 
 ```python
 users = User.all(dbs)
-users = User.all(dbs, deleted=False)
-users = User.all(dbs, account_id=123, deleted=False)
+users = User.all(deleted=False)
+users = User.all(account_id=123, deleted=False)
 ```
 
-### `Model.create(dbs, **attrs)`
+### `Model.create(**attrs)`
 
 Creates a new object and adds it to the session. This is a shortcut for:
 
@@ -75,7 +66,7 @@ Examples:
 User.create(n)
 ```
 
-### `Model.first(dbs, **attrs)`
+### `Model.first(**attrs)`
 
 Returns the first object found with these attributes.
 
@@ -84,7 +75,7 @@ Examples:
 ```python
 ```
 
-### `Model.first_or_create(dbs, **attrs)`
+### `Model.first_or_create(**attrs)`
 
 Tries to find an object, and if none exists, it tries to creates a new one.
 
@@ -93,7 +84,7 @@ Examples:
 ```python
 ```
 
-### `Model.create_or_first(dbs, **attrs)`
+### `Model.create_or_first(**attrs)`
 
 Tries to create a new object, and if it fails because already exists, return the first it founds.
 
@@ -102,7 +93,7 @@ Examples:
 ```python
 ```
 
-### `obj.update(dbs, **attrs)`
+### `obj.update(**attrs)`
 
 Updates the object with the values of the attrs dict.
 

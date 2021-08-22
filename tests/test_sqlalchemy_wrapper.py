@@ -4,8 +4,8 @@ from sqlalchemy import *  # noqa
 from sqla_wrapper import SQLAlchemy
 
 
-def test_repr(db):
-    assert db.url in str(db)
+def test_repr(memdb):
+    assert memdb.url in str(memdb)
 
 
 def test_setup_with_params_full():
@@ -59,20 +59,20 @@ def test_setup_with_driver_options():
     assert db.url == f"sqlite+pysqlite:///{name}"
 
 
-def test_drop_all(db):
-    class ToDo(db.Model):
+def test_drop_all(memdb):
+    class ToDo(memdb.Model):
         __tablename__ = "todos"
         id = Column(Integer, primary_key=True)
 
-    db.create_all()
-    db.drop_all()
+    memdb.create_all()
+    memdb.drop_all()
 
     with pytest.raises(Exception):
-        db.session.execute(select(ToDo)).all()
+        memdb.session.execute(select(ToDo)).all()
 
 
-def test_single_table_inhertance(db):
-    class Person(db.Model):
+def test_single_table_inhertance(memdb):
+    class Person(memdb.Model):
         __tablename__ = "persons"
         id = Column(Integer, primary_key=True)
         type = Column(String(50))
@@ -89,4 +89,12 @@ def test_single_table_inhertance(db):
         manager_name = Column(String(30))
         __mapper_args__ = {"polymorphic_identity": "manager"}
 
-    db.create_all()
+    memdb.create_all()
+
+    with memdb.Session() as dbs:
+        dbs.create(Engineer, engineer_name="Bob")
+        dbs.commit()
+
+        obj = dbs.first(Engineer)
+        assert obj.engineer_name == "Bob"
+        assert obj.type == "engineer"

@@ -76,7 +76,7 @@ connection = db.engine.connect()
 trans = connection.begin()
 
 # 2. Bind a new session to this connection
-session = db.session_factory(bind=connection)
+session = db.Session(bind=connection)
 
 # 3. If your database supports it, start a savepoint to allow rollbacks within a test
 nested = connection.begin_nested()

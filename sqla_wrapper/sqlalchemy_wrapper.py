@@ -1,9 +1,10 @@
-from typing import Any, Dict, Optional
+from typing import Any, Callable, Dict, Optional
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import registry, scoped_session, sessionmaker
+import sqlalchemy
+import sqlalchemy.orm
 
-from .base_model import BaseModel
+from .base_model_class import BaseModel
+from .session_class import Session
 from .ttransaction import TestTransaction
 
 
@@ -43,22 +44,6 @@ class SQLAlchemy:
 
     ```
 
-    **IMPORTANT**
-
-    In a web application or a multithreaded environment you need to call
-    ``session.remove()`` when a request/thread ends. Use your framework's
-    ``after_request`` hook, to do that. For example:
-
-    ```python
-    app = Flask(…)
-    db = SQLAlchemy(…)
-
-    @app.teardown_appcontext
-    def shutdown(response=None):
-        db.session.remove()
-        return response
-    ```
-
     """
 
     def __init__(
@@ -84,16 +69,19 @@ class SQLAlchemy:
         )
         engine_options = engine_options or {}
         engine_options.setdefault("future", True)
-        self.engine = create_engine(self.url, **engine_options)
+        self.engine = sqlalchemy.create_engine(self.url, **engine_options)
+
+        self.registry = sqlalchemy.orm.registry()
+        self.Model = self.registry.generate_base(cls=BaseModel, name="Model")
 
         session_options = session_options or {}
+        session_options.setdefault("class_", Session)
         session_options.setdefault("bind", self.engine)
         session_options.setdefault("future", True)
-        self.session_factory = sessionmaker(**session_options)
-        self.session = scoped_session(self.session_factory)
+        self.session_class = session_options["class_"]
+        self.Session = sqlalchemy.orm.sessionmaker(**session_options)
 
-        self.registry = registry()
-        self.Model = self.registry.generate_base(cls=BaseModel, name="Model")
+        self._include_sqlalchemy()
 
     def create_all(self, **kwargs) -> None:
         """Creates all tables.
@@ -115,6 +103,21 @@ class SQLAlchemy:
 
     def test_transaction(self, savepoint: bool = False) -> TestTransaction:
         return TestTransaction(self, savepoint=savepoint)
+
+    def _include_sqlalchemy(self):
+        skip = (
+            "create_engine",
+            "create_session",
+            "declarative_base",
+            "scoped_session",
+            "sessionmaker",
+        )
+        for module in sqlalchemy, sqlalchemy.orm:
+            for key in module.__all__:
+                if key in skip or hasattr(self, key):
+                    continue
+                setattr(self, key, getattr(module, key))
+        self.event = sqlalchemy.event
 
     def _make_url(
         self,

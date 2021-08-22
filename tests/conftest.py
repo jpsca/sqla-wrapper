@@ -1,22 +1,19 @@
 import shutil
 from pathlib import Path
 from tempfile import mkdtemp
-from typing import Any, Optional
 
 import pytest
 
 from sqla_wrapper import SQLAlchemy
-from sqlalchemy import Column, Integer, String, event, text
-from sqlalchemy.orm import Session
 
 
 @pytest.fixture()
-def db() -> SQLAlchemy:
+def memdb() -> SQLAlchemy:
     return SQLAlchemy("sqlite://")
 
 
 @pytest.fixture()
-def dst() -> Optional[Path]:
+def dst():
     """Return a real temporary folder path which is unique to each test
     function invocation. This folder is deleted after the test has finished.
     """
@@ -27,22 +24,21 @@ def dst() -> Optional[Path]:
 
 
 @pytest.fixture(scope="session")
-def _db() -> SQLAlchemy:
-    db = SQLAlchemy(
+def db() -> SQLAlchemy:
+    return SQLAlchemy(
         dialect="postgresql",
         user="postgres",
         password="postgres",
         name="dbtest",
     )
-    return db
 
 
 @pytest.fixture(scope="session")
-def TestModelA(_db: SQLAlchemy) -> Any:
-    class TestModelA(_db.Model):
+def TestModelA(db):
+    class TestModelA(db.Model):
         __tablename__ = "test_model_a"
-        id = Column(Integer, primary_key=True)
-        title = Column(String(50), nullable=False, unique=True)
+        id = db.Column(db.Integer, primary_key=True)
+        title = db.Column(db.String(50), nullable=False, unique=True)
 
         def __repr__(self):
             return f"<TestModelA #{self.id} title='{self.title}'>"
@@ -51,11 +47,11 @@ def TestModelA(_db: SQLAlchemy) -> Any:
 
 
 @pytest.fixture(scope="session")
-def TestModelB(_db: SQLAlchemy) -> Any:
-    class TestModelB(_db.Model):
+def TestModelB(db):
+    class TestModelB(db.Model):
         __tablename__ = "test_model_b"
-        id = Column(Integer, primary_key=True)
-        title = Column(String(50), nullable=False, unique=True)
+        id = db.Column(db.Integer, primary_key=True)
+        title = db.Column(db.String(50), nullable=False, unique=True)
 
         def __repr__(self):
             return f"<TestModelB #{self.id} title='{self.title}'>"
@@ -64,16 +60,18 @@ def TestModelB(_db: SQLAlchemy) -> Any:
 
 
 @pytest.fixture(scope="session")
-def _dbsetup(_db: SQLAlchemy, TestModelA: Any, TestModelB: Any) -> None:
-    _db.create_all()
-    TestModelB.create(_db.session, title="first")
-    _db.session.commit()
+def dbsetup(db, TestModelA, TestModelB):
+    db.drop_all()
+    db.create_all()
+    with db.Session() as dbs:
+        dbs.create(TestModelB, title="first")
+        dbs.commit()
     yield
-    _db.drop_all()
+    db.drop_all()
 
 
 @pytest.fixture()
-def dbs(_db: SQLAlchemy, _dbsetup: None) -> Session:
-    tt = _db.test_transaction(savepoint=True)
+def dbs(db, dbsetup):
+    tt = db.test_transaction(savepoint=True)
     yield tt.session
     tt.close()

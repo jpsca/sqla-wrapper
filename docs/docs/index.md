@@ -53,7 +53,7 @@ dbs.commit()
 users = dbs.execute(
     select(User).where(deleted == None)
 ).scalars().all()
-# Or: users = User.all(dbs)
+# Or: users = User.all()
 
 print(users)
 ```

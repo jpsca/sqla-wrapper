@@ -9,7 +9,7 @@ class TestTransaction:
     def __init__(self, db, savepoint=False):
         self.connection = db.engine.connect()
         self.trans = self.connection.begin()
-        self.session = db.session_factory(bind=self.connection)
+        self.session = db.Session(bind=self.connection)
 
         if savepoint:  # pragma: no branch
             # if the database supports SAVEPOINT (SQLite needs a

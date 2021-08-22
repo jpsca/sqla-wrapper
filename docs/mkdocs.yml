@@ -13,7 +13,6 @@ nav:
   - testing-with-a-real-database.md
   - alembic-wrapper.md
   - alembic-cli-integrations.md
-  - sa-shortcut-module.md
 
 theme:
   name: material
