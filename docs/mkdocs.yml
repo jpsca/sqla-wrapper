@@ -9,7 +9,7 @@ copyright: Copyright &copy; 2013 - 2021 Juan-Pablo Scaletti
 nav:
   - Home: index.md
   - sqlalchemy-wrapper.md
-  - model-helpers.md
+  - the-session.md
   - testing-with-a-real-database.md
   - alembic-wrapper.md
   - alembic-cli-integrations.md

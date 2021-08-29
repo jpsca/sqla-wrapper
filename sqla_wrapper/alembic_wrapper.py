@@ -41,8 +41,8 @@ class Alembic(object):
     def __init__(
         self,
         db: SQLAlchemy,
-        *,
         script_path: StrPath = "db/migrations",
+        *,
         init: bool = True,
         context: Optional[Dict[str, Any]] = None,
         **options,

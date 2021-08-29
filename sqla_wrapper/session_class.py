@@ -1,8 +1,8 @@
 from typing import Any, List
 
+import sqlalchemy.orm
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
-import sqlalchemy.orm
 
 
 class Session(sqlalchemy.orm.Session):
