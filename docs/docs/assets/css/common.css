@@ -1,5 +1,9 @@
+[data-md-color-scheme="default"] {
+    --md-code-bg-color: #fff;
+}
+
 body[data-md-color-scheme="default"] {
-    background-color: #eee;
+    background-color: #fbf7f0;
 }
 .md-header {
     position: initial;
