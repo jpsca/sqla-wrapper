@@ -332,6 +332,13 @@ class Alembic(object):
         if not dest_path.exists():
             shutil.copy(src_path, script_path)
 
+    def create_all(self) -> None:
+        """Create all the tables from the current models
+        and stamp the latest revision without running any migration.
+        """
+        self.db.create_all()
+        self.stamp()
+
     def get_pyceo_cli(self) -> Any:
         return pyceo_cli.get_cli(self)
 

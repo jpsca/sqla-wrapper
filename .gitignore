@@ -29,6 +29,6 @@ MANIFEST
 parts/
 pip-wheel-metadata
 sdist/
-site/*
+docs/site/*
 var/
 wheels/

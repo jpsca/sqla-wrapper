@@ -15,5 +15,6 @@ def get_cli(alembic):
             "head": alembic.head,
             "current": alembic.current,
             "init": alembic.init,
+            "create_all": alembic.create_all,
         },
     )

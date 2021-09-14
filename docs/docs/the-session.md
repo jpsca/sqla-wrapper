@@ -3,8 +3,7 @@
 
 ## Extensions
 
-An `db.Session` is a configured with a few ActiveRecord-like extensions:
-
+A `db.Session` is a configured with a few ActiveRecord-like extensions:
 
 ### `Session.all(**attrs)`
 

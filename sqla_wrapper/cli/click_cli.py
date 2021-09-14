@@ -103,4 +103,11 @@ def get_cli(alembic):
         """
         alembic.init(path)
 
+    @db.command()
+    def create_all():
+        """Create all the tables from the current models
+        and stamp the latest revision without running any migration.
+        """
+        alembic.create_all()
+
     return db
