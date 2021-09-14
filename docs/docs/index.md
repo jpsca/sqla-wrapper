@@ -9,52 +9,27 @@ It works with the [newer 2.0 style query API introduced in SQLAlchemy 1.4](https
 
 ## Includes
 
-- A [`SQLAlchemy` wrapper](sqlalchemy-wrapper), that does all the SQLAlchemy setup and gives you:
-    - A session class to instance, extended with some useful active-record-like methods
+- A [SQLAlchemy wrapper](sqlalchemy-wrapper), that does all the SQLAlchemy setup and gives you:
+    - A session class to instance and a scoped_session, both extended with some useful active-record-like methods.
     - A declarative base class
     - A helper for performant testing with a real database
 
-- An [`Alembic` wrapper](alembic-wrapper) that loads the config from your application instead of from a separated ini file.
+    ```python
+    from sqla_wrapper import SQLAlchemy
 
+    db = SQLAlchemy("sqlite:///db.sqlite", **options)
+    # You can also use separated host, name, etc.
+    # db = SQLAlchemy(user=…, password=…, host=…, port=…, name=…)
+    ```
 
-## Example
+- An [Alembic wrapper](alembic-wrapper) that loads the config from your application instead of from separated `alembic.ini` and `env.py` files.
 
-The next example creates a SQLite database and an `Alembic` object for migrations. Then, declares a `users` table, inserts an user, and finally prints the users to the console.
+    ```python
+    from sqla_wrapper import Alembic, SQLAlchemy
 
-```python
-from sqlalchemy import *
-from sqla_wrapper import Alembic, SQLAlchemy
-
-db = SQLAlchemy("sqlite:///db.sqlite")
-# You can also use separated host, name, etc.
-# db = SQLAlchemy(user=…, password=…, host=…, port=…, name=…)
-
-alembic = Alembic(db, "db/migrations")
-
-
-class Base(db.Model):
-    pass
-
-class User(Base):
-    __tablename__ = "users"
-    id = sa.Column(Integer, primary_key=True)
-    login = Column(String(80), unique=True)
-    password = Column(String(80))
-    deleted = Column(DateTime)
-
-db.create_all()
-
-with db.Session() as dbs:
-    dbs.add(User(login="scott", password="tiger"))
-    dbs.commit()
-
-    users = dbs.execute(
-        select(User).where(deleted == None)
-    ).scalars().all()
-    # Or: users = User.all()
-
-    print(users)
-```
+    db = SQLAlchemy(…)
+    alembic = Alembic(db, "db/migrations")
+    ```
 
 ## Installation
 

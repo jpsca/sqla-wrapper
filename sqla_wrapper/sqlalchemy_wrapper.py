@@ -2,6 +2,7 @@ from typing import Any, Dict, Optional
 
 import sqlalchemy
 import sqlalchemy.orm
+from sqlalchemy.orm import scoped_session
 
 from .base_model_class import BaseModel
 from .session_class import Session
@@ -80,6 +81,7 @@ class SQLAlchemy:
         session_options.setdefault("future", True)
         self.session_class = session_options["class_"]
         self.Session = sqlalchemy.orm.sessionmaker(**session_options)
+        self.scoped_session = scoped_session(self.Session)()
 
         self._include_sqlalchemy()
 
