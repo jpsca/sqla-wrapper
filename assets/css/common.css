@@ -1,0 +1,28 @@
+[data-md-color-scheme="default"] {
+    --md-code-bg-color: #fff;
+}
+
+body[data-md-color-scheme="default"] {
+    background-color: #fbf7f0;
+}
+.md-header {
+    position: initial;
+    background: var(--md-primary-fg-color);
+    background: linear-gradient(
+        125deg,
+        var(--md-primary-fg-color) 0%,
+        var(--md-accent-fg-color) 99%
+    );
+}
+.md-typeset code {
+    font-size: 0.95em;
+}
+.md-nav__title .md-nav__button.md-logo img,
+.md-nav__title .md-nav__button.md-logo svg,
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+    height: auto !important;
+}
+.md-footer {
+    margin-top: 40px;
+}
