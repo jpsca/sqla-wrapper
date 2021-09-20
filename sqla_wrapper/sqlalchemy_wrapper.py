@@ -81,7 +81,7 @@ class SQLAlchemy:
         session_options.setdefault("future", True)
         self.session_class = session_options["class_"]
         self.Session = sqlalchemy.orm.sessionmaker(**session_options)
-        self.scoped_session = scoped_session(self.Session)()
+        self.s = scoped_session(self.Session)
 
         self._include_sqlalchemy()
 

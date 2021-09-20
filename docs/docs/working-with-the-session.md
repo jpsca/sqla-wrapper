@@ -26,28 +26,28 @@ dbs.close()
 
 Instantiate `db.Session` is the recommended way to work with command-line script or background jobs: create a Session local to each child process, work with that Session through the life of the “job”, and finally tear it down when the job is completed.
 
-## Use the `db.scoped_session`
+## Use the scoped session `db.s`
 
 The "scoped_session" is really a registry that automatically generates a session scoped to the current thread.
 
 This allows separated sections of the application to call upon a global scoped_session, so that those sections may share the same session without the need to pass it explicitly
 
-This is the recommended way to work in a web application, however, you must remember to call `db.scoped_session.remove()` the session at the end of the request.
+This is the recommended way to work in a web application, however, you must remember to call `db.s.remove()` the session at the end of the request.
 
  Use your framework's "on request end" hook, to do that. For example, in Flask:
 
 ```python
 @app.teardown_request
-def shutdown(error=None):
-    db.scoped_session.remove()
+def remove_db_scoped_session(error=None):
+    db.s.remove()
 ```
 
-The `dbs.remove()` method close the current session and dispose it. A new session will be created when `db.scoped_session()` is called again. You can explicitly do it using your framework's "on request start" hook. For example, in Flask:
+The `db.s.remove()` method close the current session and dispose it. A new session will be created when `db.s` is called again. For consitency, you can explicitly do it using your framework's "on request start" hook. For example, in Flask:
 
 ```python
 @app.before_request
-def init_db_session():
-    db.scoped_session()
+def init_db_scoped_session():
+    db.s()
 ```
 
 ## Extensions
