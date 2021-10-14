@@ -30,16 +30,16 @@ With **pytest** this can be done with a session-scoped fixture:
 # conftest.py
 import pytest
 
-from myapp.models import db as _db, alembic, load_fixture_data
+from myapp.models import db, alembic, load_fixture_data
 
 @pytest.fixture(scope="session")
 def dbsetup():
-    assert "_test" in _db.url  # better to be safe than sorry
-    _db.create_all()
+    assert "_test" in db.url  # better to be safe than sorry
+    db.create_all()
     alembic.stamp()  # optional
     load_fixture_data()  # optional
     yield
-    _db.drop_all()
+    db.drop_all()
 
 ```
 
@@ -119,7 +119,7 @@ With **pytest**, we can use a regular fixture and make it *depend* on the `dbset
 # conftest.py
 import pytest
 
-from myapp.models import db as _db, alembic, load_fixture_data
+from myapp.models import db, alembic, load_fixture_data
 
 @pytest.fixture(scope="session")
 def dbsetup():
@@ -127,9 +127,9 @@ def dbsetup():
 
 @pytest.fixture()
 def dbs(dbsetup):
-    trans = _db.test_transaction()
+    trans = db.test_transaction()
     # Or, if you need to rollback in your tests
-    #   = _db.test_transaction(savepoint=True)
+    #   = db.test_transaction(savepoint=True)
     yield trans.session
     trans.close()
 
@@ -168,9 +168,9 @@ class DBTestCase(unittest.TestCase):
         # ...
 
     def setUp(self):
-        self._trans = _db.test_transaction()
+        self._trans = db.test_transaction()
         # Or, if you need to rollback in your tests
-        #   = _db.test_transaction(savepoint=True)
+        #   = db.test_transaction(savepoint=True)
         self.dbs = self._trans.session
 
     def tearDown(self):
