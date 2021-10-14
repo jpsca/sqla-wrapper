@@ -8,6 +8,7 @@ Mocking your database is not only a lot of overhead but, after a while, the mock
 
 We need each test to be isolated from others: you should never have to think about what other tests have put in the database. However, creating tables, loading fixtures, and dropping those tables for each test is too slow. The good news is, you don't need to do it for each test. You will not have to worry about database performance issues if you follow this setup.
 
+
 ## 1. Manually create an empty database for testing
 
 First, you need to manually create a new (and empty) database for your tests to use. This could mean manually running a command like `createdb myapp-tests` or adding another database service in your development `docker-compose.yml` file.
@@ -65,6 +66,7 @@ class DBTestCase(unittest.TestCase):
         db.drop_all()
 
 ```
+
 
 ## 3. Run each test inside a transaction and rollback at the end
 

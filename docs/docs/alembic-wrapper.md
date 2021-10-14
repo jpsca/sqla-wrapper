@@ -6,3 +6,17 @@ The `Alembic` wrapper class aims to simplify that set up so you can just use you
 
 The only downside is that you can't use the `alembic` command-line tool anymore. Instead, all the usual Alembic command are be available as methods of the wrapper instance and you need to integrate them with your framework/application CLI. Is easier than it sounds, specially because the wrapper comes with one-line methods to extend `Click` (the CLI used by Flask by default) and `pyCEO` (the best CLI ever made).
 
+
+## Set up
+
+The `Alembic()` class require two arguments: A [`SQLAlchemy()`](sqlalchemy-wrapper) instance and the path of the folder that will contain the migrations.
+
+```python
+from sqla_wrapper import Alembic, SQLAlchemy
+
+db = SQLAlchemy(…)
+alembic = Alembic(db, "db/migrations")
+```
+
+If the migrations folder doesn't exists, it will be created (unless you add an `, init=False` argument).
+

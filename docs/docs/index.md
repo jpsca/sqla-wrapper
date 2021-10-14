@@ -7,10 +7,11 @@ SQLA-Wrapper is a wrapper for SQLAlchemy and Alembic that simplifies many aspect
 
 It works with the [newer 2.0 style query API introduced in SQLAlchemy 1.4](https://docs.sqlalchemy.org/en/14/glossary.html#term-2.0-style), and can be used with most web frameworks.
 
+
 ## Includes
 
 - A [SQLAlchemy wrapper](sqlalchemy-wrapper), that does all the SQLAlchemy setup and gives you:
-    - A session class to instance and a scoped_session, both extended with some useful active-record-like methods.
+    - A scoped session extended with some useful active-record-like methods.
     - A declarative base class
     - A helper for performant testing with a real database
 
@@ -31,6 +32,7 @@ It works with the [newer 2.0 style query API introduced in SQLAlchemy 1.4](https
     alembic = Alembic(db, "db/migrations")
     ```
 
+
 ## Installation
 
 Install the package using `pip`. The `SQLAlchemy` and `Alembic` libraries will be installed as dependencies.
@@ -38,6 +40,7 @@ Install the package using `pip`. The `SQLAlchemy` and `Alembic` libraries will b
 ```bash
 pip install sqla-wrapper
 ```
+
 
 ## Resources
 
