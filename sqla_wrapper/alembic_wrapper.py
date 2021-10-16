@@ -12,6 +12,8 @@ from .cli import click_cli, pyceo_cli
 from .sqlalchemy_wrapper import SQLAlchemy
 
 
+__all__ = ("Alembic", )
+
 StrPath = Union[str, Path]
 DEFAULT_FILE_TEMPLATE = "%%(year)d_%%(month).2d_%%(day).2d_%%(rev)s_%%(slug)s"
 TEMPLATE_FILE = "script.py.mako"
@@ -342,8 +344,11 @@ class Alembic(object):
     def get_pyceo_cli(self) -> Any:
         return pyceo_cli.get_cli(self)
 
-    def get_click_cli(self) -> Any:
-        return click_cli.get_cli(self)
+    def get_click_cli(self, **kwargs) -> Any:
+        return click_cli.get_cli(self, **kwargs)
+
+    def get_flask_cli(self, **kwargs) -> Any:
+        return click_cli.get_flask_cli(self, **kwargs)
 
     def _get_config(self, options: Dict[str, str]) -> Config:
         options.setdefault("file_template", DEFAULT_FILE_TEMPLATE)

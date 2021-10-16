@@ -1,7 +1,7 @@
-def get_cli(alembic):
+def get_cli(alembic, **kwargs):
     import click
 
-    @click.group()
+    @click.group(**kwargs)
     def db():
         """Database migrations operations."""
         pass  # pragma: no cover
@@ -111,3 +111,10 @@ def get_cli(alembic):
         alembic.create_all()
 
     return db
+
+
+def get_flask_cli(alembic, **kwargs):
+    from flask.cli import FlaskGroup
+
+    kwargs.setdefault("cls", FlaskGroup)
+    return get_cli(alembic, **kwargs)
