@@ -73,5 +73,5 @@ def dbsetup(db, TestModelA, TestModelB):
 @pytest.fixture()
 def dbs(db, dbsetup):
     tt = db.test_transaction(savepoint=True)
-    yield tt.session
+    yield db.s
     tt.close()

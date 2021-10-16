@@ -6,6 +6,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import scoped_session
 
 
+__all__ = ("Session", )
+
+
 class Session(sqlalchemy.orm.Session):
     def all(self, Model: Any, **attrs) -> List[Any]:
         """Returns all the object found with these attributes."""

@@ -5,7 +5,11 @@ import sqlalchemy.orm
 
 from .base_model_class import BaseModel
 from .session import PatchedScopedSession, Session
-from .ttransaction import TestTransaction
+
+
+__all__ = ("SQLAlchemy", "TestTransaction")
+
+TestTransaction = None
 
 
 class SQLAlchemy:
@@ -151,3 +155,37 @@ class SQLAlchemy:
 
     def __repr__(self) -> str:
         return f"<SQLAlchemy('{self.url}')>"
+
+
+class TestTransaction:
+    """Helper for building sessions that rollback everyting at the end.
+
+    See: https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#session-external-transaction
+    """
+    def __init__(self, db: SQLAlchemy, savepoint: bool = False) -> None:
+        self.connection = db.engine.connect()
+        self.trans = self.connection.begin()
+        self.session = db.Session(bind=self.connection)
+        db.s.registry.set(self.session)
+
+        if savepoint:  # pragma: no branch
+            # if the database supports SAVEPOINT (SQLite needs a
+            # special config for this to work), starting a savepoint
+            # will allow tests to also use rollback within tests
+            self.nested = self.connection.begin_nested()
+
+            @sqlalchemy.event.listens_for(self.session, "after_transaction_end")
+            def end_savepoint(session, transaction):
+                if not self.nested.is_active:
+                    self.nested = self.connection.begin_nested()
+
+    def close(self) -> None:
+        self.session.close()
+        self.trans.rollback()
+        self.connection.close()
+
+    def __enter__(self):  # pragma: no cover
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):  # pragma: no cover
+        self.close()

@@ -1,38 +1,38 @@
 from sqlalchemy import func, select
 
 
-def test_independence_1(dbs, TestModelB):
+def test_independence_1(db, dbs, TestModelB):
     stmt = select(func.count("*")).select_from(TestModelB)
-    assert dbs.execute(stmt).scalar() == 1
+    assert db.s.execute(stmt).scalar() == 1
 
-    dbs.add(TestModelB(title="second"))
-    dbs.flush()
-    assert dbs.execute(stmt).scalar() == 2
+    db.s.add(TestModelB(title="second"))
+    db.s.flush()
+    assert db.s.execute(stmt).scalar() == 2
 
 
-def test_independence_2(dbs, TestModelB):
+def test_independence_2(db, dbs, TestModelB):
     stmt = select(func.count("*")).select_from(TestModelB)
-    assert dbs.execute(stmt).scalar() == 1
+    assert db.s.execute(stmt).scalar() == 1
 
-    dbs.add(TestModelB(title="second"))
-    dbs.flush()
-    assert dbs.execute(stmt).scalar() == 2
+    db.s.add(TestModelB(title="second"))
+    db.s.flush()
+    assert db.s.execute(stmt).scalar() == 2
 
 
-def test_independence_3(dbs, TestModelB):
+def test_independence_3(db, dbs, TestModelB):
     stmt = select(func.count("*")).select_from(TestModelB)
-    assert dbs.execute(stmt).scalar() == 1
+    assert db.s.execute(stmt).scalar() == 1
 
-    dbs.add(TestModelB(title="second"))
-    dbs.flush()
-    assert dbs.execute(stmt).scalar() == 2
+    db.s.add(TestModelB(title="second"))
+    db.s.flush()
+    assert db.s.execute(stmt).scalar() == 2
 
 
-def test_rollback(dbs, TestModelB):
+def test_rollback(db, dbs, TestModelB):
     stmt = select(func.count("*")).select_from(TestModelB)
-    assert dbs.execute(stmt).scalar() == 1
+    assert db.s.execute(stmt).scalar() == 1
 
-    dbs.add(TestModelB(title="second"))
-    dbs.flush()
-    dbs.rollback()
-    assert dbs.execute(stmt).scalar() == 1
+    db.s.add(TestModelB(title="second"))
+    db.s.flush()
+    db.s.rollback()
+    assert db.s.execute(stmt).scalar() == 1
