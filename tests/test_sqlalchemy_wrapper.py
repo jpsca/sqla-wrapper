@@ -68,7 +68,8 @@ def test_drop_all(memdb):
     memdb.drop_all()
 
     with pytest.raises(Exception):
-        memdb.session.execute(select(ToDo)).all()
+        with memdb.Session() as session:
+            session.execute(select(ToDo)).all()
 
 
 def test_single_table_inhertance(memdb):

@@ -1,4 +1,4 @@
-def get_cli(alembic):
+def get_pyceo_cli(alembic):
     import pyceo
 
     return type(

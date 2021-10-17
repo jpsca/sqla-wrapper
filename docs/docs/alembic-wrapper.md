@@ -4,8 +4,6 @@ Alembic is great but it has a configuration problem. While you web application c
 
 The `Alembic` wrapper class aims to simplify that set up so you can just use your application config, without any more config files to maintain. The actual database migrations are still handled by Alembic so you get exactly the same functionality.
 
-The only downside is that you can't use the `alembic` command-line tool anymore. Instead, all the usual Alembic command are be available as methods of the wrapper instance and you need to integrate them with your framework/application CLI. Is easier than it sounds, specially because the wrapper comes with one-line methods to extend `Click` (the CLI used by Flask by default) and `pyCEO` (the best CLI ever made).
-
 
 ## Set up
 
@@ -18,5 +16,54 @@ db = SQLAlchemy(…)
 alembic = Alembic(db, "db/migrations")
 ```
 
-If the migrations folder doesn't exists, it will be created (unless you add an `, init=False` argument).
+If the migrations folder doesn't exists, it will be created.
 
+
+## CLI integrations
+
+The only downside is that you can't use the `alembic` command-line tool anymore. Instead, all the usual Alembic command are be available as methods of the wrapper instance and you need to integrate them with your framework/application CLI.
+
+Is easier than it sounds, specially because the wrapper comes with one-line methods to extend [Click](https://click.palletsprojects.com) (the CLI used by Flask by default) and [pyCEO](https://github.com/jpsca/pyceo) (arguably, the best CLI ever made).
+
+### Integrating with Flask Click
+
+```python
+from flask import Flask
+
+db = SQLAlchemy(…)
+alembic = Alembic(…)
+
+app = Flask(__name__)
+app.cli.add_command(alembic.get_flask_cli("db"))
+```
+
+### Integrating with Click
+
+```python
+import click
+
+db = SQLAlchemy(…)
+alembic = Alembic(…)
+
+@click.group()
+def cli():
+    pass
+
+cli.add_command(alembic.get_click_cli("db"))
+
+```
+
+### Integrating with pyCEO
+
+```python
+from pyceo import Cli
+
+db = SQLAlchemy(…)
+alembic = Alembic(…)
+
+class Manage(Cli):
+  db = alembic.get_pyceo_cli("db")
+
+cli = Manage()
+
+```

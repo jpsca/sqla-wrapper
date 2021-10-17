@@ -1,4 +1,5 @@
 import pytest
+from sqlalchemy import select
 
 from sqla_wrapper import Alembic
 
@@ -21,25 +22,14 @@ def _create_test_model2(memdb):
     return TestModel2
 
 
-def test_mkdir(memdb, dst):
+def test_autoinit(memdb, dst):
     script_path = dst / "migrations"
     Alembic(memdb, script_path=script_path, init=True)
     assert script_path.is_dir()
     assert (script_path / "script.py.mako").is_file()
 
 
-def test_no_mkdir(memdb, dst):
-    script_path = dst / "migrations"
-    script_path.mkdir()
-    tmpl_path = script_path / "script.py.mako"
-    tmpl_path.touch()
-
-    Alembic(memdb, script_path=script_path, init=False)
-    assert script_path.is_dir()
-    assert tmpl_path.is_file()
-
-
-def test_mkdir_exists(memdb, dst):
+def test_autoinit_exists(memdb, dst):
     script_path = dst / "migrations"
     script_path.mkdir()
     tmpl_path = script_path / "script.py.mako"
@@ -307,6 +297,19 @@ def test_no_head(memdb, dst, capsys):
     assert not stdout
 
 
+def test_create_all(memdb, dst):
+    script_path = dst / "migrations"
+    script_path.mkdir()
+    Model = _create_test_model1(memdb)
+    alembic = Alembic(memdb, script_path)
+    rev1 = alembic.revision("test")
+    alembic.create_all()
+
+    with memdb.Session() as session:
+        session.execute(select(Model)).all()
+    assert alembic._current() == rev1
+
+
 def test_get_pyceo_cli(memdb, dst):
     alembic = Alembic(memdb, script_path=dst, init=True)
     alembic.get_pyceo_cli()
@@ -315,6 +318,22 @@ def test_get_pyceo_cli(memdb, dst):
 def test_get_click_cli(memdb, dst, capsys):
     alembic = Alembic(memdb, script_path=dst, init=True)
     cli = alembic.get_click_cli()
+
+    cli(args=["--help"], prog_name="cli", standalone_mode=False)
+    stdout, _ = capsys.readouterr()
+    assert "  current  " in stdout
+    assert "  downgrade  " in stdout
+    assert "  head  " in stdout
+    assert "  history  " in stdout
+    assert "  init  " in stdout
+    assert "  revision  " in stdout
+    assert "  stamp  " in stdout
+    assert "  upgrade  " in stdout
+
+
+def test_get_flask_cli(memdb, dst, capsys):
+    alembic = Alembic(memdb, script_path=dst, init=True)
+    cli = alembic.get_flask_cli()
 
     cli(args=["--help"], prog_name="cli", standalone_mode=False)
     stdout, _ = capsys.readouterr()

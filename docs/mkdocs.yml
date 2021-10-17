@@ -12,7 +12,6 @@ nav:
   - working-with-the-session.md
   - testing-with-a-real-database.md
   - alembic-wrapper.md
-  - alembic-cli-integrations.md
 
 theme:
   name: material

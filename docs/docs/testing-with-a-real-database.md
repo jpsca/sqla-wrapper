@@ -70,34 +70,7 @@ class DBTestCase(unittest.TestCase):
 
 ## 3. Run each test inside a transaction and rollback at the end
 
-This part is the main trick. At the beginning of each test, you:
-
-```python
-# 1. Start a transaction on a new connection
-connection = db.engine.connect()
-trans = connection.begin()
-
-# 2. Bind a new session to this connection
-session = db.Session(bind=connection)
-
-# 3. If your database supports it, start a savepoint to allow rollbacks within a test
-nested = connection.begin_nested()
-
-@event.listens_for(session, "after_transaction_end")
-def end_savepoint(session, transaction):
-    if not nested.is_active:
-        nested = connection.begin_nested()
-
-# 4. Run the test
-# ...
-
-# 5. Finally, rollback any changes and close the connection.
-session.close()
-trans.rollback()
-connection.close()
-```
-
-All of this can be error-prone to remember, so **sqla-wrapper** includes a `db.test_transaction()` method that does it for you:
+This part is the main trick, and **sqla-wrapper** includes a `db.test_transaction()` method that does it for you:
 
 ```python
 trans = db.test_transaction()
@@ -107,9 +80,40 @@ trans.close()
 
 By wrapping each test in a root transaction, we make sure that it will not alter the state of the database, even if we commit during the test since the transaction is rolled back on test teardown.
 
-There is only one caveat: your database must support SAVEPOINT to allow tests to also use rollbacks within them.
+There is only one caveat: if you want to allow tests to also use rollbacks within them, your database must support SAVEPOINT.
 
-This recipe is actually what [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#session-external-transaction) recommends and even test in their own CI to ensure that it remains working as expected.
+!!! Note
+
+    `test_transaction()` internally follow this recipe:
+
+    ```python
+    # 1. Start a transaction on a new connection
+    connection = db.engine.connect()
+    trans = connection.begin()
+
+    # 2. Bind a new session to this connection
+    session = db.Session(bind=connection)
+    # and registers it as the new scoped session
+
+    # 3. If your database supports it, start a savepoint to allow rollbacks within a test
+    nested = connection.begin_nested()
+
+    @event.listens_for(session, "after_transaction_end")
+    def end_savepoint(session, transaction):
+        if not nested.is_active:
+            nested = connection.begin_nested()
+
+    # 4. Run the test
+    # ...
+
+    # 5. Finally, rollback any changes and close the connection.
+    session.close()
+    trans.rollback()
+    connection.close()
+    ```
+
+    This recipe is what [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#session-external-transaction) recommends and even test in their own CI to ensure that it remains working as expected.
+
 
 ### pytest
 
@@ -130,20 +134,20 @@ def dbs(dbsetup):
     trans = db.test_transaction()
     # Or, if you need to rollback in your tests
     #   = db.test_transaction(savepoint=True)
-    yield trans.session
+    yield
     trans.close()
 
 ```
 
-Then, we use that database session fixture for the tests that require interacting with the database.
+Then, we use that database session fixture for the tests that require interacting with the database. You can safely use the "global" scoped session, because it nows point to the test session.
 
 ```python
 # test_something.py
 from myapp.models import db
 
 def test_something(dbs):
-    dbs.execute(some_stmt)
-    dbs.commit()
+    db.s.execute(some_stmt)
+    db.s.commit()
     ...
 
 ```
@@ -171,7 +175,6 @@ class DBTestCase(unittest.TestCase):
         self._trans = db.test_transaction()
         # Or, if you need to rollback in your tests
         #   = db.test_transaction(savepoint=True)
-        self.dbs = self._trans.session
 
     def tearDown(self):
         self._trans.close()
@@ -189,8 +192,8 @@ from .base import DBTestCase
 
 class TestSomething(DBTestCase):
     def test_something(self):
-        self.dbs.execute(some_stmt)
-        self.dbs.commit()
+        db.s.execute(some_stmt)
+        db.s.commit()
         # ...
 
 ```

@@ -1,12 +1,21 @@
-def get_cli(alembic, **kwargs):
+def get_flask_cli(alembic, name):
+    from flask.cli import FlaskGroup
+
+    group = FlaskGroup(name)
+    return _get_cli(alembic, group)
+
+
+def get_click_cli(alembic, name):
+    from click import Group
+
+    group = Group(name)
+    return _get_cli(alembic, group)
+
+
+def _get_cli(alembic, group):
     import click
 
-    @click.group(**kwargs)
-    def db():
-        """Database migrations operations."""
-        pass  # pragma: no cover
-
-    @db.command()
+    @group.command()
     @click.argument("message", default=None)
     @click.option(
         "--empty", is_flag=True, default=False,
@@ -22,7 +31,7 @@ def get_cli(alembic, **kwargs):
         """
         alembic.revision(message, empty=empty, parent=parent)
 
-    @db.command()
+    @group.command()
     @click.argument("target", default="head")
     @click.option(
         "--sql", is_flag=True, default=False,
@@ -32,7 +41,7 @@ def get_cli(alembic, **kwargs):
         """Run migrations to upgrade database."""
         alembic.upgrade(target, sql=sql)
 
-    @db.command()
+    @group.command()
     @click.argument("target", default="-1")
     @click.option(
         "--sql", is_flag=True, default=False,
@@ -42,7 +51,7 @@ def get_cli(alembic, **kwargs):
         """Revert to a previous version"""
         alembic.downgrade(target, sql=sql)
 
-    @db.command()
+    @group.command()
     @click.option(
         "-v", "--verbose", is_flag=True, default=False,
         help="Shows also the path and the docstring of each revision file.",
@@ -61,7 +70,7 @@ def get_cli(alembic, **kwargs):
         """
         alembic.history(start=start, end=end)
 
-    @db.command()
+    @group.command()
     @click.argument("target", default="head")
     @click.option(
         "--sql", is_flag=True, default=False,
@@ -76,7 +85,7 @@ def get_cli(alembic, **kwargs):
         Don't run migrations."""
         alembic.stamp(target, sql=sql, purge=purge)
 
-    @db.command()
+    @group.command()
     @click.option(
         "-v", "--verbose", is_flag=True, default=False,
         help="Shows also the path and the docstring of the revision file.",
@@ -85,7 +94,7 @@ def get_cli(alembic, **kwargs):
         """Print the latest revision(s) applied."""
         alembic.current(verbose=verbose)
 
-    @db.command()
+    @group.command()
     @click.option(
         "-v", "--verbose", is_flag=True, default=False,
         help="Shows also the path and the docstring of the revision file.",
@@ -94,7 +103,7 @@ def get_cli(alembic, **kwargs):
         """Print the latest revision(s)."""
         alembic.head(verbose=verbose)
 
-    @db.command()
+    @group.command()
     @click.argument("path", default=None)
     def init(path):
         """Creates a new migration folder
@@ -103,18 +112,11 @@ def get_cli(alembic, **kwargs):
         """
         alembic.init(path)
 
-    @db.command()
+    @group.command()
     def create_all():
         """Create all the tables from the current models
         and stamp the latest revision without running any migration.
         """
         alembic.create_all()
 
-    return db
-
-
-def get_flask_cli(alembic, **kwargs):
-    from flask.cli import FlaskGroup
-
-    kwargs.setdefault("cls", FlaskGroup)
-    return get_cli(alembic, **kwargs)
+    return group

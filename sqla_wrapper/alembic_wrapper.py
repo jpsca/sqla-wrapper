@@ -31,8 +31,6 @@ class Alembic(object):
         A `sqla_wrapper.SQLAlchemy` instance.
     - script_path:
         Path to the migrations folder.
-    - mkdir:
-        Whether to create the migrations folder, if it doesn't exists.
     - context:
         ...
     - **options:
@@ -51,6 +49,7 @@ class Alembic(object):
     ) -> None:
         self.db = db
         self.script_path = script_path = Path(script_path).absolute()
+        script_path.mkdir(exist_ok=True)
         options["script_location"] = str(script_path)
         self.config = self._get_config(options)
 
@@ -342,13 +341,13 @@ class Alembic(object):
         self.stamp()
 
     def get_pyceo_cli(self) -> Any:
-        return pyceo_cli.get_cli(self)
+        return pyceo_cli.get_pyceo_cli(self)
 
-    def get_click_cli(self, **kwargs) -> Any:
-        return click_cli.get_cli(self, **kwargs)
+    def get_click_cli(self, name="db") -> Any:
+        return click_cli.get_click_cli(self, name)
 
-    def get_flask_cli(self, **kwargs) -> Any:
-        return click_cli.get_flask_cli(self, **kwargs)
+    def get_flask_cli(self, name="db") -> Any:
+        return click_cli.get_flask_cli(self, name)
 
     def _get_config(self, options: Dict[str, str]) -> Config:
         options.setdefault("file_template", DEFAULT_FILE_TEMPLATE)
