@@ -11,9 +11,9 @@ It works with the [newer 2.0 style query API introduced in SQLAlchemy 1.4](https
 ## Includes
 
 - A [SQLAlchemy wrapper](sqlalchemy-wrapper), that does all the SQLAlchemy setup and gives you:
-    - A scoped session extended with some useful active-record-like methods.
-    - A declarative base class
-    - A helper for performant testing with a real database
+    - A scoped session extended with some useful active-record-like methods and pagination.
+    - A declarative base class.
+    - A helper for performant testing with a real database.
 
     ```python
     from sqla_wrapper import SQLAlchemy

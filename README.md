@@ -6,10 +6,25 @@ A friendly wrapper for [modern SQLAlchemy](https://docs.sqlalchemy.org/en/14/glo
 
 Includes:
 
-- A `SQLAlchemy` wrapper, that does all the SQLAlchemy setup and gives you:
-    - A preconfigured scoped session.
-    - A model baseclass including some helper methods.
+- A SQLAlchemy wrapper, that does all the SQLAlchemy setup and gives you:
+    - A scoped session extended with some useful active-record-like methods and pagination.
+    - A declarative base class.
     - A helper for performant testing with a real database.
-    - A shortcut to all the functions and classes from `sqlalchemy`and `sqlalchemy.orm`, so you don't need to repeat those imports everywhere.
 
-- An `Alembic` wrapper that loads the config from your application instead of an ini file.
+    ```python
+    from sqla_wrapper import SQLAlchemy
+
+    db = SQLAlchemy("sqlite:///db.sqlite", **options)
+    # You can also use separated host, name, etc.
+    # db = SQLAlchemy(user=…, password=…, host=…, port=…, name=…)
+    ```
+
+- An Alembic wrapper that loads the config from your application instead of from separated `alembic.ini` and `env.py` files.
+
+    ```python
+    from sqla_wrapper import Alembic, SQLAlchemy
+
+    db = SQLAlchemy(…)
+    alembic = Alembic(db, "db/migrations")
+    ```
+
