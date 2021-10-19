@@ -573,7 +573,7 @@ passwords, must be URL-encoded to be properly parsed.</p>
 </code></pre></div></div>
 <div class="autodoc-members">
 <div class="autodoc-signature"><code><strong>create_all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
-<div class="autodoc-docstring"><p>Creates all tables.</p>
+<div class="autodoc-docstring"><p>Creates all the tables of the models registered so far.</p>
 <p>Only tables that do not already exist are created. Existing tables are
 not modified.</p></div>
 <div class="autodoc-signature"><code><strong>drop_all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
@@ -598,7 +598,7 @@ active-record-like methods and a pagination helper.</p></div>
 to “equality” comparisons against the columns of the model.
 Also, there is no way to sort the results. If you need sorting or
 more complex filtering, you are better served using a <code>db.select()</code>.</p>
-<p>Examples:</p>
+<p><strong>Examples</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
 <span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -612,7 +612,7 @@ more complex filtering, you are better served using a <code>db.select()</code>.<
 </code></pre></div>
 <p>Note that this does a <code>db.s.flush()</code>, so you must later call
 <code>db.s.commit()</code> to persist the new object.</p>
-<p>Example:</p>
+<p><strong>Example</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">new_user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div></div>
@@ -623,7 +623,7 @@ if there isn&rsquo;t one.</p>
 to “equality” comparisons against the columns of the model.
 Also, there is no way to sort the results. If you need sorting or
 more complex filtering, you are better served using a <code>db.select()</code>.</p>
-<p>Examples:</p>
+<p><strong>Examples</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
 <span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div></div>
@@ -633,7 +633,7 @@ a new one first. Use this method when you expect the object to
 already exists but want to create it in case it doesn&rsquo;t.</p>
 <p>This does a <code>db.s.flush()</code>, so you must later call <code>db.s.commit()</code>
 to persist the new object (in case one has been created).</p>
-<p>Examples:</p>
+<p><strong>Examples</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">user1</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first_or_create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
 <span class="n">user2</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first_or_create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
 <span class="n">user1</span> <span class="ow">is</span> <span class="n">user2</span>
@@ -647,7 +647,7 @@ a new different object.</p>
 to avoid an exception in case it does.</p>
 <p>This does a <code>db.s.flush()</code>, so you must later call <code>db.s.commit()</code>
 to persist the new object (in case one has been created).</p>
-<p>Examples:</p>
+<p><strong>Examples</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">user1</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create_or_first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
 <span class="n">user2</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create_or_first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
 <span class="n">user1</span> <span class="ow">is</span> <span class="n">user2</span>
@@ -656,13 +656,33 @@ to persist the new object (in case one has been created).</p>
 <div class="autodoc-docstring"><p>Returns a <code>Paginator</code> of the <code>query</code> results.
 Note that you must calculate the total number of unpaginated
 results first.</p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><span class="n">query</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>             <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">deleted</span> <span class="o"><mark></span> <span class="kc">None</span><span class="p">)</span>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><strong>query</strong>:
+    A <code>select()</code> statement for all items.</li>
+<li><strong>total</strong>:
+    Total number of items. You must pre-calculate this value.</li>
+<li><strong>page</strong>:
+    Number of the current page (first page is <code>1</code>)
+    It can be a number, a string with a number, or
+    the strings &ldquo;first&rdquo; or &ldquo;last&rdquo;.</li>
+<li><strong>per_page</strong>:
+    Max number of items to display on each page.</li>
+<li><strong>padding</strong>:
+    Number of elements of the previous and next page to show.
+    For example, if <code>per_page</code> is 10 and <code>padding</code> is 2,
+    every page will show 14 items, the first two from the
+    previous page and the last two for the next one.
+    This extra items will be repeated again on their own pages.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">query</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">deleted</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span> \
     <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span>
 
 <span class="n">total</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span>
     <span class="n">select</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">deleted</span> <span class="o"></mark></span> <span class="kc">None</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">deleted</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
 <span class="p">)</span>
 
 <span class="n">pag</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">total</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
@@ -687,38 +707,38 @@ in the SQLAlchemy documentation.</p></div>
 <p>For a more in-depth understanding of these methods and the extra options, you
 can read the
 <a href="https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file">documentation for the Alembic config</a>.</p>
-<p>Arguments:</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>db:
+<li><strong>db</strong>:
     A <code>sqla_wrapper.SQLAlchemy</code> instance.</li>
-<li>path:
+<li><strong>path</strong>:
     Path to the migrations folder.</li>
-<li>**options:
+<li><strong>**options</strong>:
     Other alembic options</li>
 </ul></div>
 <div class="autodoc-members">
 <div class="autodoc-signature"><code><strong>revision</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">message</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">empty=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">parent=&rsquo;head&rsquo;</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Create a new revision.
 Auto-generate operations by comparing models and database.</p>
-<p>Arguments:</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>message:
+<li><strong>message</strong>:
     Revision message.</li>
-<li>empty:
+<li><strong>empty</strong>:
     Generate just an empty migration file, not the operations.</li>
-<li>parent:
+<li><strong>parent</strong>:
     Parent revision of this new revision.</li>
 </ul></div>
 <div class="autodoc-signature"><code><strong>upgrade</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">target=&rsquo;head&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sql=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Run migrations to upgrade database.</p>
-<p>Arguments:</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>target:
+<li><strong>target</strong>:
     Revision target or &ldquo;from:to&rdquo; range if <code>sql=True</code>. &ldquo;head&rdquo;
     by default.</li>
-<li>sql:
+<li><strong>sql</strong>:
     Don&rsquo;t emit SQL to database, dump to standard output instead.</li>
-<li>**kwargs:
+<li><strong>**kwargs</strong>:
     Optional arguments. If these are passed, they are sent directly
     to the <code>upgrade()</code> functions within each revision file.
     To use, modify the <code>script.py.mako</code>template file
@@ -726,15 +746,15 @@ Auto-generate operations by comparing models and database.</p>
 </ul></div>
 <div class="autodoc-signature"><code><strong>downgrade</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">target=&rsquo;-1&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sql=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Run migrations to downgrade database.</p>
-<p>Arguments:</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>target:
+<li><strong>target</strong>:
     Revision target as an integer relative to the current
     state (e.g.: &ldquo;-1&rdquo;), or as a &ldquo;from:to&rdquo; range if <code>sql=True</code>.
     &ldquo;-1&rdquo; by default.</li>
-<li>sql:
+<li><strong>sql</strong>:
     Don&rsquo;t emit SQL to database, dump to standard output instead.</li>
-<li>**kwargs:
+<li><strong>**kwargs</strong>:
     Optional arguments. If these are passed, they are sent directly
     to the <code>downgrade()</code> functions within each revision file.
     To use, modify the <code>script.py.mako</code> template file
@@ -743,45 +763,45 @@ Auto-generate operations by comparing models and database.</p>
 <div class="autodoc-signature"><code><strong>get_history</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">start=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">end=None</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Get the list of revisions in chronological order.
 You can optionally specify the range of revisions to return.</p>
-<p>Arguments:</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>start:
+<li><strong>start</strong>:
     From this revision (including it.)</li>
-<li>end:
+<li><strong>end</strong>:
     To this revision (including it.)</li>
 </ul></div>
 <div class="autodoc-signature"><code><strong>history</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">verbose=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">start=&rsquo;base&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">end=&rsquo;heads&rsquo;</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Print the list of revisions in chronological order.
 You can optionally specify the range of revisions to return.</p>
-<p>Arguments:</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>verbose:
+<li><strong>verbose</strong>:
     If <code>True</code>, shows also the path and the docstring
     of each revision file.</li>
-<li>start:
+<li><strong>start</strong>:
     Optional starting revision (including it.)</li>
-<li>end:
+<li><strong>end</strong>:
     Optional end revision (including it.)</li>
 </ul></div>
 <div class="autodoc-signature"><code><strong>stamp</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">target=&rsquo;head&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sql=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">purge=False</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Set the given revision in the revision table. Don&rsquo;t run migrations.</p>
-<p>Arguments:</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>target:
+<li><strong>target</strong>:
     The target revision; &ldquo;head&rdquo; by default.</li>
-<li>sql:
+<li><strong>sql</strong>:
     Don&rsquo;t emit SQL to the database, dump to the standard
     output instead.</li>
-<li>purge:
+<li><strong>purge</strong>:
     Delete all entries in the version table before stamping.</li>
 </ul></div>
 <div class="autodoc-signature"><code><strong>get_current</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Get the last revision applied.</p></div>
 <div class="autodoc-signature"><code><strong>current</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">verbose=False</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Print the latest revision(s) applied.</p>
-<p>Arguments:</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>verbose:
+<li><strong>verbose</strong>:
     If <code>True</code>, shows also the path and the docstring
     of the revision file.</li>
 </ul></div>
@@ -789,9 +809,9 @@ You can optionally specify the range of revisions to return.</p>
 <div class="autodoc-docstring"><p>Get the latest revision.</p></div>
 <div class="autodoc-signature"><code><strong>head</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">verbose=False</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Print the latest revision.</p>
-<p>Arguments:</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>verbose:
+<li><strong>verbose</strong>:
     If <code>True</code>, shows also the path and the docstring
     of the revision file.</li>
 </ul></div>
@@ -799,9 +819,9 @@ You can optionally specify the range of revisions to return.</p>
 <div class="autodoc-docstring"><p>Creates a new migration folder
 with a <code>script.py.mako</code> template file. It doesn&rsquo;t fail if the
 folder or file already exists.</p>
-<p>Arguments:</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li>path:
+<li><strong>path</strong>:
     Target folder.</li>
 </ul></div>
 <div class="autodoc-signature"><code><strong>create_all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
@@ -821,25 +841,73 @@ method to change it.</p></div>
 </div>
 <h2 id="paginator-class">Paginator class<a class="headerlink" href="#paginator-class" title="Permanent link">#</a></h2>
 <div class="autodoc">
-<div class="autodoc-signature"><em>class </em><code>sqla_wrapper.<strong>Paginator</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">query</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">page=1</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">per_page=20</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">total=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">padding=0</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-signature"><em>class </em><code>sqla_wrapper.<strong>Paginator</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">query</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">page=1</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">per_page=20</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">total=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">padding=0</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Helper class for paginate data.
 You can construct it from any iterable.</p>
-<p>Arguments are:</p>
-<div class="highlight"><pre><span></span><code>query:
-    Iterable to paginate.
-page:
-    Current page. If the value is the string
-per_page:
-    Max number of items to display on each page.
-total:
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><strong>query</strong>:
+    Items to paginate.</li>
+<li><strong>page</strong>:
+    Number of the current page (first page is <code>1</code>)
+    It can be a number, a string with a number, or
+    the strings &ldquo;first&rdquo; or &ldquo;last&rdquo;.</li>
+<li><strong>per_page</strong>:
+    Max number of items to display on each page.</li>
+<li><strong>total</strong>:
     Total number of items. If not provided, the length
-    of items will be used
-padding:
-    Number of elements of the next page to show.
-</code></pre></div></div>
+    of the iterable will be used.</li>
+<li><strong>padding</strong>:
+    Number of elements of the previous and next page to show.
+    For example, if <code>per_page</code> is 10 and <code>padding</code> is 2,
+    every page will show 14 items, the first two from the
+    previous page and the last two for the next one.
+    This extra items will be repeated again on their own pages.</li>
+</ul></div>
 <div class="autodoc-members">
+<div class="autodoc-signature"><code><strong>num_pages</strong></code></div>
+<div class="autodoc-docstring"><p>The total number of pages.</p></div>
+<div class="autodoc-signature"><code><strong>total_pages</strong></code></div>
+<div class="autodoc-docstring"><p>Alias to <code>num_pages</code></p></div>
+<div class="autodoc-signature"><code><strong>showing</strong></code></div>
+<div class="autodoc-docstring"><p>The number of items in the current page
+Could be less than <code>per_page</code> if we are in the
+last page, or more if <code>padding</code> &gt; 0.</p></div>
+<div class="autodoc-signature"><code><strong>is_paginated</strong></code></div>
+<div class="autodoc-docstring"><p>True if a more than one page exists.</p></div>
+<div class="autodoc-signature"><code><strong>has_prev</strong></code></div>
+<div class="autodoc-docstring"><p>True if a previous page exists.</p></div>
+<div class="autodoc-signature"><code><strong>has_next</strong></code></div>
+<div class="autodoc-docstring"><p>True if a next page exists.</p></div>
+<div class="autodoc-signature"><code><strong>next_num</strong></code></div>
+<div class="autodoc-docstring"><p>Number of the next page.</p></div>
+<div class="autodoc-signature"><code><strong>prev_num</strong></code></div>
+<div class="autodoc-docstring"><p>Number of the previous page.</p></div>
+<div class="autodoc-signature"><code><strong>prev</strong></code></div>
+<div class="autodoc-docstring"><p>Returns a <code>Paginator</code> object for the previous page.</p></div>
+<div class="autodoc-signature"><code><strong>next</strong></code></div>
+<div class="autodoc-docstring"><p>Returns a <code>Paginator</code> object for the next page.</p></div>
+<div class="autodoc-signature"><code><strong>start_index</strong></code></div>
+<div class="autodoc-docstring"><p>0-based index of the first element in the current page.</p></div>
 <div class="autodoc-signature"><code><strong>end_index</strong></code></div>
 <div class="autodoc-docstring"><p>0-based index of the last element in the current page.</p></div>
+<div class="autodoc-signature"><code><strong>items</strong></code></div>
+<div class="autodoc-docstring"><p>Return the items to for the current page.</p></div>
+<div class="autodoc-signature"><code><strong>pages</strong></code></div>
+<div class="autodoc-docstring"><p>Proxy to get_pages()</p></div>
+<div class="autodoc-signature"><code><strong>get_range</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sep=&rsquo; - &lsquo;</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Return a string with the 1-based index range
+of items in the page (ignoring the padding). Useful
+for displaying &ldquo;Showing x - y items of z&rdquo;.</p>
+<p><strong>Examples</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">get_range</span><span class="p">()</span>
+<span class="s1">&#39;1 - 10&#39;</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">get_range</span><span class="p">()</span>
+<span class="s1">&#39;41 - 50&#39;</span>
+</code></pre></div></div>
 <div class="autodoc-signature"><code><strong>get_pages</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">showmax=12</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Return a list of the page numbers in the pagination. The <code>showmax</code>
 parameter control how many numbers are shown at most.</p>
@@ -854,22 +922,10 @@ order, in turns.</li>
 one page, so the final number of pages shown could be less than
 the value of <code>showmax</code>.</li>
 </ol>
-<p>Examples:</p>
-<div class="highlight"><pre><span></span><code><span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">(</span><span class="mi">7</span><span class="p">),</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<p><strong>Examples</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span> <span class="p">]</span>
 <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">9</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">13</span><span class="p">),</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="p">(</span><span class="mi">14</span><span class="p">),</span> <span class="mi">15</span> <span class="p">]</span>
-<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span> <span class="p">]</span>
 </code></pre></div>
 <p>This is one way how you could render such a pagination in the template:</p>
 <div class="highlight"><pre><span></span><code><span class="x">  &lt;p&gt;Showing </span><span class="cp">{{</span> <span class="nv">pg.showing</span> <span class="cp">}}</span><span class="x"> or </span><span class="cp">{{</span> <span class="nv">pg.total</span> <span class="cp">}}</span><span class="x">&lt;/p&gt;</span>
@@ -902,74 +958,6 @@ the value of <code>showmax</code>.</li>
 <span class="x">  </span><span class="cp">{%</span>- <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">  &lt;/ol&gt;</span>
 </code></pre></div></div>
-<div class="autodoc-signature"><code><strong>get_range</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sep=&rsquo; - &lsquo;</em><span class="autodoc-punctuation">)</span></div>
-<div class="autodoc-docstring"></div>
-<div class="autodoc-signature"><code><strong>has_next</strong></code></div>
-<div class="autodoc-docstring"><p>True if a next page exists.</p></div>
-<div class="autodoc-signature"><code><strong>has_prev</strong></code></div>
-<div class="autodoc-docstring"><p>True if a previous page exists.</p></div>
-<div class="autodoc-signature"><code><strong>is_paginated</strong></code></div>
-<div class="autodoc-docstring"><p>True if a more than one page exists.</p></div>
-<div class="autodoc-signature"><code><strong>items</strong></code></div>
-<div class="autodoc-docstring"></div>
-<div class="autodoc-signature"><code><strong>limit</strong></code></div>
-<div class="autodoc-docstring"></div>
-<div class="autodoc-signature"><code><strong>next</strong></code></div>
-<div class="autodoc-docstring"><p>Returns a <code>Paginator</code> object for the next page.</p></div>
-<div class="autodoc-signature"><code><strong>next_num</strong></code></div>
-<div class="autodoc-docstring"><p>Number of the next page.</p></div>
-<div class="autodoc-signature"><code><strong>num_pages</strong></code></div>
-<div class="autodoc-docstring"><p>The total number of pages.</p></div>
-<div class="autodoc-signature"><code><strong>offset</strong></code></div>
-<div class="autodoc-docstring"></div>
-<div class="autodoc-signature"><code><strong>pages</strong></code></div>
-<div class="autodoc-docstring"><p>Proxy to get_pages()</p></div>
-<div class="autodoc-signature"><code><strong>prev</strong></code></div>
-<div class="autodoc-docstring"><p>Returns a <code>Paginator</code> object for the previous page.</p></div>
-<div class="autodoc-signature"><code><strong>prev_num</strong></code></div>
-<div class="autodoc-docstring"><p>Number of the previous page.</p></div>
-<div class="autodoc-signature"><code><strong>showing</strong></code></div>
-<div class="autodoc-docstring"><p>int([x]) -&gt; integer
-int(x, base=10) -&gt; integer</p>
-<p>Convert a number or string to an integer, or return 0 if no arguments
-are given.  If x is a number, return x.<strong>int</strong>().  For floating point
-numbers, this truncates towards zero.</p>
-<p>If x is not a number or if base is given, then x must be a string,
-bytes, or bytearray instance representing an integer literal in the
-given base.  The literal can be preceded by &lsquo;+&rsquo; or &lsquo;-&lsquo; and be surrounded
-by whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.
-Base 0 means to interpret the base from the string as an integer literal.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>int(&lsquo;0b100&rsquo;, base=0)
-4</p>
-</blockquote>
-</blockquote>
-</blockquote></div>
-<div class="autodoc-signature"><code><strong>start_index</strong></code></div>
-<div class="autodoc-docstring"><p>0-based index of the first element in the current page.</p></div>
-<div class="autodoc-signature"><code><strong>total</strong></code></div>
-<div class="autodoc-docstring"><p>int([x]) -&gt; integer
-int(x, base=10) -&gt; integer</p>
-<p>Convert a number or string to an integer, or return 0 if no arguments
-are given.  If x is a number, return x.<strong>int</strong>().  For floating point
-numbers, this truncates towards zero.</p>
-<p>If x is not a number or if base is given, then x must be a string,
-bytes, or bytearray instance representing an integer literal in the
-given base.  The literal can be preceded by &lsquo;+&rsquo; or &lsquo;-&lsquo; and be surrounded
-by whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.
-Base 0 means to interpret the base from the string as an integer literal.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>int(&lsquo;0b100&rsquo;, base=0)
-4</p>
-</blockquote>
-</blockquote>
-</blockquote></div>
-<div class="autodoc-signature"><code><strong>total_pages</strong></code></div>
-<div class="autodoc-docstring"><p>Alias to <code>num_pages</code></p></div>
 </div>
 </div>
                 
