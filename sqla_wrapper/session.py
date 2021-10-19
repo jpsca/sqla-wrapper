@@ -38,7 +38,7 @@ class SessionPaginator(Paginator):
         offset = self.offset
         return self.session.execute(
             self.query.offset(offset).limit(self.limit)
-        ).scalars()
+        ).scalars().all()
 
 
 class Session(sqlalchemy.orm.Session):

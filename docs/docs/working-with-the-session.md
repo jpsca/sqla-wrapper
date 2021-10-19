@@ -47,17 +47,17 @@ dbs.close()
 Instantiate `db.Session` is the recommended way to work when the session is not shared like in a  command-line script.
 
 
-## Extensions
+## Extra methods
 
 SQLAlchemy default Session has the method `db.s.get(Model, pk)` to query and return a record by its primary key.
 
 SQLA-wrapper extends it with a few other ActiveRecord-like methods:
 
-### `Session.all(Model, **attrs)`
+### `.all(Model, **attrs)`
 
 Returns all the object found with these attributes.
 
-The filtering is done with a simple `.filter_by()` so is limited to the columns of the model and basic filters. Also, there is no way to sort the results. If you need sorting or more complex filtering, you are better served using a `db.select()`.
+The filtering is done with a simple `.filter_by()` so is limited to “equality” comparisons against the columns of the model. Also, there is no way to sort the results. If you need sorting or more complex filtering, you are better served using a `db.select()`.
 
 Examples:
 
@@ -67,7 +67,7 @@ users = db.s.all(User, deleted=False)
 users = db.s.all(User, account_id=123, deleted=False)
 ```
 
-### `Session.create(Model, **attrs)`
+### `.create(Model, **attrs)`
 
 Creates a new object and adds it to the session. This is a shortcut for:
 
@@ -86,9 +86,11 @@ new_user = db.s.create(User, email='foo@example.com')
 db.s.commit()
 ```
 
-### `Session.first(Model, **attrs)`
+### `.first(Model, **attrs)`
 
 Returns the first object found with these attributes or `None` if there isn't one.
+
+The filtering is done with a simple `.filter_by()` so is limited to “equality” comparisons against the columns of the model. Also, there is no way to sort the results. If you need sorting or more complex filtering, you are better served using a `db.select()`.
 
 Examples:
 
@@ -97,7 +99,7 @@ user = db.s.first(User)
 user = db.s.first(User, deleted=False)
 ```
 
-### `Session.first_or_create(Model, **attrs)`
+### `.first_or_create(Model, **attrs)`
 
 Tries to find an object and if none exists, it tries to creates a new one first. Use this method when you expect the object to already exists but want to create it in case it doesn't.
 
@@ -111,7 +113,7 @@ user2 = db.s.first_or_create(User, email='foo@example.com')
 user1 is user2
 ```
 
-### `Session.create_or_first(Model, **attrs)`
+### `.create_or_first(Model, **attrs)`
 
 Tries to create a new object, and if it fails because already exists, return the first it founds. For this to work one or more of the attributes must be unique so it does fail, otherwise you will be creating a new different object.
 
@@ -125,6 +127,25 @@ Examples:
 user1 = db.s.create_or_first(User, email='foo@example.com')
 user2 = db.s.create_or_first(User, email='foo@example.com')
 user1 is user2
+```
+
+### `.paginate(query, total, page, per_page, padding)`
+
+Returns a `Paginator` of the `query` results. Note that you must calculate the total number of unpaginated results first.
+
+Example:
+
+```python
+query = select(User) \
+    .where(User.deleted == None)
+    .order_by(User.created_at)
+
+total = db.s.scalar(
+    select(func.count(User.id))
+    .where(User.deleted == None)
+)
+
+pag = db.s.paginate(query, total=total, page=1, per_page=20)
 ```
 
 ---

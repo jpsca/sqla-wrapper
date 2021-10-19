@@ -65,10 +65,12 @@ def test_paginate(memdb):
             dbs.add(Product())
         dbs.commit()
 
+        query = select(Product)
         p = dbs.paginate(
-            Product,
+            query,
             total=total,
             page=2,
             per_page=50,
         )
         assert p.num_pages == 20
+        assert p.items[0].id == 51
