@@ -7,7 +7,7 @@ A friendly wrapper for [modern SQLAlchemy](https://docs.sqlalchemy.org/en/14/glo
 Includes:
 
 - A SQLAlchemy wrapper, that does all the SQLAlchemy setup and gives you:
-    - A scoped session extended with some useful active-record-like methods and pagination.
+    - A scoped session extended with some useful active-record-like methods and pagination helper.
     - A declarative base class.
     - A helper for performant testing with a real database.
 

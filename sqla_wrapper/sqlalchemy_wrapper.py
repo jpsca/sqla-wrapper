@@ -158,7 +158,8 @@ class SQLAlchemy:
 class TestTransaction:
     """Helper for building sessions that rollback everyting at the end.
 
-    See: https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#session-external-transaction
+    See ["Joining a Session into an External Transaction"](https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#session-external-transaction)
+    in the SQLAlchemy documentation.
     """
     def __init__(self, db: SQLAlchemy, savepoint: bool = False) -> None:
         self.connection = db.engine.connect()

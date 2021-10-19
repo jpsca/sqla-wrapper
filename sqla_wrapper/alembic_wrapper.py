@@ -21,17 +21,16 @@ TEMPLATE_FILE = "script.py.mako"
 class Alembic(object):
     """Provide an Alembic environment and migration API.
 
-    See the
-    [alembic documentation](https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file)
-    for more details about the options.
+    For a more in-depth understanding of these methods and the extra options, you
+    can read the
+    [documentation for the Alembic config](https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file).
 
     Arguments:
+
     - db:
         A `sqla_wrapper.SQLAlchemy` instance.
-    - script_path:
+    - path:
         Path to the migrations folder.
-    - context:
-        ...
     - **options:
         Other alembic options
 
@@ -40,23 +39,15 @@ class Alembic(object):
     def __init__(
         self,
         db: SQLAlchemy,
-        script_path: StrPath = "db/migrations",
-        *,
-        init: bool = True,
-        context: Optional[Dict[str, Any]] = None,
+        path: StrPath = "db/migrations",
         **options,
     ) -> None:
         self.db = db
-        self.script_path = script_path = Path(script_path).absolute()
-        script_path.mkdir(exist_ok=True)
-        options["script_location"] = str(script_path)
+        self.path = path = Path(path).absolute()
+        options["script_location"] = str(path)
         self.config = self._get_config(options)
-
-        if init:
-            self.init(script_path)
-
+        self.init(path)
         self.script_directory = ScriptDirectory.from_config(self.config)
-        self.context = context or {}
 
     def revision(
         self,
@@ -69,6 +60,7 @@ class Alembic(object):
         Auto-generate operations by comparing models and database.
 
         Arguments:
+
         - message:
             Revision message.
         - empty:
@@ -87,7 +79,7 @@ class Alembic(object):
                 "splice": False,
                 "branch_label": None,
                 "version_path": self.script_directory.dir,
-                "rev_id": self._rev_id(),
+                "rev_id": self.rev_id(),
                 "depends_on": None,
             },
         )
@@ -108,6 +100,7 @@ class Alembic(object):
         """Run migrations to upgrade database.
 
         Arguments:
+
         - target:
             Revision target or "from:to" range if `sql=True`. "head"
             by default.
@@ -143,6 +136,7 @@ class Alembic(object):
         """Run migrations to downgrade database.
 
         Arguments:
+
         - target:
             Revision target as an integer relative to the current
             state (e.g.: "-1"), or as a "from:to" range if `sql=True`.
@@ -179,13 +173,14 @@ class Alembic(object):
             destination_rev=target,
         )
 
-    def _get_history(
+    def get_history(
         self, *, start: Optional[str] = None, end: Optional[str] = None
     ) -> List[Script]:
         """Get the list of revisions in chronological order.
         You can optionally specify the range of revisions to return.
 
         Arguments:
+
         - start:
             From this revision (including it.)
         - end:
@@ -193,10 +188,10 @@ class Alembic(object):
 
         """
         if start == "current":
-            current = self._get_current()
+            current = self.get_current()
             start = current.revision if current else None
         if end == "current":
-            current = self._get_current()
+            current = self.get_current()
             end = current.revision if current else "heads"
 
         return list(
@@ -214,6 +209,7 @@ class Alembic(object):
         You can optionally specify the range of revisions to return.
 
         Arguments:
+
         - verbose:
             If `True`, shows also the path and the docstring
             of each revision file.
@@ -223,7 +219,7 @@ class Alembic(object):
             Optional end revision (including it.)
 
         """
-        for rev in self._get_history(start=start, end=end):
+        for rev in self.get_history(start=start, end=end):
             if verbose:
                 print("-" * 20)
             print(
@@ -240,6 +236,7 @@ class Alembic(object):
         """Set the given revision in the revision table. Don't run migrations.
 
         Arguments:
+
         - target:
             The target revision; "head" by default.
         - sql:
@@ -261,16 +258,17 @@ class Alembic(object):
         )
 
     def _get_currents(self) -> Tuple[Script, ...]:
-        """Get the latest revisions applied."""
+        """Get the last revisions applied."""
         env = EnvironmentContext(self.config, self.script_directory)
         with self.db.engine.connect() as connection:
-            env.configure(connection=connection, **self.context)
+            env.configure(connection=connection)
             migration_context = env.get_context()
             current_heads = migration_context.get_current_heads()
 
         return self.script_directory.get_revisions(current_heads)
 
-    def _get_current(self) -> Optional[Script]:
+    def get_current(self) -> Optional[Script]:
+        """Get the last revision applied."""
         revisions = self._get_currents()
         return revisions[0] if revisions else None
 
@@ -278,12 +276,13 @@ class Alembic(object):
         """Print the latest revision(s) applied.
 
         Arguments:
+
         - verbose:
             If `True`, shows also the path and the docstring
             of the revision file.
 
         """
-        rev = self._get_current()
+        rev = self.get_current()
         if rev:
             print(
                 rev.cmd_format(
@@ -294,24 +293,25 @@ class Alembic(object):
             )
 
     def _get_heads(self) -> Tuple[Script, ...]:
-        """Get the list of the latest revision."""
+        """Get the list of the latest revisions."""
         return self.script_directory.get_revisions("heads")
 
-    def _get_head(self) -> Optional[Script]:
+    def get_head(self) -> Optional[Script]:
         """Get the latest revision."""
         heads = self._get_heads()
         return heads[0] if heads else None
 
     def head(self, verbose: bool = False) -> None:
-        """Print the latest revision(s).
+        """Print the latest revision.
 
         Arguments:
+
         - verbose:
             If `True`, shows also the path and the docstring
             of the revision file.
 
         """
-        rev = self._get_head()
+        rev = self.get_head()
         if rev:
             print(
                 rev.cmd_format(
@@ -321,24 +321,25 @@ class Alembic(object):
                 )
             )
 
-    def init(self, script_path: StrPath) -> None:
+    def init(self, path: StrPath) -> None:
         """Creates a new migration folder
         with a `script.py.mako` template file. It doesn't fail if the
         folder or file already exists.
 
         Arguments:
-        - script_path:
+
+        - path:
             Target folder.
 
         """
-        script_path = Path(script_path)
-        script_path.mkdir(exist_ok=True)
+        path = Path(path)
+        path.mkdir(exist_ok=True)
         src_path = (
             Path(self.config.get_template_directory()) / "generic" / TEMPLATE_FILE
         )
-        dest_path = script_path / TEMPLATE_FILE
+        dest_path = path / TEMPLATE_FILE
         if not dest_path.exists():
-            shutil.copy(src_path, script_path)
+            shutil.copy(src_path, path)
 
     def create_all(self) -> None:
         """Create all the tables from the current models
@@ -346,6 +347,14 @@ class Alembic(object):
         """
         self.db.create_all()
         self.stamp()
+
+    def rev_id(self) -> str:
+        """Generate a unique id for a revision.
+
+        By default this uses `alembic.util.rev_id`. Override this
+        method to change it.
+        """
+        return util.rev_id()
 
     def get_pyceo_cli(self) -> Any:
         return pyceo_cli.get_pyceo_cli(self)
@@ -356,6 +365,8 @@ class Alembic(object):
     def get_flask_cli(self, name="db") -> Any:
         return click_cli.get_flask_cli(self, name)
 
+    # Private
+
     def _get_config(self, options: Dict[str, str]) -> Config:
         options.setdefault("file_template", DEFAULT_FILE_TEMPLATE)
         options.setdefault("version_locations", options["script_location"])
@@ -365,14 +376,6 @@ class Alembic(object):
             config.set_main_option(key, value)
 
         return config
-
-    def _rev_id(self) -> str:
-        """Generate a unique id for a revision.
-
-        By default this uses `alembic.util.rev_id`. Override this
-        method to change it.
-        """
-        return util.rev_id()
 
     def _run_online(
         self, fn: Callable, *, kwargs: Optional[Dict] = None, **envargs
