@@ -1,4 +1,4 @@
-# SQLAlchemy wrapper class
+# SQLAlchemy wrapper
 
 The `SQLAlchemy` wrapper class is a *light* wrapper over regular SQLAlchemy, mainly to simplify the configuration.
 
@@ -64,3 +64,9 @@ class User(db.Model):
 ```
 
 To learn more about how to define database models, consult the [SQLAlchemy ORM documentation](https://docs.sqlalchemy.org/en/14/orm/index.html).
+
+
+## API
+
+::: sqla_wrapper.SQLAlchemy
+    :members:

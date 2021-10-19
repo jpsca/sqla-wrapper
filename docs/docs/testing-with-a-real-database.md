@@ -197,3 +197,8 @@ class TestSomething(DBTestCase):
         # ...
 
 ```
+
+## API
+
+::: sqla_wrapper.TestTransaction
+    :members:

@@ -47,106 +47,16 @@ dbs.close()
 Instantiate `db.Session` is the recommended way to work when the session is not shared like in a  command-line script.
 
 
-## Extra methods
+## API
 
-SQLAlchemy default Session has the method `db.s.get(Model, pk)` to query and return a record by its primary key.
+SQLAlchemy default Session class has the method `.get(Model, pk)`
+to query and return a record by its primary key.
 
-SQLA-wrapper extends it with a few other ActiveRecord-like methods:
+This class extends the `sqlalchemy.orm.Session` class with some useful
+active-record-like methods and a pagination helper.
 
-### `.all(Model, **attrs)`
-
-Returns all the object found with these attributes.
-
-The filtering is done with a simple `.filter_by()` so is limited to “equality” comparisons against the columns of the model. Also, there is no way to sort the results. If you need sorting or more complex filtering, you are better served using a `db.select()`.
-
-Examples:
-
-```python
-users = db.s.all(User)
-users = db.s.all(User, deleted=False)
-users = db.s.all(User, account_id=123, deleted=False)
-```
-
-### `.create(Model, **attrs)`
-
-Creates a new object and adds it to the session. This is a shortcut for:
-
-```python
-obj = Model(**attrs)
-db.s.add(obj)
-db.s.flush()
-```
-
-Note that this does a `db.s.flush()`, so you must later call `db.s.commit()` to persist the new object, You must later call `db.s.commit()` to persist the new object.
-
-Examples:
-
-```python
-new_user = db.s.create(User, email='foo@example.com')
-db.s.commit()
-```
-
-### `.first(Model, **attrs)`
-
-Returns the first object found with these attributes or `None` if there isn't one.
-
-The filtering is done with a simple `.filter_by()` so is limited to “equality” comparisons against the columns of the model. Also, there is no way to sort the results. If you need sorting or more complex filtering, you are better served using a `db.select()`.
-
-Examples:
-
-```python
-user = db.s.first(User)
-user = db.s.first(User, deleted=False)
-```
-
-### `.first_or_create(Model, **attrs)`
-
-Tries to find an object and if none exists, it tries to creates a new one first. Use this method when you expect the object to already exists but want to create it in case it doesn't.
-
-This does a `db.s.flush()`, so you must later call `db.s.commit()` to persist the new object (in case one has been created).
-
-Examples:
-
-```python
-user1 = db.s.first_or_create(User, email='foo@example.com')
-user2 = db.s.first_or_create(User, email='foo@example.com')
-user1 is user2
-```
-
-### `.create_or_first(Model, **attrs)`
-
-Tries to create a new object, and if it fails because already exists, return the first it founds. For this to work one or more of the attributes must be unique so it does fail, otherwise you will be creating a new different object.
-
-Use this method when you expect that the object does not exists but want to avoid an exception in case it does.
-
-This does a `db.s.flush()`, so you must later call `db.s.commit()` to persist the new object (in case one has been created).
-
-Examples:
-
-```python
-user1 = db.s.create_or_first(User, email='foo@example.com')
-user2 = db.s.create_or_first(User, email='foo@example.com')
-user1 is user2
-```
-
-### `.paginate(query, total, page, per_page, padding)`
-
-Returns a `Paginator` of the `query` results. Note that you must calculate the total number of unpaginated results first.
-
-Example:
-
-```python
-query = select(User) \
-    .where(User.deleted == None)
-    .order_by(User.created_at)
-
-total = db.s.scalar(
-    select(func.count(User.id))
-    .where(User.deleted == None)
-)
-
-pag = db.s.paginate(query, total=total, page=1, per_page=20)
-```
+::: sqla_wrapper.Session
+    :members: all create first first_or_create create_or_first paginate
 
 ---
 

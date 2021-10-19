@@ -1,28 +1,41 @@
 [data-md-color-scheme="default"] {
-    --md-code-bg-color: #fff;
+	--md-code-bg-color: #fff;
 }
 
 body[data-md-color-scheme="default"] {
-    background-color: #fbf7f0;
+	background-color: #fbf7f0;
 }
 .md-header {
-    position: initial;
-    background: var(--md-primary-fg-color);
-    background: linear-gradient(
-        125deg,
-        var(--md-primary-fg-color) 0%,
-        var(--md-accent-fg-color) 99%
-    );
+	position: initial;
+	background: var(--md-primary-fg-color);
+	background: linear-gradient(
+		125deg,
+		var(--md-primary-fg-color) 0%,
+		var(--md-accent-fg-color) 99%
+	);
 }
 .md-typeset code {
-    font-size: 0.95em;
+	font-size: 0.95em;
 }
 .md-nav__title .md-nav__button.md-logo img,
 .md-nav__title .md-nav__button.md-logo svg,
 .md-header__button.md-logo img,
 .md-header__button.md-logo svg {
-    height: auto !important;
+	height: auto !important;
 }
 .md-footer {
-    margin-top: 40px;
+	margin-top: 40px;
+}
+
+.autodoc-signature {
+	margin-bottom: 20px;
+}
+.autodoc-docstring {
+	padding-left: 20px;
+	margin-bottom: 30px;
+	border-left: 5px solid rgba(230, 230, 230);
+}
+.autodoc-members {
+	padding-left: 20px;
+	margin-bottom: 15px;
 }
