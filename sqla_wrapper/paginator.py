@@ -3,7 +3,10 @@
 A helper class for simple pagination of any iterable, like a
 SQLAlchemy query, a list, or any iterable.
 """
+from __future__ import annotations
+
 from math import ceil
+from typing import Any, Iterable, Iterator, List, Optional, Tuple, Union
 
 
 __all__ = ("Paginator", "sanitize_page_number")
@@ -16,26 +19,21 @@ DEFAULT_PADDING = 0
 
 class Paginator(object):
     """Helper class for paginate data.
-    You can construct it from any SQLAlchemy query object or other iterable.
+    You can construct it from any iterable.
 
     Arguments are:
 
         query:
-            Iterable to paginate. Can be a query, a list or any
-            other iterable.
+            Iterable to paginate.
         page:
             Current page. If the value is the string
         per_page:
             Max number of items to display on each page.
         total:
-            Total number of items. If provided, no attempt wll be made to
-            calculate it from the `query` argument.
+            Total number of items. If not provided, the length
+            of items will be used
         padding:
             Number of elements of the next page to show.
-        on_error:
-            Used if the page number is too big for the total number
-            of items. Raised if it's an exception, called otherwise.
-            `None` by default.
 
     """
 
@@ -44,13 +42,12 @@ class Paginator(object):
 
     def __init__(
         self,
-        query,
-        page=DEFAULT_START_PAGE,
-        per_page=DEFAULT_PER_PAGE,
-        total=None,
-        padding=DEFAULT_PADDING,
-        on_error=None,
-    ):
+        query: Any,
+        page: Union[int, str] = DEFAULT_START_PAGE,
+        per_page: int = DEFAULT_PER_PAGE,
+        total: Optional[int] = None,
+        padding: int = DEFAULT_PADDING,
+    ) -> None:
         self.query = query
 
         # The number of items to be displayed on a page.
@@ -59,12 +56,9 @@ class Paginator(object):
         ), "`per_page` must be a positive integer"
         self.per_page = per_page
 
-        # The total number of items matching the query.
+        # The total number of items.
         if total is None:
-            try:
-                total = query.count()
-            except (TypeError, AttributeError):
-                total = query.__len__()
+            total = len(query)
         self.total = total
 
         # The current page number (1 indexed)
@@ -73,6 +67,8 @@ class Paginator(object):
         if page == "first":
             page = 1
         self.page = page = sanitize_page_number(page)
+        if page > self.num_pages:
+            page = self.num_pages
 
         # The number of items in the current page (could be less than per_page)
         if total > per_page * page:
@@ -81,101 +77,103 @@ class Paginator(object):
             showing = total - per_page * (page - 1)
         self.showing = showing
 
-        if showing == 0 and on_error:
-            if isinstance(on_error, Exception):
-                raise on_error
-            return on_error()
-
         self.padding = padding
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return self.total > 0
 
     __nonzero__ = __bool__
 
     @property
-    def num_pages(self):
+    def num_pages(self) -> int:
         """The total number of pages."""
         return int(ceil(self.total / float(self.per_page)))
 
     @property
-    def total_pages(self):
+    def total_pages(self) -> int:
         """Alias to `num_pages`"""
         return self.num_pages
 
     @property
-    def is_paginated(self):
+    def is_paginated(self) -> bool:
         """True if a more than one page exists."""
         return self.num_pages > 1
 
     @property
-    def has_prev(self):
+    def has_prev(self) -> bool:
         """True if a previous page exists."""
         return self.page > 1
 
     @property
-    def has_next(self):
+    def has_next(self) -> bool:
         """True if a next page exists."""
         return self.page < self.num_pages
 
     @property
-    def next_num(self):
+    def next_num(self) -> int:
         """Number of the next page."""
         return self.page + 1
 
     @property
-    def prev_num(self):
+    def prev_num(self) -> int:
         """Number of the previous page."""
         return self.page - 1
 
     @property
-    def prev(self):
+    def prev(self) -> Optional[Paginator]:
         """Returns a `Paginator` object for the previous page."""
         if self.has_prev:
             return Paginator(self.query, self.page - 1, per_page=self.per_page)
+        return None
 
     @property
-    def next(self):
+    def next(self) -> Optional[Paginator]:
         """Returns a `Paginator` object for the next page."""
         if self.has_next:
             return Paginator(self.query, self.page + 1, per_page=self.per_page)
+        return None
 
     @property
-    def start_index(self):
+    def start_index(self) -> int:
         """0-based index of the first element in the current page."""
         return (self.page - 1) * self.per_page
 
     @property
-    def end_index(self):
+    def end_index(self) -> int:
         """0-based index of the last element in the current page."""
         end = self.start_index + self.per_page - 1
         return min(end, self.total - 1)
 
-    def get_range(self, sep=u" - "):
-        return sep.join([str(self.start_index + 1), str(self.end_index + 1)])
+    @property
+    def offset(self) -> int:
+        offset = (self.page - 1) * self.per_page
+        return max(offset - self.padding, 0)
 
     @property
-    def items(self):
-        offset = (self.page - 1) * self.per_page
-        offset = max(offset - self.padding, 0)
+    def limit(self) -> int:
         limit = self.per_page + self.padding
         if self.page > 1:
             limit = limit + self.padding
+        return limit
 
-        if hasattr(self.query, "limit") and hasattr(self.query, "offset"):
-            return self.query.limit(limit).offset(offset)
+    @property
+    def items(self) -> Iterable:
+        offset = self.offset
+        return self.query[offset : offset + self.limit]
 
-        return self.query[offset : offset + limit]
+    @property
+    def pages(self) -> List:
+        """Proxy to get_pages()"""
+        return self.get_pages()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator:
         for i in self.items:
             yield i
 
-    def pages(self):
-        """Iterates over the page numbers in the pagination."""
-        return self.get_pages()
+    def get_range(self, sep=u" - ") -> str:
+        return sep.join([str(self.start_index + 1), str(self.end_index + 1)])
 
-    def get_pages(self, showmax=12):
+    def get_pages(self, showmax: int = 12) -> List:
         """Return a list of the page numbers in the pagination. The `showmax`
         parameter control how many numbers are shown at most.
 
@@ -250,7 +248,7 @@ class Paginator(object):
         left, center, right = self._get_page_groups(showmax)
         return self._merge_page_groups(left, center, right)
 
-    def _get_page_groups(self, showmax):
+    def _get_page_groups(self, showmax: int) -> Tuple[List[int], List[int], List[int]]:
         left = [1]
         center = [self.page]
         right = [self.num_pages]
@@ -283,34 +281,48 @@ class Paginator(object):
 
         return left, center, right
 
-    def _merge_page_groups(self, left, center, right):
-        pages = left[:]
+    def _merge_page_groups(
+        self,
+        left: List[int],
+        center: List[int],
+        right: List[int],
+    ) -> List[Union[int, None]]:
+        pages: List[Optional[int]] = []
 
-        if pages[-1] == center[0] - 2:
-            if len(pages) > 1:
-                pages = pages[:-1]
+        pages += left
+        if pages and center:
+            if pages[-1] == center[0] - 2:
+                if len(pages) > 1:
+                    pages = pages[:-1]
 
-        if pages[-1] < center[0] - 1:
-            pages.append(None)
+            if (
+                pages[-1] is not None
+                and pages[-1] < center[0] - 1
+            ):
+                pages.append(None)
 
         pages += center
+        if pages and right:
+            if pages[-1] == right[0] - 2:
+                if len(right) > 1:
+                    right = right[1:]
 
-        if pages[-1] == right[0] - 2:
-            if len(right) > 1:
-                right = right[1:]
-
-        if pages[-1] < right[0] - 1:
-            pages.append(None)
+            if (
+                pages[-1] is not None
+                and pages[-1] < right[0] - 1
+            ):
+                pages.append(None)
 
         pages += right
 
         return sorted_dedup(pages)
 
 
-def sorted_dedup(iterable):
+def sorted_dedup(iterable: Iterable) -> List[Optional[int]]:
     """Sorted deduplication without removing the
     possibly duplicated `None` values."""
-    dedup = []
+    dedup: List[Optional[int]] = []
+
     visited = set()
     for item in iterable:
         if item is None:
@@ -322,7 +334,10 @@ def sorted_dedup(iterable):
     return dedup
 
 
-def sanitize_page_number(page, default=DEFAULT_START_PAGE):
+def sanitize_page_number(
+    page: Union[int, str],
+    default: int = DEFAULT_START_PAGE,
+) -> int:
     """A helper function for cleanup a `page` argument. Cast a string to
     integer and check that the final value is positive.
     If the value is not valid, returns the default value.
@@ -333,6 +348,5 @@ def sanitize_page_number(page, default=DEFAULT_START_PAGE):
         page = int(page)
     except (ValueError, TypeError):
         return default
-    if isinstance(page, int) and (page > 0):
-        return page
-    return default
+
+    return page if page > 0 else default

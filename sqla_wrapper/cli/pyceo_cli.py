@@ -1,5 +1,7 @@
+
+
 def get_pyceo_cli(alembic):
-    import pyceo
+    import pyceo  # type: ignore
 
     return type(
         "DBCli",

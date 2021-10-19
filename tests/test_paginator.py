@@ -103,44 +103,6 @@ def test_paginator_whith_manual_total():
     assert p.next_num == 2
 
 
-class FakeStmt:
-    def __init__(self, items):
-        self._items = items
-        self._offset = 0
-        self._limit = len(items)
-
-    @property
-    def items(self):
-        return self._items[self._offset:self._offset + self._limit]
-
-    def order_by(self, _order):
-        self._order = _order
-        return self
-
-    def limit(self, _limit):
-        self._limit = _limit
-        return self
-
-    def offset(self, _offset):
-        self._offset = _offset
-        return self
-
-    def count(self):
-        return len(self.items)
-
-    def __iter__(self):
-        return self.items.__iter__()
-
-
-def test_paginated_query():
-    query = FakeStmt([{"id": i} for i in range(1, 26)])
-    p = Paginator(query, page=2, per_page=5)
-    items_in_page = list(p)
-
-    assert items_in_page[0]["id"] == 6
-    assert items_in_page[1]["id"] == 7
-
-
 def test_bool_paginator():
     assert Paginator(range(5))
     assert not Paginator([])

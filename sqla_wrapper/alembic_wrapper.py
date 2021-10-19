@@ -1,18 +1,17 @@
 import shutil
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from alembic import autogenerate, util
 from alembic.config import Config
 from alembic.runtime.environment import EnvironmentContext
-from alembic.script import ScriptDirectory
-from alembic.script.revision import Revision
+from alembic.script import Script, ScriptDirectory
 
 from .cli import click_cli, pyceo_cli
 from .sqlalchemy_wrapper import SQLAlchemy
 
 
-__all__ = ("Alembic", )
+__all__ = ("Alembic",)
 
 StrPath = Union[str, Path]
 DEFAULT_FILE_TEMPLATE = "%%(year)d_%%(month).2d_%%(day).2d_%%(rev)s_%%(slug)s"
@@ -65,7 +64,7 @@ class Alembic(object):
         *,
         empty: bool = False,
         parent: str = "head",
-    ) -> Revision:
+    ) -> Optional[Script]:
         """Create a new revision.
         Auto-generate operations by comparing models and database.
 
@@ -180,9 +179,9 @@ class Alembic(object):
             destination_rev=target,
         )
 
-    def _history(
-        self, *, start: Optional[str] = "base", end: Optional[str] = "heads"
-    ) -> List[Revision]:
+    def _get_history(
+        self, *, start: Optional[str] = None, end: Optional[str] = None
+    ) -> List[Script]:
         """Get the list of revisions in chronological order.
         You can optionally specify the range of revisions to return.
 
@@ -194,13 +193,15 @@ class Alembic(object):
 
         """
         if start == "current":
-            current = self.current()
+            current = self._get_current()
             start = current.revision if current else None
         if end == "current":
-            current = self.current()
-            end = current.revision if current else None
+            current = self._get_current()
+            end = current.revision if current else "heads"
 
-        return list(self.script_directory.walk_revisions(start, end))[::-1]
+        return list(
+            self.script_directory.walk_revisions(start or "base", end or "heads")
+        )[::-1]
 
     def history(
         self,
@@ -222,14 +223,16 @@ class Alembic(object):
             Optional end revision (including it.)
 
         """
-        for rev in self._history(start=start, end=end):
+        for rev in self._get_history(start=start, end=end):
             if verbose:
                 print("-" * 20)
-            print(rev.cmd_format(
-                verbose=verbose,
-                include_doc=True,
-                include_parents=True,
-            ))
+            print(
+                rev.cmd_format(
+                    verbose=verbose,
+                    include_doc=True,
+                    include_parents=True,
+                )
+            )
 
     def stamp(
         self, target: str = "head", *, sql: bool = False, purge: bool = False
@@ -257,7 +260,7 @@ class Alembic(object):
             purge=purge,
         )
 
-    def _currents(self) -> List[Revision]:
+    def _get_currents(self) -> Tuple[Script, ...]:
         """Get the latest revisions applied."""
         env = EnvironmentContext(self.config, self.script_directory)
         with self.db.engine.connect() as connection:
@@ -267,8 +270,8 @@ class Alembic(object):
 
         return self.script_directory.get_revisions(current_heads)
 
-    def _current(self) -> Optional[Revision]:
-        revisions = self._currents()
+    def _get_current(self) -> Optional[Script]:
+        revisions = self._get_currents()
         return revisions[0] if revisions else None
 
     def current(self, verbose: bool = False) -> None:
@@ -280,21 +283,23 @@ class Alembic(object):
             of the revision file.
 
         """
-        rev = self._current()
+        rev = self._get_current()
         if rev:
-            print(rev.cmd_format(
-                verbose=verbose,
-                include_doc=True,
-                include_parents=True,
-            ))
+            print(
+                rev.cmd_format(
+                    verbose=verbose,
+                    include_doc=True,
+                    include_parents=True,
+                )
+            )
 
-    def _heads(self) -> List[Revision]:
+    def _get_heads(self) -> Tuple[Script, ...]:
         """Get the list of the latest revision."""
         return self.script_directory.get_revisions("heads")
 
-    def _head(self) -> Optional[Revision]:
+    def _get_head(self) -> Optional[Script]:
         """Get the latest revision."""
-        heads = self._heads()
+        heads = self._get_heads()
         return heads[0] if heads else None
 
     def head(self, verbose: bool = False) -> None:
@@ -306,13 +311,15 @@ class Alembic(object):
             of the revision file.
 
         """
-        rev = self._head()
+        rev = self._get_head()
         if rev:
-            print(rev.cmd_format(
-                verbose=verbose,
-                include_doc=True,
-                include_parents=True,
-            ))
+            print(
+                rev.cmd_format(
+                    verbose=verbose,
+                    include_doc=True,
+                    include_parents=True,
+                )
+            )
 
     def init(self, script_path: StrPath) -> None:
         """Creates a new migration folder

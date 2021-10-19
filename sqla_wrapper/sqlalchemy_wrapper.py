@@ -3,13 +3,11 @@ from typing import Any, Dict, Optional
 import sqlalchemy
 import sqlalchemy.orm
 
-from .base_model_class import BaseModel
+from .base_model import BaseModel
 from .session import PatchedScopedSession, Session
 
 
 __all__ = ("SQLAlchemy", "TestTransaction")
-
-TestTransaction = None
 
 
 class SQLAlchemy:
@@ -106,7 +104,7 @@ class SQLAlchemy:
         kwargs.setdefault("bind", self.engine)
         self.registry.metadata.drop_all(**kwargs)
 
-    def test_transaction(self, savepoint: bool = False) -> TestTransaction:
+    def test_transaction(self, savepoint: bool = False) -> "TestTransaction":
         return TestTransaction(self, savepoint=savepoint)
 
     def _include_sqlalchemy(self):

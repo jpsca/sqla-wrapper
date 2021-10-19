@@ -73,9 +73,9 @@ def test_upgrade(memdb, dst):
     alembic = Alembic(memdb, script_path=dst, init=True)
     rev1 = alembic.revision("test1")
 
-    assert alembic._current() is None
+    assert alembic._get_current() is None
     alembic.upgrade()
-    assert alembic._current() == rev1
+    assert alembic._get_current() == rev1
 
 
 def test_upgrade_sql(memdb, dst, capsys):
@@ -115,16 +115,16 @@ def test_downgrade(memdb, dst):
     rev2 = alembic.revision("test2")
     alembic.upgrade()
 
-    assert alembic._current() == rev2
+    assert alembic._get_current() == rev2
     alembic.downgrade()
-    assert alembic._current() == rev1
+    assert alembic._get_current() == rev1
     alembic.upgrade()
     alembic.downgrade(-2)
-    assert alembic._current() is None
+    assert alembic._get_current() is None
     alembic.upgrade()
-    assert alembic._current() == rev2
+    assert alembic._get_current() == rev2
     alembic.downgrade(1)
-    assert alembic._current() == rev1
+    assert alembic._get_current() == rev1
 
 
 def test_downgrade_sql(memdb, dst, capsys):
@@ -166,10 +166,11 @@ def test_get_history(memdb, dst):
     _create_test_model2(memdb)
     rev2 = alembic.revision("test2")
 
-    assert alembic._history() == [rev1, rev2]
-    assert alembic._history(end="current") == []
+    print("rev1, rev2", rev1, rev2)
+    assert alembic._get_history() == [rev1, rev2]
+    assert alembic._get_history(end="current") == [rev1]
     alembic.upgrade()
-    assert alembic._history(start="current") == [rev1, rev2]
+    assert alembic._get_history(start="current") == [rev2]
 
 
 def test_print_history(memdb, dst, capsys):
@@ -205,7 +206,7 @@ def test_stamp(memdb, dst):
     alembic = Alembic(memdb, script_path=dst, init=True)
     rev1 = alembic.revision("test1")
     alembic.stamp()
-    assert alembic._current() == rev1
+    assert alembic._get_current() == rev1
 
 
 def test_stamp_sql(memdb, dst, capsys):
@@ -261,7 +262,7 @@ def test_get_head(memdb, dst):
     _create_test_model2(memdb)
     rev2 = alembic.revision("test2")
 
-    assert alembic._head() == rev2
+    assert alembic._get_head() == rev2
 
 
 def test_print_head(memdb, dst, capsys):
@@ -307,7 +308,7 @@ def test_create_all(memdb, dst):
 
     with memdb.Session() as session:
         session.execute(select(Model)).all()
-    assert alembic._current() == rev1
+    assert alembic._get_current() == rev1
 
 
 def test_get_pyceo_cli(memdb, dst):
