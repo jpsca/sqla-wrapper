@@ -1,0 +1,1048 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A friendly wrapper for modern SQLAlchemy and Alembic">
+      
+      
+      
+      
+        <link rel="canonical" href="https://jpsca.github.io/sqla-wrapper/api/">
+      
+      <link rel="icon" href="../assets/img/favicon.svg">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.4">
+    
+    
+      
+        <title>API Reference - SQLA Wrapper</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.db9e7362.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Convergence:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Convergence";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../assets/css/highlight.css">
+    
+      <link rel="stylesheet" href="../assets/css/common.css">
+    
+    
+      
+
+
+    
+    
+
+
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="SQLA Wrapper - API Reference" />
+<meta property="og:description" content="A friendly wrapper for modern SQLAlchemy and Alembic" />
+<meta property="og:url" content="https://jpsca.github.io/sqla-wrapper/api/" />
+<meta property="og:image" content="https://jpsca.github.io/sqla-wrapper/assets/img/social.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1280" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image">
+
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="pink">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="SQLA Wrapper" class="md-header__button md-logo" aria-label="SQLA Wrapper" data-md-component="logo">
+      
+  <img src="../assets/img/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SQLA Wrapper
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 10.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13zM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061zM16 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8zM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8zm10.657-5.657a.75.75 0 0 1 0 1.061l-1.061 1.06a.75.75 0 1 1-1.06-1.06l1.06-1.06a.75.75 0 0 1 1.06 0zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="pink"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M9.598 1.591a.75.75 0 0 1 .785-.175 7 7 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.5 5.5 0 1 0 7.678-7.678z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/jpsca/sqla-wrapper" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jpsca/sqla-wrapper
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SQLA Wrapper" class="md-nav__button md-logo" aria-label="SQLA Wrapper" data-md-component="logo">
+      
+  <img src="../assets/img/logo.svg" alt="logo">
+
+    </a>
+    SQLA Wrapper
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/jpsca/sqla-wrapper" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jpsca/sqla-wrapper
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          SQLAlchemy
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="SQLAlchemy" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          SQLAlchemy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sqlalchemy-wrapper/" class="md-nav__link">
+        SQLAlchemy wrapper
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../working-with-the-session/" class="md-nav__link">
+        Working with the session
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-with-a-real-database/" class="md-nav__link">
+        Testing with a real database
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Alembic
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Alembic" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Alembic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alembic-wrapper/" class="md-nav__link">
+        Alembic wrapper
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        API Reference
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sqlalchemy-wrapper-class" class="md-nav__link">
+    SQLAlchemy wrapper class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#session-class" class="md-nav__link">
+    Session class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testtransaction-class" class="md-nav__link">
+    TestTransaction class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alembic-wrapper-class" class="md-nav__link">
+    Alembic wrapper class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paginator-class" class="md-nav__link">
+    Paginator class
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sqlalchemy-wrapper-class" class="md-nav__link">
+    SQLAlchemy wrapper class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#session-class" class="md-nav__link">
+    Session class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testtransaction-class" class="md-nav__link">
+    TestTransaction class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alembic-wrapper-class" class="md-nav__link">
+    Alembic wrapper class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paginator-class" class="md-nav__link">
+    Paginator class
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">#</a></h1>
+<h2 id="sqlalchemy-wrapper-class">SQLAlchemy wrapper class<a class="headerlink" href="#sqlalchemy-wrapper-class" title="Permanent link">#</a></h2>
+<div class="autodoc">
+<div class="autodoc-signature"><em>class </em><code>sqla_wrapper.<strong>SQLAlchemy</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">url=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">dialect=&rsquo;sqlite&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">name=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">user=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">password=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">host=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">port=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">engine_options=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">session_options=None</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Create a SQLAlchemy connection</p>
+<p>This class creates an engine, a base class for your models, and a scoped session.</p>
+<p>The string form of the URL is
+<code>dialect[+driver]://user:password@host/dbname[?key=value..]</code>,
+where dialect is a database name such as mysql, postgresql, etc., and driver the
+name of a DBAPI, such as psycopg2, pyodbc, etc.</p>
+<p>Instead of the connection URL you can also specify dialect (plus optional driver),
+user, password, host, port, and database name as separate arguments.</p>
+<p>Please review the
+<a href="https://docs.sqlalchemy.org/en/14/core/engines.html#database-urls">Database URLs</a>
+section of the SQLAlchemy documentation, for general guidelines in composing
+URL strings. In particular, special characters, such as those often part of
+passwords, must be URL-encoded to be properly parsed.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">database_uri</span><span class="p">)</span>
+<span class="c1"># or SQLAlchemy(dialect=, name= [, user=] [, password=] [, host=] [, port=])</span>
+
+<span class="k">class</span> <span class="nc">Base</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n"><strong>tablename</strong></span> <span class="o">=</span> <span class="s2">&quot;users&quot;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">login</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">deleted</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">)</span>
+</code></pre></div></div>
+<div class="autodoc-members">
+<div class="autodoc-signature"><code><strong>create_all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Creates all tables.</p>
+<p>Only tables that do not already exist are created. Existing tables are
+not modified.</p></div>
+<div class="autodoc-signature"><code><strong>drop_all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Drop all the database tables.</p>
+<p>Note that this is a destructive operation; data stored in the
+database will be deleted when this method is called.</p></div>
+<div class="autodoc-signature"><code><strong>test_transaction</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">savepoint=False</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
+</div>
+</div>
+<h2 id="session-class">Session class<a class="headerlink" href="#session-class" title="Permanent link">#</a></h2>
+<div class="autodoc">
+<div class="autodoc-signature"><em>class </em><code>sqla_wrapper.<strong>Session</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">bind=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">autoflush=True</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">future=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">expire_on_commit=True</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">autocommit=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">twophase=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">binds=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">enable_baked_queries=True</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">info=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">query_cls=None</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>SQLAlchemy default Session class has the method <code>.get(Model, pk)</code>
+to query and return a record by its primary key.</p>
+<p>This class extends the <code>sqlalchemy.orm.Session</code> class with some useful
+active-record-like methods and a pagination helper.</p></div>
+<div class="autodoc-members">
+<div class="autodoc-signature"><code><strong>all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">Model</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**attrs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Returns all the object found with these attributes.</p>
+<p>The filtering is done with a simple <code>.filter_by()</code> so is limited
+to “equality” comparisons against the columns of the model.
+Also, there is no way to sort the results. If you need sorting or
+more complex filtering, you are better served using a <code>db.select()</code>.</p>
+<p>Examples:</p>
+<div class="highlight"><pre><span></span><code><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>create</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">Model</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**attrs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Creates a new object and adds it to the session.</p>
+<p>This is a shortcut for:</p>
+<div class="highlight"><pre><span></span><code><span class="n">obj</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</code></pre></div>
+<p>Note that this does a <code>db.s.flush()</code>, so you must later call
+<code>db.s.commit()</code> to persist the new object.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="n">new_user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>first</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">Model</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**attrs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Returns the first object found with these attributes or <code>None</code>
+if there isn&rsquo;t one.</p>
+<p>The filtering is done with a simple <code>.filter_by()</code> so is limited
+to “equality” comparisons against the columns of the model.
+Also, there is no way to sort the results. If you need sorting or
+more complex filtering, you are better served using a <code>db.select()</code>.</p>
+<p>Examples:</p>
+<div class="highlight"><pre><span></span><code><span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+<span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>first_or_create</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">Model</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**attrs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Tries to find an object and if none exists, it tries to create
+a new one first. Use this method when you expect the object to
+already exists but want to create it in case it doesn&rsquo;t.</p>
+<p>This does a <code>db.s.flush()</code>, so you must later call <code>db.s.commit()</code>
+to persist the new object (in case one has been created).</p>
+<p>Examples:</p>
+<div class="highlight"><pre><span></span><code><span class="n">user1</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first_or_create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
+<span class="n">user2</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first_or_create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
+<span class="n">user1</span> <span class="ow">is</span> <span class="n">user2</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>create_or_first</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">Model</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**attrs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Tries to create a new object, and if it fails because already exists,
+return the first it founds. For this to work one or more of the
+attributes must be unique so it does fail, otherwise you will be creating
+a new different object.</p>
+<p>Use this method when you expect that the object does not exists but want
+to avoid an exception in case it does.</p>
+<p>This does a <code>db.s.flush()</code>, so you must later call <code>db.s.commit()</code>
+to persist the new object (in case one has been created).</p>
+<p>Examples:</p>
+<div class="highlight"><pre><span></span><code><span class="n">user1</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create_or_first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
+<span class="n">user2</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create_or_first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
+<span class="n">user1</span> <span class="ow">is</span> <span class="n">user2</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>paginate</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">query</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">total</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">page=1</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">per_page=20</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">padding=0</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Returns a <code>Paginator</code> of the <code>query</code> results.
+Note that you must calculate the total number of unpaginated
+results first.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="n">query</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>             <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">deleted</span> <span class="o"><mark></span> <span class="kc">None</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span>
+
+<span class="n">total</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span>
+    <span class="n">select</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">deleted</span> <span class="o"></mark></span> <span class="kc">None</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">pag</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">total</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div></div>
+</div>
+</div>
+<h2 id="testtransaction-class">TestTransaction class<a class="headerlink" href="#testtransaction-class" title="Permanent link">#</a></h2>
+<div class="autodoc">
+<div class="autodoc-signature"><em>class </em><code>sqla_wrapper.<strong>TestTransaction</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">db</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">savepoint=False</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Helper for building sessions that rollback everyting at the end.</p>
+<p>See <a href="https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#session-external-transaction">&ldquo;Joining a Session into an External Transaction&rdquo;</a>
+in the SQLAlchemy documentation.</p></div>
+<div class="autodoc-members">
+<div class="autodoc-signature"><code><strong>close</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
+</div>
+</div>
+<h2 id="alembic-wrapper-class">Alembic wrapper class<a class="headerlink" href="#alembic-wrapper-class" title="Permanent link">#</a></h2>
+<div class="autodoc">
+<div class="autodoc-signature"><em>class </em><code>sqla_wrapper.<strong>Alembic</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">db</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">path=&rsquo;db/migrations&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**options</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Provide an Alembic environment and migration API.</p>
+<p>For a more in-depth understanding of these methods and the extra options, you
+can read the
+<a href="https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file">documentation for the Alembic config</a>.</p>
+<p>Arguments:</p>
+<ul>
+<li>db:
+    A <code>sqla_wrapper.SQLAlchemy</code> instance.</li>
+<li>path:
+    Path to the migrations folder.</li>
+<li>**options:
+    Other alembic options</li>
+</ul></div>
+<div class="autodoc-members">
+<div class="autodoc-signature"><code><strong>revision</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">message</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">empty=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">parent=&rsquo;head&rsquo;</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Create a new revision.
+Auto-generate operations by comparing models and database.</p>
+<p>Arguments:</p>
+<ul>
+<li>message:
+    Revision message.</li>
+<li>empty:
+    Generate just an empty migration file, not the operations.</li>
+<li>parent:
+    Parent revision of this new revision.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>upgrade</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">target=&rsquo;head&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sql=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Run migrations to upgrade database.</p>
+<p>Arguments:</p>
+<ul>
+<li>target:
+    Revision target or &ldquo;from:to&rdquo; range if <code>sql=True</code>. &ldquo;head&rdquo;
+    by default.</li>
+<li>sql:
+    Don&rsquo;t emit SQL to database, dump to standard output instead.</li>
+<li>**kwargs:
+    Optional arguments. If these are passed, they are sent directly
+    to the <code>upgrade()</code> functions within each revision file.
+    To use, modify the <code>script.py.mako</code>template file
+    so that the <code>upgrade()</code> functions can accept arguments.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>downgrade</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">target=&rsquo;-1&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sql=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Run migrations to downgrade database.</p>
+<p>Arguments:</p>
+<ul>
+<li>target:
+    Revision target as an integer relative to the current
+    state (e.g.: &ldquo;-1&rdquo;), or as a &ldquo;from:to&rdquo; range if <code>sql=True</code>.
+    &ldquo;-1&rdquo; by default.</li>
+<li>sql:
+    Don&rsquo;t emit SQL to database, dump to standard output instead.</li>
+<li>**kwargs:
+    Optional arguments. If these are passed, they are sent directly
+    to the <code>downgrade()</code> functions within each revision file.
+    To use, modify the <code>script.py.mako</code> template file
+    so that the <code>downgrade()</code> functions can accept arguments.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>get_history</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">start=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">end=None</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Get the list of revisions in chronological order.
+You can optionally specify the range of revisions to return.</p>
+<p>Arguments:</p>
+<ul>
+<li>start:
+    From this revision (including it.)</li>
+<li>end:
+    To this revision (including it.)</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>history</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">verbose=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">start=&rsquo;base&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">end=&rsquo;heads&rsquo;</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Print the list of revisions in chronological order.
+You can optionally specify the range of revisions to return.</p>
+<p>Arguments:</p>
+<ul>
+<li>verbose:
+    If <code>True</code>, shows also the path and the docstring
+    of each revision file.</li>
+<li>start:
+    Optional starting revision (including it.)</li>
+<li>end:
+    Optional end revision (including it.)</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>stamp</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">target=&rsquo;head&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sql=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">purge=False</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Set the given revision in the revision table. Don&rsquo;t run migrations.</p>
+<p>Arguments:</p>
+<ul>
+<li>target:
+    The target revision; &ldquo;head&rdquo; by default.</li>
+<li>sql:
+    Don&rsquo;t emit SQL to the database, dump to the standard
+    output instead.</li>
+<li>purge:
+    Delete all entries in the version table before stamping.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>get_current</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Get the last revision applied.</p></div>
+<div class="autodoc-signature"><code><strong>current</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">verbose=False</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Print the latest revision(s) applied.</p>
+<p>Arguments:</p>
+<ul>
+<li>verbose:
+    If <code>True</code>, shows also the path and the docstring
+    of the revision file.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>get_head</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Get the latest revision.</p></div>
+<div class="autodoc-signature"><code><strong>head</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">verbose=False</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Print the latest revision.</p>
+<p>Arguments:</p>
+<ul>
+<li>verbose:
+    If <code>True</code>, shows also the path and the docstring
+    of the revision file.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>init</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">path</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Creates a new migration folder
+with a <code>script.py.mako</code> template file. It doesn&rsquo;t fail if the
+folder or file already exists.</p>
+<p>Arguments:</p>
+<ul>
+<li>path:
+    Target folder.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>create_all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Create all the tables from the current models
+and stamp the latest revision without running any migration.</p></div>
+<div class="autodoc-signature"><code><strong>rev_id</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Generate a unique id for a revision.</p>
+<p>By default this uses <code>alembic.util.rev_id</code>. Override this
+method to change it.</p></div>
+<div class="autodoc-signature"><code><strong>get_pyceo_cli</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
+<div class="autodoc-signature"><code><strong>get_click_cli</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">name=&rsquo;db&rsquo;</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
+<div class="autodoc-signature"><code><strong>get_flask_cli</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">name=&rsquo;db&rsquo;</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
+</div>
+</div>
+<h2 id="paginator-class">Paginator class<a class="headerlink" href="#paginator-class" title="Permanent link">#</a></h2>
+<div class="autodoc">
+<div class="autodoc-signature"><em>class </em><code>sqla_wrapper.<strong>Paginator</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">query</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">page=1</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">per_page=20</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">total=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">padding=0</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Helper class for paginate data.
+You can construct it from any iterable.</p>
+<p>Arguments are:</p>
+<div class="highlight"><pre><span></span><code>query:
+    Iterable to paginate.
+page:
+    Current page. If the value is the string
+per_page:
+    Max number of items to display on each page.
+total:
+    Total number of items. If not provided, the length
+    of items will be used
+padding:
+    Number of elements of the next page to show.
+</code></pre></div></div>
+<div class="autodoc-members">
+<div class="autodoc-signature"><code><strong>end_index</strong></code></div>
+<div class="autodoc-docstring"><p>0-based index of the last element in the current page.</p></div>
+<div class="autodoc-signature"><code><strong>get_pages</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">showmax=12</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Return a list of the page numbers in the pagination. The <code>showmax</code>
+parameter control how many numbers are shown at most.</p>
+<p>Depending of the page number and the showmax value, there are several
+possible scenarios, but the these rules are followed:</p>
+<ol>
+<li>The first, last and current pages are always returned.</li>
+<li>After those three, the remaining slots are filled around the
+current page, after the first page, and before the last page, in that
+order, in turns.</li>
+<li>Skipped page numbers are represented as <code>None</code>. We never skip just
+one page, so the final number of pages shown could be less than
+the value of <code>showmax</code>.</li>
+</ol>
+<p>Examples:</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">(</span><span class="mi">7</span><span class="p">),</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">9</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">13</span><span class="p">),</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="p">(</span><span class="mi">14</span><span class="p">),</span> <span class="mi">15</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="p">]</span>
+</code></pre></div>
+<p>This is one way how you could render such a pagination in the template:</p>
+<div class="highlight"><pre><span></span><code><span class="x">  &lt;p&gt;Showing </span><span class="cp">{{</span> <span class="nv">pg.showing</span> <span class="cp">}}</span><span class="x"> or </span><span class="cp">{{</span> <span class="nv">pg.total</span> <span class="cp">}}</span><span class="x">&lt;/p&gt;</span>
+<span class="x">  &lt;ol class=&quot;pg&quot;&gt;</span>
+<span class="x">  </span><span class="cp">{%</span>- <span class="k">if</span> <span class="nv">pg.has_prev</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;li&gt;&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">url_for</span><span class="o">(</span><span class="nv">endpoint</span><span class="o">,</span> <span class="nv">page</span><span class="o">=</span><span class="nv">pg.prev_num</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;</span>
+<span class="x">     rel=&quot;me prev&quot;&gt;«&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">  </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;li class=&quot;disabled&quot;&gt;&lt;span&gt;«&lt;/span&gt;&lt;/li&gt;</span>
+<span class="x">  </span><span class="cp">{%</span>- <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="x">  </span><span class="cp">{%</span>- <span class="k">for</span> <span class="nv">page</span> <span class="k">in</span> <span class="nv">pg.pages</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">page</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">page</span> <span class="o">!=</span> <span class="nv">pg.page</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;li&gt;&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">url_for</span><span class="o">(</span><span class="nv">endpoint</span><span class="o">,</span> <span class="nv">page</span><span class="o">=</span><span class="nv">page</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;</span>
+<span class="x">         rel=&quot;me&quot;&gt;</span><span class="cp">{{</span> <span class="nv">page</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;li class=&quot;current&quot;&gt;&lt;span&gt;</span><span class="cp">{{</span> <span class="nv">page</span> <span class="cp">}}</span><span class="x">&lt;/span&gt;&lt;/li&gt;</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">      &lt;li&gt;&lt;span class=ellipsis&gt;…&lt;/span&gt;&lt;/li&gt;</span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">  </span><span class="cp">{%</span>- <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="x">  </span><span class="cp">{%</span>- <span class="k">if</span> <span class="nv">pg.has_next</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;li&gt;&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">url_for</span><span class="o">(</span><span class="nv">endpoint</span><span class="o">,</span> <span class="nv">page</span><span class="o">=</span><span class="nv">pg.next_num</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;</span>
+<span class="x">     rel=&quot;me next&quot;&gt;»&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">  </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;li class=&quot;disabled&quot;&gt;&lt;span&gt;»&lt;/span&gt;&lt;/li&gt;</span>
+<span class="x">  </span><span class="cp">{%</span>- <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">  &lt;/ol&gt;</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>get_range</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sep=&rsquo; - &lsquo;</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
+<div class="autodoc-signature"><code><strong>has_next</strong></code></div>
+<div class="autodoc-docstring"><p>True if a next page exists.</p></div>
+<div class="autodoc-signature"><code><strong>has_prev</strong></code></div>
+<div class="autodoc-docstring"><p>True if a previous page exists.</p></div>
+<div class="autodoc-signature"><code><strong>is_paginated</strong></code></div>
+<div class="autodoc-docstring"><p>True if a more than one page exists.</p></div>
+<div class="autodoc-signature"><code><strong>items</strong></code></div>
+<div class="autodoc-docstring"></div>
+<div class="autodoc-signature"><code><strong>limit</strong></code></div>
+<div class="autodoc-docstring"></div>
+<div class="autodoc-signature"><code><strong>next</strong></code></div>
+<div class="autodoc-docstring"><p>Returns a <code>Paginator</code> object for the next page.</p></div>
+<div class="autodoc-signature"><code><strong>next_num</strong></code></div>
+<div class="autodoc-docstring"><p>Number of the next page.</p></div>
+<div class="autodoc-signature"><code><strong>num_pages</strong></code></div>
+<div class="autodoc-docstring"><p>The total number of pages.</p></div>
+<div class="autodoc-signature"><code><strong>offset</strong></code></div>
+<div class="autodoc-docstring"></div>
+<div class="autodoc-signature"><code><strong>pages</strong></code></div>
+<div class="autodoc-docstring"><p>Proxy to get_pages()</p></div>
+<div class="autodoc-signature"><code><strong>prev</strong></code></div>
+<div class="autodoc-docstring"><p>Returns a <code>Paginator</code> object for the previous page.</p></div>
+<div class="autodoc-signature"><code><strong>prev_num</strong></code></div>
+<div class="autodoc-docstring"><p>Number of the previous page.</p></div>
+<div class="autodoc-signature"><code><strong>showing</strong></code></div>
+<div class="autodoc-docstring"><p>int([x]) -&gt; integer
+int(x, base=10) -&gt; integer</p>
+<p>Convert a number or string to an integer, or return 0 if no arguments
+are given.  If x is a number, return x.<strong>int</strong>().  For floating point
+numbers, this truncates towards zero.</p>
+<p>If x is not a number or if base is given, then x must be a string,
+bytes, or bytearray instance representing an integer literal in the
+given base.  The literal can be preceded by &lsquo;+&rsquo; or &lsquo;-&lsquo; and be surrounded
+by whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.
+Base 0 means to interpret the base from the string as an integer literal.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>int(&lsquo;0b100&rsquo;, base=0)
+4</p>
+</blockquote>
+</blockquote>
+</blockquote></div>
+<div class="autodoc-signature"><code><strong>start_index</strong></code></div>
+<div class="autodoc-docstring"><p>0-based index of the first element in the current page.</p></div>
+<div class="autodoc-signature"><code><strong>total</strong></code></div>
+<div class="autodoc-docstring"><p>int([x]) -&gt; integer
+int(x, base=10) -&gt; integer</p>
+<p>Convert a number or string to an integer, or return 0 if no arguments
+are given.  If x is a number, return x.<strong>int</strong>().  For floating point
+numbers, this truncates towards zero.</p>
+<p>If x is not a number or if base is given, then x must be a string,
+bytes, or bytearray instance representing an integer literal in the
+given base.  The literal can be preceded by &lsquo;+&rsquo; or &lsquo;-&lsquo; and be surrounded
+by whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.
+Base 0 means to interpret the base from the string as an integer literal.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>int(&lsquo;0b100&rsquo;, base=0)
+4</p>
+</blockquote>
+</blockquote>
+</blockquote></div>
+<div class="autodoc-signature"><code><strong>total_pages</strong></code></div>
+<div class="autodoc-docstring"><p>Alias to <code>num_pages</code></p></div>
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../alembic-wrapper/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Alembic wrapper" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Alembic wrapper
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2013 - 2021 Juan-Pablo Scaletti
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "navigation.tracking", "search.suggest", "search.highligh"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.8397ff9e.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e84347e.min.js"></script>
+      
+    
+  </body>
+</html>

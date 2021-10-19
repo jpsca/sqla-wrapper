@@ -18,7 +18,7 @@
     
     
       
-        <title>SQLAlchemy wrapper class - SQLA Wrapper</title>
+        <title>SQLAlchemy wrapper - SQLA Wrapper</title>
       
     
     
@@ -54,7 +54,7 @@
 
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="SQLA Wrapper - SQLAlchemy wrapper class" />
+<meta property="og:title" content="SQLA Wrapper - SQLAlchemy wrapper" />
 <meta property="og:description" content="A friendly wrapper for modern SQLAlchemy and Alembic" />
 <meta property="og:url" content="https://jpsca.github.io/sqla-wrapper/sqlalchemy-wrapper/" />
 <meta property="og:image" content="https://jpsca.github.io/sqla-wrapper/assets/img/social.png" />
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sqlalchemy-wrapper-class" class="md-skip">
+        <a href="#sqlalchemy-wrapper" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SQLAlchemy wrapper class
+              SQLAlchemy wrapper
             
           </span>
         </div>
@@ -270,6 +270,34 @@
     
   
   
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          SQLAlchemy
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="SQLAlchemy" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          SQLAlchemy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
@@ -279,12 +307,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          SQLAlchemy wrapper class
+          SQLAlchemy wrapper
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        SQLAlchemy wrapper class
+        SQLAlchemy wrapper
       </a>
       
         
@@ -315,6 +343,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    API
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -322,11 +357,10 @@
     </li>
   
 
-    
-      
-      
-      
-
+            
+          
+            
+              
   
   
   
@@ -337,6 +371,27 @@
     </li>
   
 
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-with-a-real-database/" class="md-nav__link">
+        Testing with a real database
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
     
       
       
@@ -345,10 +400,43 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Alembic
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Alembic" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Alembic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../testing-with-a-real-database/" class="md-nav__link">
-        Testing with a real database
+      <a href="../alembic-wrapper/" class="md-nav__link">
+        Alembic wrapper
       </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -361,8 +449,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../alembic-wrapper/" class="md-nav__link">
-        Alembic wrapper
+      <a href="../api/" class="md-nav__link">
+        API Reference
       </a>
     </li>
   
@@ -407,6 +495,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    API
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -420,7 +515,7 @@
               
                 
                 
-                <h1 id="sqlalchemy-wrapper-class">SQLAlchemy wrapper class<a class="headerlink" href="#sqlalchemy-wrapper-class" title="Permanent link">#</a></h1>
+                <h1 id="sqlalchemy-wrapper">SQLAlchemy wrapper<a class="headerlink" href="#sqlalchemy-wrapper" title="Permanent link">#</a></h1>
 <p>The <code>SQLAlchemy</code> wrapper class is a <em>light</em> wrapper over regular SQLAlchemy, mainly to simplify the configuration.</p>
 <p>A <code>SQLAlchemy</code> instance gives you access to the following things:</p>
 <ul>
@@ -466,6 +561,22 @@
     <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
 </code></pre></div>
 <p>To learn more about how to define database models, consult the <a href="https://docs.sqlalchemy.org/en/14/orm/index.html">SQLAlchemy ORM documentation</a>.</p>
+<h2 id="api">API<a class="headerlink" href="#api" title="Permanent link">#</a></h2>
+<div class="autodoc">
+<div class="autodoc-signature"><em>class </em><code>sqla_wrapper.<strong>SQLAlchemy</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">url=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">dialect=&rsquo;sqlite&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">name=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">user=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">password=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">host=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">port=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">engine_options=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">session_options=None</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-members">
+<div class="autodoc-signature"><code><strong>create_all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Creates all tables.</p>
+<p>Only tables that do not already exist are created. Existing tables are
+not modified.</p></div>
+<div class="autodoc-signature"><code><strong>drop_all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Drop all the database tables.</p>
+<p>Note that this is a destructive operation; data stored in the
+database will be deleted when this method is called.</p></div>
+<div class="autodoc-signature"><code><strong>test_transaction</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">savepoint=False</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
+</div>
+</div>
                 
               
               
@@ -547,7 +658,7 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.tracking", "navigation.top", "search.suggest", "search.highligh"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.8397ff9e.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "navigation.tracking", "search.suggest", "search.highligh"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.8397ff9e.min.js", "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.1e84347e.min.js"></script>

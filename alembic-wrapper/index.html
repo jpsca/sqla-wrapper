@@ -268,18 +268,43 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          SQLAlchemy
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="SQLAlchemy" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          SQLAlchemy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
       <a href="../sqlalchemy-wrapper/" class="md-nav__link">
-        SQLAlchemy wrapper class
+        SQLAlchemy wrapper
       </a>
     </li>
   
 
-    
-      
-      
-      
-
+            
+          
+            
+              
   
   
   
@@ -290,11 +315,10 @@
     </li>
   
 
-    
-      
-      
-      
-
+            
+          
+            
+              
   
   
   
@@ -305,11 +329,46 @@
     </li>
   
 
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
     
       
       
       
 
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Alembic
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Alembic" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Alembic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
   
   
     
@@ -387,10 +446,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    API
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        API Reference
+      </a>
     </li>
   
 
@@ -461,6 +549,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    API
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -520,6 +615,133 @@
 
 <span class="n">cli</span> <span class="o">=</span> <span class="n">Manage</span><span class="p">()</span>
 </code></pre></div>
+<h2 id="api">API<a class="headerlink" href="#api" title="Permanent link">#</a></h2>
+<p>For a more in-depth understanding of these methods and the extra options, you can read the <a href="https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file">documentation for the Alembic config</a>.</p>
+<div class="autodoc">
+<div class="autodoc-signature"><em>class </em><code>sqla_wrapper.<strong>Alembic</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">db</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">path=&rsquo;db/migrations&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**options</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-members">
+<div class="autodoc-signature"><code><strong>revision</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">message</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">empty=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">parent=&rsquo;head&rsquo;</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Create a new revision.
+Auto-generate operations by comparing models and database.</p>
+<p>Arguments:</p>
+<ul>
+<li>message:
+    Revision message.</li>
+<li>empty:
+    Generate just an empty migration file, not the operations.</li>
+<li>parent:
+    Parent revision of this new revision.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>upgrade</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">target=&rsquo;head&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sql=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Run migrations to upgrade database.</p>
+<p>Arguments:</p>
+<ul>
+<li>target:
+    Revision target or &ldquo;from:to&rdquo; range if <code>sql=True</code>. &ldquo;head&rdquo;
+    by default.</li>
+<li>sql:
+    Don&rsquo;t emit SQL to database, dump to standard output instead.</li>
+<li>**kwargs:
+    Optional arguments. If these are passed, they are sent directly
+    to the <code>upgrade()</code> functions within each revision file.
+    To use, modify the <code>script.py.mako</code>template file
+    so that the <code>upgrade()</code> functions can accept arguments.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>downgrade</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">target=&rsquo;-1&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sql=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**kwargs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Run migrations to downgrade database.</p>
+<p>Arguments:</p>
+<ul>
+<li>target:
+    Revision target as an integer relative to the current
+    state (e.g.: &ldquo;-1&rdquo;), or as a &ldquo;from:to&rdquo; range if <code>sql=True</code>.
+    &ldquo;-1&rdquo; by default.</li>
+<li>sql:
+    Don&rsquo;t emit SQL to database, dump to standard output instead.</li>
+<li>**kwargs:
+    Optional arguments. If these are passed, they are sent directly
+    to the <code>downgrade()</code> functions within each revision file.
+    To use, modify the <code>script.py.mako</code> template file
+    so that the <code>downgrade()</code> functions can accept arguments.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>get_history</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">start=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">end=None</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Get the list of revisions in chronological order.
+You can optionally specify the range of revisions to return.</p>
+<p>Arguments:</p>
+<ul>
+<li>start:
+    From this revision (including it.)</li>
+<li>end:
+    To this revision (including it.)</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>history</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">verbose=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">start=&rsquo;base&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">end=&rsquo;heads&rsquo;</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Print the list of revisions in chronological order.
+You can optionally specify the range of revisions to return.</p>
+<p>Arguments:</p>
+<ul>
+<li>verbose:
+    If <code>True</code>, shows also the path and the docstring
+    of each revision file.</li>
+<li>start:
+    Optional starting revision (including it.)</li>
+<li>end:
+    Optional end revision (including it.)</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>stamp</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">target=&rsquo;head&rsquo;</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">sql=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">purge=False</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Set the given revision in the revision table. Don&rsquo;t run migrations.</p>
+<p>Arguments:</p>
+<ul>
+<li>target:
+    The target revision; &ldquo;head&rdquo; by default.</li>
+<li>sql:
+    Don&rsquo;t emit SQL to the database, dump to the standard
+    output instead.</li>
+<li>purge:
+    Delete all entries in the version table before stamping.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>get_current</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Get the last revision applied.</p></div>
+<div class="autodoc-signature"><code><strong>current</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">verbose=False</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Print the latest revision(s) applied.</p>
+<p>Arguments:</p>
+<ul>
+<li>verbose:
+    If <code>True</code>, shows also the path and the docstring
+    of the revision file.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>get_head</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Get the latest revision.</p></div>
+<div class="autodoc-signature"><code><strong>head</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">verbose=False</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Print the latest revision.</p>
+<p>Arguments:</p>
+<ul>
+<li>verbose:
+    If <code>True</code>, shows also the path and the docstring
+    of the revision file.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>init</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">path</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Creates a new migration folder
+with a <code>script.py.mako</code> template file. It doesn&rsquo;t fail if the
+folder or file already exists.</p>
+<p>Arguments:</p>
+<ul>
+<li>path:
+    Target folder.</li>
+</ul></div>
+<div class="autodoc-signature"><code><strong>create_all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Create all the tables from the current models
+and stamp the latest revision without running any migration.</p></div>
+<div class="autodoc-signature"><code><strong>rev_id</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Generate a unique id for a revision.</p>
+<p>By default this uses <code>alembic.util.rev_id</code>. Override this
+method to change it.</p></div>
+<div class="autodoc-signature"><code><strong>get_pyceo_cli</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
+<div class="autodoc-signature"><code><strong>get_click_cli</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">name=&rsquo;db&rsquo;</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
+<div class="autodoc-signature"><code><strong>get_flask_cli</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">name=&rsquo;db&rsquo;</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
+</div>
+</div>
                 
               
               
@@ -559,6 +781,21 @@
         </a>
       
       
+        
+        <a href="../api/" class="md-footer__link md-footer__link--next" aria-label="Next: API Reference" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              API Reference
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
     </nav>
   
   <div class="md-footer-meta md-typeset">
@@ -586,7 +823,7 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.tracking", "navigation.top", "search.suggest", "search.highligh"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.8397ff9e.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "navigation.tracking", "search.suggest", "search.highligh"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.8397ff9e.min.js", "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.1e84347e.min.js"></script>
