@@ -13,5 +13,6 @@ coverage:
 .PHONY: install
 install:
 	pip install -e .[test,dev]
+	pip install -r docs/requirements.txt
 	createdb dbtest || true
 	pre-commit install --hook-type pre-push

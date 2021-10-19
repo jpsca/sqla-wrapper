@@ -25,13 +25,13 @@ class Alembic(object):
     can read the
     [documentation for the Alembic config](https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file).
 
-    Arguments:
+    **Arguments**:
 
-    - db:
+    - **db**:
         A `sqla_wrapper.SQLAlchemy` instance.
-    - path:
+    - **path**:
         Path to the migrations folder.
-    - **options:
+    - **\*\*options**:
         Other alembic options
 
     """
@@ -59,13 +59,13 @@ class Alembic(object):
         """Create a new revision.
         Auto-generate operations by comparing models and database.
 
-        Arguments:
+        **Arguments**:
 
-        - message:
+        - **message**:
             Revision message.
-        - empty:
+        - **empty**:
             Generate just an empty migration file, not the operations.
-        - parent:
+        - **parent**:
             Parent revision of this new revision.
 
         """
@@ -99,14 +99,14 @@ class Alembic(object):
     def upgrade(self, target: str = "head", *, sql: bool = False, **kwargs) -> None:
         """Run migrations to upgrade database.
 
-        Arguments:
+        **Arguments**:
 
-        - target:
+        - **target**:
             Revision target or "from:to" range if `sql=True`. "head"
             by default.
-        - sql:
+        - **sql**:
             Don't emit SQL to database, dump to standard output instead.
-        - **kwargs:
+        - **\*\*kwargs**:
             Optional arguments. If these are passed, they are sent directly
             to the `upgrade()` functions within each revision file.
             To use, modify the `script.py.mako`template file
@@ -135,15 +135,15 @@ class Alembic(object):
     def downgrade(self, target: str = "-1", *, sql: bool = False, **kwargs) -> None:
         """Run migrations to downgrade database.
 
-        Arguments:
+        **Arguments**:
 
-        - target:
+        - **target**:
             Revision target as an integer relative to the current
             state (e.g.: "-1"), or as a "from:to" range if `sql=True`.
             "-1" by default.
-        - sql:
+        - **sql**:
             Don't emit SQL to database, dump to standard output instead.
-        - **kwargs:
+        - **\*\*kwargs**:
             Optional arguments. If these are passed, they are sent directly
             to the `downgrade()` functions within each revision file.
             To use, modify the `script.py.mako` template file
@@ -179,11 +179,11 @@ class Alembic(object):
         """Get the list of revisions in chronological order.
         You can optionally specify the range of revisions to return.
 
-        Arguments:
+        **Arguments**:
 
-        - start:
+        - **start**:
             From this revision (including it.)
-        - end:
+        - **end**:
             To this revision (including it.)
 
         """
@@ -208,14 +208,14 @@ class Alembic(object):
         """Print the list of revisions in chronological order.
         You can optionally specify the range of revisions to return.
 
-        Arguments:
+        **Arguments**:
 
-        - verbose:
+        - **verbose**:
             If `True`, shows also the path and the docstring
             of each revision file.
-        - start:
+        - **start**:
             Optional starting revision (including it.)
-        - end:
+        - **end**:
             Optional end revision (including it.)
 
         """
@@ -235,14 +235,14 @@ class Alembic(object):
     ) -> None:
         """Set the given revision in the revision table. Don't run migrations.
 
-        Arguments:
+        **Arguments**:
 
-        - target:
+        - **target**:
             The target revision; "head" by default.
-        - sql:
+        - **sql**:
             Don't emit SQL to the database, dump to the standard
             output instead.
-        - purge:
+        - **purge**:
             Delete all entries in the version table before stamping.
 
         """
@@ -275,9 +275,9 @@ class Alembic(object):
     def current(self, verbose: bool = False) -> None:
         """Print the latest revision(s) applied.
 
-        Arguments:
+        **Arguments**:
 
-        - verbose:
+        - **verbose**:
             If `True`, shows also the path and the docstring
             of the revision file.
 
@@ -304,9 +304,9 @@ class Alembic(object):
     def head(self, verbose: bool = False) -> None:
         """Print the latest revision.
 
-        Arguments:
+        **Arguments**:
 
-        - verbose:
+        - **verbose**:
             If `True`, shows also the path and the docstring
             of the revision file.
 
@@ -326,9 +326,9 @@ class Alembic(object):
         with a `script.py.mako` template file. It doesn't fail if the
         folder or file already exists.
 
-        Arguments:
+        **Arguments**:
 
-        - path:
+        - **path**:
             Target folder.
 
         """

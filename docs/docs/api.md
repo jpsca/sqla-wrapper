@@ -33,4 +33,4 @@
 
 ::: sqla_wrapper.Paginator
     :docstring:
-    :members:
+    :members: num_pages total_pages showing is_paginated has_prev has_next next_num prev_num prev next start_index end_index items pages get_range get_pages

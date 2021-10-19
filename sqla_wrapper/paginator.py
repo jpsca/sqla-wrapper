@@ -17,23 +17,29 @@ DEFAULT_PER_PAGE = 20
 DEFAULT_PADDING = 0
 
 
-class Paginator(object):
+class Paginator:
     """Helper class for paginate data.
     You can construct it from any iterable.
 
-    Arguments are:
+    **Arguments**:
 
-        query:
-            Iterable to paginate.
-        page:
-            Current page. If the value is the string
-        per_page:
-            Max number of items to display on each page.
-        total:
-            Total number of items. If not provided, the length
-            of items will be used
-        padding:
-            Number of elements of the next page to show.
+    - **query**:
+        Items to paginate.
+    - **page**:
+        Number of the current page (first page is `1`)
+        It can be a number, a string with a number, or
+        the strings "first" or "last".
+    - **per_page**:
+        Max number of items to display on each page.
+    - **total**:
+        Total number of items. If not provided, the length
+        of the iterable will be used.
+    - **padding**:
+        Number of elements of the previous and next page to show.
+        For example, if `per_page` is 10 and `padding` is 2,
+        every page will show 14 items, the first two from the
+        previous page and the last two for the next one.
+        This extra items will be repeated again on their own pages.
 
     """
 
@@ -43,6 +49,7 @@ class Paginator(object):
     def __init__(
         self,
         query: Any,
+        *,
         page: Union[int, str] = DEFAULT_START_PAGE,
         per_page: int = DEFAULT_PER_PAGE,
         total: Optional[int] = None,
@@ -70,13 +77,6 @@ class Paginator(object):
         if page > self.num_pages:
             page = self.num_pages
 
-        # The number of items in the current page (could be less than per_page)
-        if total > per_page * page:
-            showing = per_page
-        else:
-            showing = total - per_page * (page - 1)
-        self.showing = showing
-
         self.padding = padding
 
     def __bool__(self) -> bool:
@@ -98,6 +98,19 @@ class Paginator(object):
     def is_paginated(self) -> bool:
         """True if a more than one page exists."""
         return self.num_pages > 1
+
+    @property
+    def showing(self) -> int:
+        """The number of items in the current page
+        Could be less than `per_page` if we are in the
+        last page, or more if `padding` > 0.
+        """
+        so_far = self.per_page * self.page + self.padding
+        so_far = min(so_far, self.total)
+        if self.page > 1:
+            so_far += self.padding
+        prev_pages = self.per_page * (self.page - 1)
+        return so_far - prev_pages
 
     @property
     def has_prev(self) -> bool:
@@ -158,6 +171,7 @@ class Paginator(object):
 
     @property
     def items(self) -> Iterable:
+        """Return the items to for the current page."""
         offset = self.offset
         return self.query[offset : offset + self.limit]
 
@@ -171,6 +185,23 @@ class Paginator(object):
             yield i
 
     def get_range(self, sep=u" - ") -> str:
+        """Return a string with the 1-based index range
+        of items in the page (ignoring the padding). Useful
+        for displaying "Showing x - y items of z".
+
+        **Examples**:
+
+        ```python
+        p = Paginator(range(100), per_page=10, page=1)
+        p.get_range()
+        '1 - 10'
+
+        p = Paginator(range(100), per_page=10, page=5)
+        p.get_range()
+        '41 - 50'
+        ```
+
+        """
         return sep.join([str(self.start_index + 1), str(self.end_index + 1)])
 
     def get_pages(self, showmax: int = 12) -> List:
@@ -188,24 +219,12 @@ class Paginator(object):
         one page, so the final number of pages shown could be less than
         the value of `showmax`.
 
-        Examples:
+        **Examples**:
 
         ```python
-        [ (1), 2, 3, 4, 5, 6, None, 10, 11, 12, 13, 14, 15 ]
-        [ 1, (2), 3, 4, 5, 6, 7, None, 11, 12, 13, 14, 15 ]
-        [ 1, 2, (3), 4, 5, 6, 7, None, 11, 12, 13, 14, 15 ]
-        [ 1, 2, 3, (4), 5, 6, 7, 8, None, 12, 13, 14, 15 ]
-        [ 1, 2, 3, 4, (5), 6, 7, 8, None, 12, 13, 14, 15 ]
-        [ 1, 2, 3, 4, 5, (6), 7, 8, 9, None, 13, 14, 15 ]
-        [ 1, 2, 3, 4, 5, 6, (7), 8, 9, None, 13, 14, 15 ]
+        [ (1), 2, 3, 4, 5, 6, None, 10, 11, 12, 13 ]
         [ 1, 2, None, 5, 6, 7, (8), 9, 10, None, 13, 14, 15 ]
-        [ 1, 2, 3, None, 6, 7, 8, (9), 10, 11, None, 14, 15 ]
-        [ 1, 2, 3, None, 7, 8, 9, (10), 11, 12, 13, 14, 15 ]
-        [ 1, 2, 3, 4, None, 8, 9, 10, (11), 12, 13, 14, 15 ]
-        [ 1, 2, 3, 4, None, 8, 9, 10, 11, (12), 13, 14, 15 ]
-        [ 1, 2, 3, 4, 5, None, 9, 10, 11, 12, (13), 14, 15 ]
-        [ 1, 2, 3, 4, 5, None, 9, 10, 11, 12, 13, (14), 15 ]
-        [ 1, 2, 3, 4, 5, 6, None, 10, 11, 12, 13, 14, (15) ]
+        [ 1, 2, (3), 4, 5 ]
         ```
 
         This is one way how you could render such a pagination in the template:

@@ -57,7 +57,7 @@ class Session(sqlalchemy.orm.Session):
         Also, there is no way to sort the results. If you need sorting or
         more complex filtering, you are better served using a `db.select()`.
 
-        Examples:
+        **Examples**:
 
         ```python
         users = db.s.all(User)
@@ -81,7 +81,7 @@ class Session(sqlalchemy.orm.Session):
         Note that this does a `db.s.flush()`, so you must later call
         `db.s.commit()` to persist the new object.
 
-        Example:
+        **Example**:
 
         ```python
         new_user = db.s.create(User, email='foo@example.com')
@@ -102,7 +102,7 @@ class Session(sqlalchemy.orm.Session):
         Also, there is no way to sort the results. If you need sorting or
         more complex filtering, you are better served using a `db.select()`.
 
-        Examples:
+        **Examples**:
 
         ```python
         user = db.s.first(User)
@@ -121,7 +121,7 @@ class Session(sqlalchemy.orm.Session):
         This does a `db.s.flush()`, so you must later call `db.s.commit()`
         to persist the new object (in case one has been created).
 
-        Examples:
+        **Examples**:
 
         ```python
         user1 = db.s.first_or_create(User, email='foo@example.com')
@@ -146,7 +146,7 @@ class Session(sqlalchemy.orm.Session):
         This does a `db.s.flush()`, so you must later call `db.s.commit()`
         to persist the new object (in case one has been created).
 
-        Examples:
+        **Examples**:
 
         ```python
         user1 = db.s.create_or_first(User, email='foo@example.com')
@@ -173,16 +173,35 @@ class Session(sqlalchemy.orm.Session):
         Note that you must calculate the total number of unpaginated
         results first.
 
-        Example:
+        **Arguments**:
+
+        - **query**:
+            A `select()` statement for all items.
+        - **total**:
+            Total number of items. You must pre-calculate this value.
+        - **page**:
+            Number of the current page (first page is `1`)
+            It can be a number, a string with a number, or
+            the strings "first" or "last".
+        - **per_page**:
+            Max number of items to display on each page.
+        - **padding**:
+            Number of elements of the previous and next page to show.
+            For example, if `per_page` is 10 and `padding` is 2,
+            every page will show 14 items, the first two from the
+            previous page and the last two for the next one.
+            This extra items will be repeated again on their own pages.
+
+        **Example**:
 
         ```python
-        query = select(User) \
-            .where(User.deleted == None)
+        query = select(User) \\
+            .where(User.deleted.is_(None)) \\
             .order_by(User.created_at)
 
         total = db.s.scalar(
             select(func.count(User.id))
-            .where(User.deleted == None)
+            .where(User.deleted.is_(None))
         )
 
         pag = db.s.paginate(query, total=total, page=1, per_page=20)

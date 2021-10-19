@@ -87,7 +87,7 @@ class SQLAlchemy:
         self._include_sqlalchemy()
 
     def create_all(self, **kwargs) -> None:
-        """Creates all tables.
+        """Creates all the tables of the models registered so far.
 
         Only tables that do not already exist are created. Existing tables are
         not modified.
