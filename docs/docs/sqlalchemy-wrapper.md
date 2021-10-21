@@ -53,7 +53,7 @@ class User(db.Model):
     name = Column(String(128))
 ```
 
-The instance also includes all the functions and classes from `sqlalchemy` and `sqlalchemy.orm` so you don't need to import `Column`, `Integer`, `String`, etc. and do this instead:
+`db` also includes all the functions and classes from `sqlalchemy` and `sqlalchemy.orm` so you don't need to import `Column`, `Integer`, `String`, etc. and can do this instead:
 
 ```python
 from .base import db

@@ -14,6 +14,7 @@ nav:
     - testing-with-a-real-database.md
   - Alembic:
     - alembic-wrapper.md
+  - how-to.md
   - api.md
 
 theme:

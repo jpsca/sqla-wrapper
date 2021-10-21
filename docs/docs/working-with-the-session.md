@@ -22,6 +22,8 @@ def remove_db_scoped_session(error=None):
 
 The `db.s.remove()` method close the current session and dispose it. A new session will be created when `db.s` is called again.
 
+Outside a web request cycle, like in a background job, you must call manually call  `db.s.remove()` at the end.
+
 
 ## Instantiate `db.Session`
 
@@ -44,7 +46,7 @@ dbs = db.Session():
 dbs.close()
 ```
 
-Instantiate `db.Session` is the recommended way to work when the session is not shared like in a  command-line script.
+Instantiate `db.Session` is the recommended way to work when the session is not shared like in a command-line script.
 
 
 ## API
