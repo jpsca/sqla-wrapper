@@ -441,15 +441,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#get-an-object-from-by-its-primary-key" class="md-nav__link">
-    Get an object from by its primary key
+  <a href="#get-an-object-by-its-primary-key" class="md-nav__link">
+    Get an object by its primary key
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#get-the-first-object-from-by-its-attributes" class="md-nav__link">
-    Get the first object from by its attributes
+  <a href="#get-the-first-object-by-its-attributes" class="md-nav__link">
+    Get the first object by its attributes
   </a>
   
 </li>
@@ -559,15 +559,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#get-an-object-from-by-its-primary-key" class="md-nav__link">
-    Get an object from by its primary key
+  <a href="#get-an-object-by-its-primary-key" class="md-nav__link">
+    Get an object by its primary key
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#get-the-first-object-from-by-its-attributes" class="md-nav__link">
-    Get the first object from by its attributes
+  <a href="#get-the-first-object-by-its-attributes" class="md-nav__link">
+    Get the first object by its attributes
   </a>
   
 </li>
@@ -666,13 +666,13 @@
 <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Me&quot;</span><span class="p">,</span> <span class="n">login</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="get-an-object-from-by-its-primary-key">Get an object from by its primary key<a class="headerlink" href="#get-an-object-from-by-its-primary-key" title="Permanent link">#</a></h2>
+<h2 id="get-an-object-by-its-primary-key">Get an object by its primary key<a class="headerlink" href="#get-an-object-by-its-primary-key" title="Permanent link">#</a></h2>
 <p>The <a href="dbsapi"><code>db.s.get()</code></a> method can be used to retrieve an object by its primary key:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
 
 <span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="get-the-first-object-from-by-its-attributes">Get the first object from by its attributes<a class="headerlink" href="#get-the-first-object-from-by-its-attributes" title="Permanent link">#</a></h2>
+<h2 id="get-the-first-object-by-its-attributes">Get the first object by its attributes<a class="headerlink" href="#get-the-first-object-by-its-attributes" title="Permanent link">#</a></h2>
 <p>The <a href="dbsapi"><code>db.s.first()</code></a> helper method can be used to retrieve an object by its primary key:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
 
