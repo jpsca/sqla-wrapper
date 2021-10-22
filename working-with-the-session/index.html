@@ -450,6 +450,21 @@
   
   
     <li class="md-nav__item">
+      <a href="../how-to/" class="md-nav__link">
+        How to ...?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../api/" class="md-nav__link">
         API Reference
       </a>
@@ -529,6 +544,7 @@ There are two main ways to use it:</p>
     <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 </code></pre></div>
 <p>The <code>db.s.remove()</code> method close the current session and dispose it. A new session will be created when <code>db.s</code> is called again.</p>
+<p>Outside a web request cycle, like in a background job, you must call manually call  <code>db.s.remove()</code> at the end.</p>
 <h2 id="instantiate-dbsession">Instantiate <code>db.Session</code><a class="headerlink" href="#instantiate-dbsession" title="Permanent link">#</a></h2>
 <p>You can use a context manager:</p>
 <div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">dbs</span><span class="p">:</span>
@@ -541,7 +557,7 @@ There are two main ways to use it:</p>
 <span class="c1"># work with the session here</span>
 <span class="n">dbs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div>
-<p>Instantiate <code>db.Session</code> is the recommended way to work when the session is not shared like in a  command-line script.</p>
+<p>Instantiate <code>db.Session</code> is the recommended way to work when the session is not shared like in a command-line script.</p>
 <h2 id="api">API<a class="headerlink" href="#api" title="Permanent link">#</a></h2>
 <p>SQLAlchemy default Session class has the method <code>.get(Model, pk)</code>
 to query and return a record by its primary key.</p>
