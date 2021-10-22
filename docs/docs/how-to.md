@@ -163,25 +163,14 @@ Is important to use `db.text()` instead of plain strings so the parameters are e
 
 ## Work with background jobs
 
-Use the global scoped session `db.s`. A new session will be created automatically for the thread running the background job so there is no risk of conflict.
+Background jobs libraries, like Celery or RQ, use multiprocessing or `fork()`, to have several "workers" to run these jobs. When that happens, the pool of connections to the database is copied to the child processes, which does causes problems.
 
-However, you must remember to call `db.s.remove()` at the end, so the next job uses a fresh session.
+For that reason you should call `db.engine.dispose()` when each worker is created, so that the engine creates brand new database connections local to that fork.
+
 
 ```python
-from ..models import db, MyModel
 
-def background_job(obj_id):
-  # Manipulate the data directly
-  obj = db.s.get(MyModel, obj_id)
-  obj.lorem = "ipsum"
-  db.s.commit()
-
-  # ... or call other code that also uses
-  # the scoped session
-  ...
-
-  # Always remove the scoped session at the end
-  db.s.remove()
 ```
+
 
 [dbsapi]: working-with-the-session/#api
