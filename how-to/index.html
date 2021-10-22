@@ -490,9 +490,29 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#work-with-background-jobs" class="md-nav__link">
-    Work with background jobs
+  <a href="#work-with-background-jobstasks" class="md-nav__link">
+    Work with background jobs/tasks
   </a>
+  
+    <nav class="md-nav" aria-label="Work with background jobs/tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rq" class="md-nav__link">
+    RQ
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#celery" class="md-nav__link">
+    Celery
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -608,9 +628,29 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#work-with-background-jobs" class="md-nav__link">
-    Work with background jobs
+  <a href="#work-with-background-jobstasks" class="md-nav__link">
+    Work with background jobs/tasks
   </a>
+  
+    <nav class="md-nav" aria-label="Work with background jobs/tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rq" class="md-nav__link">
+    RQ
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#celery" class="md-nav__link">
+    Celery
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -660,20 +700,20 @@
 <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">me</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div>
-<p>You can also use the <a href="dbsapi"><code>db.s.create</code></a> helper method to merge the first two steps.</p>
+<p>You can also use the <a href="working-with-the-session/#api"><code>db.s.create</code></a> helper method to merge the first two steps.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
 
 <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Me&quot;</span><span class="p">,</span> <span class="n">login</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="get-an-object-by-its-primary-key">Get an object by its primary key<a class="headerlink" href="#get-an-object-by-its-primary-key" title="Permanent link">#</a></h2>
-<p>The <a href="dbsapi"><code>db.s.get()</code></a> method can be used to retrieve an object by its primary key:</p>
+<p>The <a href="working-with-the-session/#api"><code>db.s.get()</code></a> method can be used to retrieve an object by its primary key:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
 
 <span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="get-the-first-object-by-its-attributes">Get the first object by its attributes<a class="headerlink" href="#get-the-first-object-by-its-attributes" title="Permanent link">#</a></h2>
-<p>The <a href="dbsapi"><code>db.s.first()</code></a> helper method can be used to retrieve an object by its primary key:</p>
+<p>The <a href="working-with-the-session/#api"><code>db.s.first()</code></a> helper method can be used to retrieve an object by its primary key:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
 
 <span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">login</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
@@ -728,10 +768,42 @@
 </code></pre></div>
 <p>Parameters are specified by name, always using the format <code>:name</code>, no matter the database engine.</p>
 <p>Is important to use <code>db.text()</code> instead of plain strings so the parameters are escaped protecting you from SQL injection attacks.</p>
-<h2 id="work-with-background-jobs">Work with background jobs<a class="headerlink" href="#work-with-background-jobs" title="Permanent link">#</a></h2>
-<p>Background jobs libraries, like Celery or RQ, use multiprocessing or <code>fork()</code>, to have several &ldquo;workers&rdquo; to run these jobs. When that happens, the pool of connections to the database is copied to the child processes, which does causes problems.</p>
-<p>For that reason you should call <code>db.engine.dispose()</code> when each worker is created, so that the engine creates brand new database connections local to that fork.</p>
-<div class="highlight"><pre><span></span><code>
+<h2 id="work-with-background-jobstasks">Work with background jobs/tasks<a class="headerlink" href="#work-with-background-jobstasks" title="Permanent link">#</a></h2>
+<ol>
+<li>Call <code>db.engine.dispose()</code> when each new process is created.</li>
+<li>Call <code>db.s.remove()</code> at the end of each job/task</li>
+</ol>
+<p>Background jobs libraries, like Celery or RQ, use multiprocessing or <code>fork()</code>, to have several &ldquo;workers&rdquo; to run these jobs. When that happens, the pool of connections to the database is copied to the child processes, which does causes errors.</p>
+<p>For that reason you should call <code>db.engine.dispose()</code> when each worker process is created, so that the engine creates brand new database connections local to that fork.</p>
+<p>You also must remember to call <code>db.s.remove()</code> at the end of each job, so a new session is used each time.</p>
+<h3 id="rq">RQ<a class="headerlink" href="#rq" title="Permanent link">#</a></h3>
+<p>RQ actually uses a <code>fork()</code> for <em>each</em> job. The best way to make sure you make the required cleanup is to use a custom <code>Worker</code> class:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># foo/bar.py</span>
+<span class="kn">import</span> <span class="nn">rq</span>
+<span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">db</span>
+
+<span class="k">class</span> <span class="nc">Worker</span><span class="p">(</span><span class="n">rq</span><span class="o">.</span><span class="n">Worker</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">perform_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">,</span> <span class="n">queue</span><span class="p">):</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">perform_job</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">queue</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">rv</span>
+</code></pre></div>
+<p>You can then use that custom class by starting the workers with the <code>--worker-class</code> argument:</p>
+<div class="highlight"><pre><span></span><code>rq worker --worker-class <span class="s1">&#39;foo.bar.Worker&#39;</span>
+</code></pre></div>
+<h3 id="celery">Celery<a class="headerlink" href="#celery" title="Permanent link">#</a></h3>
+<p>Use signals to register functions to run when the worker is ready and when each job/task finish.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">celery.signals</span> <span class="kn">import</span> <span class="n">task_postrun</span><span class="p">,</span> <span class="n">worker_process_init</span>
+<span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">db</span>
+
+<span class="nd">@worker_process_init</span>
+<span class="k">def</span> <span class="nf">refresh_db_connections</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+
+<span class="nd">@task_postrun</span>
+<span class="k">def</span> <span class="nf">remove_db_scoped_session</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 </code></pre></div>
                 
               
