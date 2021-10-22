@@ -5,7 +5,7 @@ In this section you can find how to do some common database tasks using SQLAlche
 All examples assume that an SQLAlchemy instance has been created and stored in a global variable named `db`.
 
 
-## Declaring models
+## Declare models
 
 `db` provides a `db.Model` class to be used as a declarative base class for your models.
 
@@ -31,7 +31,7 @@ class User(db.Model):
 To learn more about how to define database models, consult the [SQLAlchemy ORM documentation](https://docs.sqlalchemy.org/en/14/orm/index.html).
 
 
-## Inserting records
+## Insert an object to the database
 
 Inserting data into the database is a three step process:
 
@@ -42,15 +42,130 @@ Inserting data into the database is a three step process:
 ```python
 from myapp.models import User, db
 
+me = User(name="Me", login="hello")
+db.s.add(me)
+db.s.commit()
+```
 
+You can also use the [`db.s.create`](dbsapi) helper method to merge the first two steps.
+
+```python
+from myapp.models import User, db
+
+db.s.create(User, name="Me", login="hello")
+db.s.commit()
 ```
 
 
-## Working with background jobs
+## Get an object by its primary key
+
+The [`db.s.get()`](dbsapi) method can be used to retrieve an object by its primary key:
+
+```python
+from myapp.models import User, db
+
+user = db.s.get(User, 2)
+```
+
+
+## Get the first object by its attributes
+
+The [`db.s.first()`](dbsapi) helper method can be used to retrieve an object by its primary key:
+
+```python
+from myapp.models import User, db
+
+user = db.s.first(User, login="hello")
+```
+
+
+## Query the database
+
+First, make a query using `db.select( ... )`, and then execute the query with `db.s.execute( ... )`.
+
+```python
+from myapp.models import User, db
+
+users = db.s.execute(
+  db.select(User)
+  .where(User.email.endswith('@example.com'))
+).scalars()
+
+# You can now do `users.all()`, `users.first()`,
+# `users.unique()`, etc.
+```
+
+The [results](https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.Result) from `db.s.execute()` are returned as a list of rows, where each row is a tuple, even if only one result per row was requested. The [`scalars()`](https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.ScalarResult) method conveniently extract the first result in each row.
+
+The `select()` function it is very powerful and can do **a lot** more:
+https://docs.sqlalchemy.org/en/14/tutorial/data_select.html#selecting-rows-with-core-or-orm
+
+
+
+## Count the number of rows in a query
+
+Like with regular SQL, use the `count` function:
+
+```python
+from myapp.models import User, db
+
+num = db.s.execute(
+  db.select(db,func.count(User.id))
+  .where(User.email.endswith('@example.com'))
+).scalar()
+```
+
+The `scalar()` method conveniently returns only the first object of the first row.
+
+
+
+## Update an object
+
+To update a database object, first retrieve it, modify it, and finally commit the session.
+
+```python
+from myapp.models import User, db
+
+user = db.s.first(User, login="hello")
+user.name = "me"
+db.s.commit()
+```
+
+
+## Delete an object from the database
+
+Deleting objects from the database is very similar to adding new ones, instead of `db.s.add()` use `db.s.delete()`:
+
+```python
+from myapp.models import User, db
+
+user = db.s.first(User, login="hello")
+db.s.delete(user)
+db.s.commit()
+```
+
+
+## Run an arbitrary SQL statement
+
+Use `db.text` to build a query and then run it with `db.s.execute`.
+
+```python
+from myapp.models import db
+
+sql = db.text("SELECT * FROM user WHERE user.id = :user_id")
+results = db.s.execute(sql, params={"user_id": 5}).all()
+```
+
+Parameters are specified by name, always using the format `:name`, no matter the database engine.
+
+Is important to use `db.text()` instead of plain strings so the parameters are escaped protecting you from SQL injection attacks.
+
+
+## Work with background jobs
 
 Use the global scoped session `db.s`. A new session will be created automatically for the thread running the background job so there is no risk of conflict.
 
-However, you must remember to call `db.s.remove()` at the end to remove the scoped session.
+However, you must remember to call `db.s.remove()` at the end, so the next job uses a fresh session.
 
 ```python
 from ..models import db, MyModel
@@ -68,3 +183,5 @@ def background_job(obj_id):
   # Always remove the scoped session at the end
   db.s.remove()
 ```
+
+[dbsapi]: working-with-the-session/#api
