@@ -434,6 +434,62 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#insert-an-object-to-the-database" class="md-nav__link">
+    Insert an object to the database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-an-object-from-by-its-primary-key" class="md-nav__link">
+    Get an object from by its primary key
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-the-first-object-from-by-its-attributes" class="md-nav__link">
+    Get the first object from by its attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-the-database" class="md-nav__link">
+    Query the database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#count-the-number-of-rows-in-a-query" class="md-nav__link">
+    Count the number of rows in a query
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-an-object" class="md-nav__link">
+    Update an object
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-an-object-from-the-database" class="md-nav__link">
+    Delete an object from the database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-an-arbitrary-sql-statement" class="md-nav__link">
+    Run an arbitrary SQL statement
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#work-with-background-jobs" class="md-nav__link">
     Work with background jobs
   </a>
@@ -496,6 +552,62 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#insert-an-object-to-the-database" class="md-nav__link">
+    Insert an object to the database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-an-object-from-by-its-primary-key" class="md-nav__link">
+    Get an object from by its primary key
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-the-first-object-from-by-its-attributes" class="md-nav__link">
+    Get the first object from by its attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-the-database" class="md-nav__link">
+    Query the database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#count-the-number-of-rows-in-a-query" class="md-nav__link">
+    Count the number of rows in a query
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-an-object" class="md-nav__link">
+    Update an object
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-an-object-from-the-database" class="md-nav__link">
+    Delete an object from the database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-an-arbitrary-sql-statement" class="md-nav__link">
+    Run an arbitrary SQL statement
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#work-with-background-jobs" class="md-nav__link">
     Work with background jobs
   </a>
@@ -521,23 +633,104 @@
 <h2 id="declare-models">Declare models<a class="headerlink" href="#declare-models" title="Permanent link">#</a></h2>
 <p><code>db</code> provides a <code>db.Model</code> class to be used as a declarative base class for your models.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">db</span>
+<span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">db</span>
 
 <span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
 </code></pre></div>
 <p><code>db</code> also includes all the functions and classes from <code>sqlalchemy</code> and <code>sqlalchemy.orm</code> so you don&rsquo;t need to import <code>Column</code>, <code>Integer</code>, <code>String</code>, etc. and can do this instead:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">db</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">db</span>
 
 <span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
 </code></pre></div>
 <p>To learn more about how to define database models, consult the <a href="https://docs.sqlalchemy.org/en/14/orm/index.html">SQLAlchemy ORM documentation</a>.</p>
+<h2 id="insert-an-object-to-the-database">Insert an object to the database<a class="headerlink" href="#insert-an-object-to-the-database" title="Permanent link">#</a></h2>
+<p>Inserting data into the database is a three step process:</p>
+<ol>
+<li>Create the Python object</li>
+<li>Add it to the session</li>
+<li>Commit the session</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
+
+<span class="n">me</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Me&quot;</span><span class="p">,</span> <span class="n">login</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">me</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div>
+<p>You can also use the <a href="dbsapi"><code>db.s.create</code></a> helper method to merge the first two steps.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
+
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Me&quot;</span><span class="p">,</span> <span class="n">login</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="get-an-object-from-by-its-primary-key">Get an object from by its primary key<a class="headerlink" href="#get-an-object-from-by-its-primary-key" title="Permanent link">#</a></h2>
+<p>The <a href="dbsapi"><code>db.s.get()</code></a> method can be used to retrieve an object by its primary key:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="get-the-first-object-from-by-its-attributes">Get the first object from by its attributes<a class="headerlink" href="#get-the-first-object-from-by-its-attributes" title="Permanent link">#</a></h2>
+<p>The <a href="dbsapi"><code>db.s.first()</code></a> helper method can be used to retrieve an object by its primary key:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">login</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="query-the-database">Query the database<a class="headerlink" href="#query-the-database" title="Permanent link">#</a></h2>
+<p>First, make a query using <code>db.select( ... )</code>, and then execute the query with <code>db.s.execute( ... )</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+  <span class="n">db</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">email</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;@example.com&#39;</span><span class="p">))</span>
+<span class="p">)</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span>
+
+<span class="c1"># You can now do `users.all()`, `users.first()`,</span>
+<span class="c1"># `users.unique()`, etc.</span>
+</code></pre></div>
+<p>The <a href="https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.Result">results</a> from <code>db.s.execute()</code> are returned as a list of rows, where each row is a tuple, even if only one result per row was requested. The <a href="https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.ScalarResult"><code>scalars()</code></a> method conveniently extract the first result in each row.</p>
+<p>The <code>select()</code> function it is very powerful and can do <strong>a lot</strong> more:
+<a href="https://docs.sqlalchemy.org/en/14/tutorial/data_select.html#selecting-rows-with-core-or-orm">https://docs.sqlalchemy.org/en/14/tutorial/data_select.html#selecting-rows-with-core-or-orm</a></p>
+<h2 id="count-the-number-of-rows-in-a-query">Count the number of rows in a query<a class="headerlink" href="#count-the-number-of-rows-in-a-query" title="Permanent link">#</a></h2>
+<p>Like with regular SQL, use the <code>count</code> function:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
+
+<span class="n">num</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+  <span class="n">db</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">db</span><span class="p">,</span><span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+  <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">email</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;@example.com&#39;</span><span class="p">))</span>
+<span class="p">)</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+</code></pre></div>
+<p>The <code>scalar()</code> method conveniently returns only the first object of the first row.</p>
+<h2 id="update-an-object">Update an object<a class="headerlink" href="#update-an-object" title="Permanent link">#</a></h2>
+<p>To update a database object, first retrieve it, modify it, and finally commit the session.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">login</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;me&quot;</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="delete-an-object-from-the-database">Delete an object from the database<a class="headerlink" href="#delete-an-object-from-the-database" title="Permanent link">#</a></h2>
+<p>Deleting objects from the database is very similar to adding new ones, instead of <code>db.s.add()</code> use <code>db.s.delete()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">db</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">login</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="run-an-arbitrary-sql-statement">Run an arbitrary SQL statement<a class="headerlink" href="#run-an-arbitrary-sql-statement" title="Permanent link">#</a></h2>
+<p>Use <code>db.text</code> to build a query and then run it with <code>db.s.execute</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">db</span>
+
+<span class="n">sql</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM user WHERE user.id = :user_id&quot;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</code></pre></div>
+<p>Parameters are specified by name, always using the format <code>:name</code>, no matter the database engine.</p>
+<p>Is important to use <code>db.text()</code> instead of plain strings so the parameters are escaped protecting you from SQL injection attacks.</p>
 <h2 id="work-with-background-jobs">Work with background jobs<a class="headerlink" href="#work-with-background-jobs" title="Permanent link">#</a></h2>
 <p>Use the global scoped session <code>db.s</code>. A new session will be created automatically for the thread running the background job so there is no risk of conflict.</p>
-<p>However, you must remember to call <code>db.s.remove()</code> at the end to remove the scoped session.</p>
+<p>However, you must remember to call <code>db.s.remove()</code> at the end, so the next job uses a fresh session.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="n">db</span><span class="p">,</span> <span class="n">MyModel</span>
 
 <span class="k">def</span> <span class="nf">background_job</span><span class="p">(</span><span class="n">obj_id</span><span class="p">):</span>
