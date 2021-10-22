@@ -47,7 +47,7 @@ db.s.add(me)
 db.s.commit()
 ```
 
-You can also use the [`db.s.create`](dbsapi) helper method to merge the first two steps.
+You can also use the [`db.s.create`](working-with-the-session/#api) helper method to merge the first two steps.
 
 ```python
 from myapp.models import User, db
@@ -59,7 +59,7 @@ db.s.commit()
 
 ## Get an object by its primary key
 
-The [`db.s.get()`](dbsapi) method can be used to retrieve an object by its primary key:
+The [`db.s.get()`](working-with-the-session/#api) method can be used to retrieve an object by its primary key:
 
 ```python
 from myapp.models import User, db
@@ -70,7 +70,7 @@ user = db.s.get(User, 2)
 
 ## Get the first object by its attributes
 
-The [`db.s.first()`](dbsapi) helper method can be used to retrieve an object by its primary key:
+The [`db.s.first()`](working-with-the-session/#api) helper method can be used to retrieve an object by its primary key:
 
 ```python
 from myapp.models import User, db
@@ -161,16 +161,55 @@ Parameters are specified by name, always using the format `:name`, no matter the
 Is important to use `db.text()` instead of plain strings so the parameters are escaped protecting you from SQL injection attacks.
 
 
-## Work with background jobs
+## Work with background jobs/tasks
 
-Background jobs libraries, like Celery or RQ, use multiprocessing or `fork()`, to have several "workers" to run these jobs. When that happens, the pool of connections to the database is copied to the child processes, which does causes problems.
+1. Call `db.engine.dispose()` when each new process is created.
+2. Call `db.s.remove()` at the end of each job/task
 
-For that reason you should call `db.engine.dispose()` when each worker is created, so that the engine creates brand new database connections local to that fork.
+Background jobs libraries, like Celery or RQ, use multiprocessing or `fork()`, to have several "workers" to run these jobs. When that happens, the pool of connections to the database is copied to the child processes, which does causes errors.
 
+For that reason you should call `db.engine.dispose()` when each worker process is created, so that the engine creates brand new database connections local to that fork.
+
+You also must remember to call `db.s.remove()` at the end of each job, so a new session is used each time.
+
+### RQ
+
+RQ actually uses a `fork()` for *each* job. The best way to make sure you make the required cleanup is to use a custom `Worker` class:
 
 ```python
+# foo/bar.py
+import rq
+from myapp.models import db
+
+class Worker(rq.Worker):
+    def perform_job(self, job, queue):
+        db.engine.dispose()
+        rv = super().perform_job(job, queue)
+        db.s.remove()
+        return rv
 
 ```
 
+You can then use that custom class by starting the workers with the `--worker-class` argument:
 
-[dbsapi]: working-with-the-session/#api
+```bash
+rq worker --worker-class 'foo.bar.Worker'
+```
+
+### Celery
+
+Use signals to register functions to run when the worker is ready and when each job/task finish.
+
+```python
+from celery.signals import task_postrun, worker_process_init
+from myapp.models import db
+
+@worker_process_init
+def refresh_db_connections(*args, **kwargs):
+    db.engine.dispose()
+
+@task_postrun
+def remove_db_scoped_session(*args, **kwargs):
+    db.s.remove()
+
+```
