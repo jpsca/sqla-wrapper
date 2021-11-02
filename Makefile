@@ -19,4 +19,8 @@ install:
 
 .PHONY: docs
 docs:
+	cd docs && mkdocs serve
+
+.PHONY: docsdeploy
+docsdeploy:
 	cd docs && ./deploy.sh
