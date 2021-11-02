@@ -16,3 +16,7 @@ install:
 	pip install -r docs/requirements.txt
 	createdb dbtest || true
 	pre-commit install --hook-type pre-push
+
+.PHONY: docs
+docs:
+	cd docs && ./deploy.sh
