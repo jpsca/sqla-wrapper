@@ -110,7 +110,7 @@ class Session(sqlalchemy.orm.Session):
         ```
         """
         return self.execute(
-            select(Model).filter_by(**attrs)
+            select(Model).filter_by(**attrs).limit(1)
         ).scalars().first()
 
     def first_or_create(self, Model: Any, **attrs) -> Any:

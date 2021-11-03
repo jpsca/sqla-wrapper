@@ -1,6 +1,16 @@
 from sqlalchemy import *  # noqa
 
 
+def test_first(dbs, TestModelA):
+    dbs.add(TestModelA(title="Lorem"))
+    dbs.add(TestModelA(title="Ipsum"))
+    dbs.add(TestModelA(title="Sit"))
+    dbs.commit()
+
+    obj = dbs.first(TestModelA)
+    assert obj.title == "Lorem"
+
+
 def test_create(dbs, TestModelA):
     dbs.create(TestModelA, title="Remember")
     dbs.commit()
