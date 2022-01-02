@@ -43,7 +43,6 @@ class Paginator:
 
     """
 
-    showing = 0
     total = 0
 
     def __init__(
@@ -136,14 +135,14 @@ class Paginator:
     def prev(self) -> Optional[Paginator]:
         """Returns a `Paginator` object for the previous page."""
         if self.has_prev:
-            return Paginator(self.query, self.page - 1, per_page=self.per_page)
+            return Paginator(self.query, page=self.page - 1, per_page=self.per_page)
         return None
 
     @property
     def next(self) -> Optional[Paginator]:
         """Returns a `Paginator` object for the next page."""
         if self.has_next:
-            return Paginator(self.query, self.page + 1, per_page=self.per_page)
+            return Paginator(self.query, page=self.page + 1, per_page=self.per_page)
         return None
 
     @property

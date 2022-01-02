@@ -311,9 +311,9 @@ def test_create_all(memdb, dst):
     assert alembic.get_current() == rev1
 
 
-def test_get_pyceo_cli(memdb, dst):
+def test_get_proper_cli(memdb, dst):
     alembic = Alembic(memdb, path=dst)
-    alembic.get_pyceo_cli()
+    alembic.get_proper_cli()
 
 
 def test_get_click_cli(memdb, dst, capsys):

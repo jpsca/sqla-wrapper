@@ -26,7 +26,7 @@
 
 ::: sqla_wrapper.Alembic
     :docstring:
-    :members: revision upgrade downgrade get_history history stamp get_current current get_head head init create_all rev_id get_pyceo_cli get_click_cli get_flask_cli
+    :members: revision upgrade downgrade get_history history stamp get_current current get_head head init create_all rev_id get_proper_cli get_click_cli get_flask_cli
 
 
 ## Paginator class

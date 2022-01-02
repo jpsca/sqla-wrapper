@@ -23,7 +23,7 @@ If the migrations folder doesn't exists, it will be created.
 
 The only downside is that you can't use the `alembic` command-line tool anymore. Instead, all the usual Alembic command are be available as methods of the wrapper instance and you need to integrate them with your framework/application CLI.
 
-Is easier than it sounds, specially because the wrapper comes with one-line methods to extend [Click](https://click.palletsprojects.com) (the CLI used by Flask by default) and [pyCEO](https://github.com/jpsca/pyceo) (arguably, the best CLI ever made).
+Is easier than it sounds, specially because the wrapper comes with one-line methods to extend [Click](https://click.palletsprojects.com) (the CLI used by Flask by default) and [Proper CLI](https://github.com/jpsca/proper-cli) (arguably, the best CLI ever made).
 
 ### Integrating with Flask Click
 
@@ -53,16 +53,16 @@ cli.add_command(alembic.get_click_cli("db"))
 
 ```
 
-### Integrating with pyCEO
+### Integrating with Proper CLI
 
 ```python
-from pyceo import Cli
+from proper_cli import Cli
 
 db = SQLAlchemy(…)
 alembic = Alembic(…)
 
 class Manage(Cli):
-  db = alembic.get_pyceo_cli("db")
+  db = alembic.get_proper_cli("db")
 
 cli = Manage()
 
@@ -73,4 +73,4 @@ cli = Manage()
 For a more in-depth understanding of these methods and the extra options, you can read the [documentation for the Alembic config](https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file).
 
 ::: sqla_wrapper.Alembic
-    :members: revision upgrade downgrade get_history history stamp get_current current get_head head init create_all rev_id get_pyceo_cli get_click_cli get_flask_cli
+    :members: revision upgrade downgrade get_history history stamp get_current current get_head head init create_all rev_id get_proper_cli get_click_cli get_flask_cli

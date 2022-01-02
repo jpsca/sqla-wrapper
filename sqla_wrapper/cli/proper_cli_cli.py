@@ -1,11 +1,11 @@
 
 
-def get_pyceo_cli(alembic):
-    import pyceo  # type: ignore
+def get_proper_cli(alembic):
+    import proper_cli  # type: ignore
 
     return type(
         "DBCli",
-        (pyceo.Cli,),
+        (proper_cli.Cli,),
         {
             "__doc__": """Database migrations operations.""",
 

@@ -7,7 +7,7 @@ from alembic.config import Config
 from alembic.runtime.environment import EnvironmentContext
 from alembic.script import Script, ScriptDirectory
 
-from .cli import click_cli, pyceo_cli
+from .cli import click_cli, proper_cli_cli
 from .sqlalchemy_wrapper import SQLAlchemy
 
 
@@ -356,8 +356,8 @@ class Alembic(object):
         """
         return util.rev_id()
 
-    def get_pyceo_cli(self) -> Any:
-        return pyceo_cli.get_pyceo_cli(self)
+    def get_proper_cli(self) -> Any:
+        return proper_cli_cli.get_proper_cli(self)
 
     def get_click_cli(self, name="db") -> Any:
         return click_cli.get_click_cli(self, name)
