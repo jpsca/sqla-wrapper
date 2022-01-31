@@ -1,4 +1,5 @@
 import shutil
+from datetime import datetime
 from pathlib import Path
 from tempfile import mkdtemp
 
@@ -39,9 +40,7 @@ def TestModelA(db):
         __tablename__ = "test_model_a"
         id = db.Column(db.Integer, primary_key=True)
         title = db.Column(db.String(50), nullable=False, unique=True)
-
-        def __repr__(self):
-            return f"<TestModelA #{self.id} title='{self.title}'>"
+        created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     return TestModelA
 
@@ -52,9 +51,6 @@ def TestModelB(db):
         __tablename__ = "test_model_b"
         id = db.Column(db.Integer, primary_key=True)
         title = db.Column(db.String(50), nullable=False, unique=True)
-
-        def __repr__(self):
-            return f"<TestModelB #{self.id} title='{self.title}'>"
 
     return TestModelB
 

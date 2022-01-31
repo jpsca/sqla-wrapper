@@ -25,13 +25,13 @@ class Alembic(object):
     can read the
     [documentation for the Alembic config](https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file).
 
-    **Arguments**:
+    Arguments:
 
-    - **db**:
+    - db:
         A `sqla_wrapper.SQLAlchemy` instance.
-    - **path**:
+    - path:
         Path to the migrations folder.
-    - **\*\*options**:
+    - **options:
         Other alembic options
 
     """

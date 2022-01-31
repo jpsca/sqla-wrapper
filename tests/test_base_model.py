@@ -5,3 +5,13 @@ def test_fill(dbs, TestModelA):
 
     updated = dbs.first(TestModelA)
     assert updated.title == "lorem ipsum"
+
+
+def test_repr(dbs, TestModelA):
+    obj = dbs.create(TestModelA, title="Hello world")
+    dbs.commit()
+
+    repr = str(obj)
+    assert f"<TestModelA #{id(obj)}" in repr
+    assert f"\n id = {obj.id}" in repr
+    assert "\n title = 'Hello world'" in repr
