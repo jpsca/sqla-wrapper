@@ -29,4 +29,6 @@ class BaseModel:
         name, value = attr
         if hasattr(value, "isoformat"):
             value = value.isoformat()
-        return f"{name} = {repr(value)}"
+        else:
+            value = repr(value)
+        return f"{name} = {value}"
