@@ -60,6 +60,7 @@ class SQLAlchemy:
         port: Optional[str] = None,
         engine_options: Optional[Dict[str, Any]] = None,
         session_options: Optional[Dict[str, Any]] = None,
+        base_model_class: Any = BaseModel
     ) -> None:
         self.url = url or self._make_url(
             dialect=dialect,
@@ -74,7 +75,7 @@ class SQLAlchemy:
         self.engine = sqlalchemy.create_engine(self.url, **engine_options)
 
         self.registry = sqlalchemy.orm.registry()
-        self.Model = self.registry.generate_base(cls=BaseModel, name="Model")
+        self.Model = self.registry.generate_base(cls=base_model_class, name="Model")
 
         session_options = session_options or {}
         session_options.setdefault("class_", Session)
