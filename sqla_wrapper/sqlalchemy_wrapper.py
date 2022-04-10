@@ -2,12 +2,13 @@ from typing import Any, Dict, Optional
 
 import sqlalchemy
 import sqlalchemy.orm
+from sqlalchemy.orm.decl_api import DeclarativeMeta
 
 from .base_model import BaseModel
 from .session import PatchedScopedSession, Session
 
 
-__all__ = ("SQLAlchemy", "TestTransaction")
+__all__ = ("SQLAlchemy", "TestTransaction", "DeclarativeMeta")
 
 
 class SQLAlchemy:
@@ -60,7 +61,8 @@ class SQLAlchemy:
         port: Optional[str] = None,
         engine_options: Optional[Dict[str, Any]] = None,
         session_options: Optional[Dict[str, Any]] = None,
-        base_model_class: Any = BaseModel
+        base_model_class: Any = BaseModel,
+        base_model_metaclass: Any = DeclarativeMeta,
     ) -> None:
         self.url = url or self._make_url(
             dialect=dialect,
@@ -75,7 +77,11 @@ class SQLAlchemy:
         self.engine = sqlalchemy.create_engine(self.url, **engine_options)
 
         self.registry = sqlalchemy.orm.registry()
-        self.Model = self.registry.generate_base(cls=base_model_class, name="Model")
+        self.Model = self.registry.generate_base(
+            cls=base_model_class,
+            name="Model",
+            metaclass=base_model_metaclass
+        )
 
         session_options = session_options or {}
         session_options.setdefault("class_", Session)
