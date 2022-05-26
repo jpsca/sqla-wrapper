@@ -64,11 +64,11 @@ def _get_cli(alembic, group):
         "-e", "--end", default="head",
         help="To this revision (including it.)",
     )
-    def history(start, end):
+    def history(verbose, start, end):
         """Get the list of revisions in chronological order.
         You can optionally specify the range of revisions to return.
         """
-        alembic.history(start=start, end=end)
+        alembic.history(verbose=verbose, start=start, end=end)
 
     @group.command()
     @click.argument("target", default="head")
