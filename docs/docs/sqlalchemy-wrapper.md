@@ -35,36 +35,25 @@ db = SQLAlchemy(
 )
 ```
 
- After the setup, you will be interacting mostly directly with SQLAlchemy so I recommend reading the official [SQLAlchemy tutorial](https://docs.sqlalchemy.org/en/14/tutorial/index.html) if you haven't done it yet.
+ After the setup, you will be interacting mostly directly with SQLAlchemy so I recommend reading the official [SQLAlchemy tutorial](https://docs.sqlalchemy.org/en/20/tutorial/index.html) if you haven't done it yet.
 
 Beyond the URI, the class also accepts an `engine_options` and a `session_options` dictionary to pass special options when creating the engine and/or the session.
 
 
 ## Declaring models
 
-A `SQLAlchemy` instance provides a `db.Model` class to be used as a declarative base class for your models.
+A `SQLAlchemy` instance provides a `db.Model` class to be used as a declarative base class for your models. Follow the new [type-based way to declare the table columns](https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#declaring-mapped-classes)
 
 ```python
-from sqlalchemy import Column, Integer, String
-from .base import db
+from sqlalchemy.orm import Mapped, mapped_column
+from myapp.models import db
 
 class User(db.Model):
-    id = Column(Integer, primary_key=True)
-    name = Column(String(128))
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(128))
 ```
-
-`db` also includes all the functions and classes from `sqlalchemy` and `sqlalchemy.orm` so you don't need to import `Column`, `Integer`, `String`, etc. and can do this instead:
-
-```python
-from .base import db
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128))
-```
-
-To learn more about how to define database models, consult the [SQLAlchemy ORM documentation](https://docs.sqlalchemy.org/en/14/orm/index.html).
-
 
 ## API
 

@@ -14,7 +14,7 @@ class Session(sqlalchemy.orm.Session):
     to query and return a record by its primary key.
 
     This class extends the `sqlalchemy.orm.Session` class with some useful
-    active-record-like methods and a pagination helper.
+    active-record-like methods.
     """
 
     def all(self, Model: t.Any, **attrs) -> t.Sequence[t.Any]:

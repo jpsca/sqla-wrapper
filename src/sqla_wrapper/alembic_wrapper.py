@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import shutil
 import typing as t
 from pathlib import Path
@@ -53,7 +51,7 @@ class Alembic(object):
 
     def revision(
         self, message: str, *, empty: bool = False, parent: str = "head"
-    ) -> Script | None:
+    ) -> "Script | None":
         """Create a new revision.
         Auto-generate operations by comparing models and database.
 
@@ -172,7 +170,7 @@ class Alembic(object):
         )
 
     def get_history(
-        self, *, start: str | None = None, end: str | None = None
+        self, *, start: "str | None" = None, end: "str | None" = None
     ) -> list[Script]:
         """Get the list of revisions in chronological order.
         You can optionally specify the range of revisions to return.
@@ -200,8 +198,8 @@ class Alembic(object):
         self,
         *,
         verbose: bool = False,
-        start: str | None = "base",
-        end: str | None = "heads",
+        start: "str | None" = "base",
+        end: "str | None" = "heads",
     ) -> None:
         """Print the list of revisions in chronological order.
         You can optionally specify the range of revisions to return.
@@ -255,7 +253,7 @@ class Alembic(object):
             purge=purge,
         )
 
-    def _get_currents(self) -> t.Tuple[Script | None, ...]:
+    def _get_currents(self) -> "t.Tuple[Script | None, ...]":
         """Get the last revisions applied."""
         env = EnvironmentContext(self.config, self.script_directory)
         with self.db.engine.connect() as connection:
@@ -265,7 +263,7 @@ class Alembic(object):
 
         return self.script_directory.get_revisions(current_heads)
 
-    def get_current(self) -> Script | None:
+    def get_current(self) -> "Script | None":
         """Get the last revision applied."""
         revisions = self._get_currents()
         return revisions[0] if revisions else None
@@ -290,11 +288,11 @@ class Alembic(object):
                 )
             )
 
-    def _get_heads(self) -> t.Tuple[Script | None, ...]:
+    def _get_heads(self) -> "t.Tuple[Script | None, ...]":
         """Get the list of the latest revisions."""
         return self.script_directory.get_revisions("heads")
 
-    def get_head(self) -> Script | None:
+    def get_head(self) -> "Script | None":
         """Get the latest revision."""
         heads = self._get_heads()
         return heads[0] if heads else None
@@ -376,7 +374,7 @@ class Alembic(object):
         return config
 
     def _run_online(
-        self, fn: t.Callable, *, kwargs: dict | None = None, **envargs
+        self, fn: t.Callable, *, kwargs: "dict | None" = None, **envargs
     ) -> None:
         """Emit the SQL to the database."""
         env = EnvironmentContext(self.config, self.script_directory)
@@ -392,7 +390,7 @@ class Alembic(object):
                 env.run_migrations(**kwargs)
 
     def _run_offline(
-        self, fn: t.Callable, *, kwargs: dict | None = None, **envargs
+        self, fn: t.Callable, *, kwargs: "dict | None" = None, **envargs
     ) -> None:
         """Don't emit SQL to the database, dump to standard output instead."""
         env = EnvironmentContext(self.config, self.script_directory)

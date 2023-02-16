@@ -5,13 +5,13 @@ template: home.html
 
 SQLA-Wrapper is a wrapper for SQLAlchemy and Alembic that simplifies many aspects of its setup.
 
-It works with the [newer 2.0 style query API introduced in SQLAlchemy 1.4](https://docs.sqlalchemy.org/en/14/glossary.html#term-2.0-style), and can be used with most web frameworks.
+It works with the [newer  SQLAlchemy 2.0 style](https://docs.sqlalchemy.org/en/20/glossary.html#term-2.0-style), and can be used with most web frameworks.
 
 
 ## Includes
 
 - A [SQLAlchemy wrapper](sqlalchemy-wrapper), that does all the SQLAlchemy setup and gives you:
-    - A scoped session extended with some useful active-record-like methods and pagination.
+    - A scoped session extended with some useful active-record-like methods.
     - A declarative base class.
     - A helper for performant testing with a real database.
 
