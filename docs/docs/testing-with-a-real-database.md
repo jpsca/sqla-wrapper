@@ -201,4 +201,6 @@ class TestSomething(DBTestCase):
 ## API
 
 ::: sqla_wrapper.TestTransaction
-    :members:
+    options:
+        heading_level: 3
+        filter:

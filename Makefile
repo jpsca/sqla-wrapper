@@ -16,7 +16,7 @@ types:
 
 .PHONY: install
 install:
-	poetry install --with dev,test
+	poetry install --with dev,test,lint
 	createdb dbtest -U postgres || true
 	poetry run pre-commit install
 

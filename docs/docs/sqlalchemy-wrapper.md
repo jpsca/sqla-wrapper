@@ -58,4 +58,6 @@ class User(db.Model):
 ## API
 
 ::: sqla_wrapper.SQLAlchemy
-    :members:
+    options:
+        heading_level: 3
+        filter:

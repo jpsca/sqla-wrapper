@@ -3,7 +3,7 @@ site_description: A friendly wrapper for modern SQLAlchemy and Alembic
 site_url: https://sqla-wrapper.scaletti.dev
 repo_url: https://github.com/jpsca/sqla-wrapper
 repo_name: jpsca/sqla-wrapper
-copyright: Copyright &copy; 2013 - 2021 Juan-Pablo Scaletti
+copyright: Copyright &copy; 2013 Juan-Pablo Scaletti
 
 nav:
   - Home: index.md
@@ -14,7 +14,11 @@ nav:
   - Alembic:
     - alembic-wrapper.md
   - how-to.md
-  - api.md
+  - API:
+    - api/sqlalchemy-wrapper-class.md
+    - api/session-class.md
+    - api/testtransaction-class.md
+    - api/alembic-wrapper-class.md
 
 theme:
   name: material
@@ -56,11 +60,19 @@ extra_css:
   - assets/css/highlight.css
   # - assets/css/termynal.css
   - assets/css/common.css
-extra_javascript:
+# extra_javascript:
   # - assets/js/termynal.js
 edit_uri: ""
 plugins:
   - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_bases: false
+            show_source: false
+
 
 markdown_extensions:
   - admonition
@@ -70,7 +82,6 @@ markdown_extensions:
   - toc:
       permalink: "#"
       toc_depth: 4
-  - mkautodoc
   - pymdownx.betterem:
       smart_enable: all
   - pymdownx.caret

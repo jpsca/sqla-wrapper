@@ -73,4 +73,22 @@ cli = Manage()
 For a more in-depth understanding of these methods and the extra options, you can read the [documentation for the Alembic config](https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file).
 
 ::: sqla_wrapper.Alembic
-    :members: revision upgrade downgrade get_history history stamp get_current current get_head head init create_all rev_id get_proper_cli get_click_cli get_flask_cli
+    options:
+        heading_level: 3
+        members:
+            - revision
+            - upgrade
+            - downgrade
+            - get_history
+            - history
+            - stamp
+            - get_current
+            - current
+            - get_head
+            - head
+            - init
+            - create_all
+            - rev_id
+            - get_proper_cli
+            - get_click_cli
+            - get_flask_cli

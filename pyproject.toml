@@ -38,22 +38,35 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"
+pre-commit = "^2.20.0"
+tox = "*"
+
+[tool.poetry.group.lint]
+optional = true
+
+[tool.poetry.group.lint.dependencies]
 flake8 = "*"
 flake8-bugbear = "*"
-ipdb = "^0.13.9"
-pre-commit = "^2.20.0"
 pyright = "^1.1.282"
-pytest-cov = "*"
-tox = "*"
 
 [tool.poetry.group.test]
 optional = true
 
 [tool.poetry.group.test.dependencies]
 pytest = ">=7.2.0"
+pytest-cov = "*"
 flask = "^2.2"
 proper-cli = "^1.2"
 psycopg2-binary = "^2.9"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.4.2"
+mkdocs-material = "^9.0.12"
+pygments-github-lexers = "^0.0.5"
+mkdocstrings-python = "^0.8.3"
 
 
 [tool.black]

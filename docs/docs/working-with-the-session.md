@@ -1,9 +1,9 @@
 # Working with the session
 
-The Session is the mean to communicate with the database.
+The Session is the mean that you use to communicate with the database.
 There are two main ways to use it:
 
-## In a web app: use the scoped session `db.s`
+## In a web application: Use the scoped session `db.s`
 
 The "scoped_session" is really a proxy to a  session automatically scoped to the current thread.
 
@@ -21,7 +21,7 @@ def remove_db_scoped_session(error=None):
 
 The `db.s.remove()` method close the current session and dispose it. A new session will be created when `db.s` is called again.
 
-## In a web app background job
+### Background job/tasks
 
 Outside a web request cycle, like in a background job, you still can use the global session, but you must:
 
@@ -42,6 +42,8 @@ With most background jobs libraries you can set them so it's done automatically,
 
 ## In a standalone script: Instantiate `db.Session`
 
+Instantiating `db.Session` is the recommended way to work when the session is not shared like in a command-line script.
+
 You can use a context manager:
 
 ```python
@@ -61,19 +63,19 @@ dbs = db.Session():
 dbs.close()
 ```
 
-Instantiate `db.Session` is the recommended way to work when the session is not shared like in a command-line script.
-
 
 ## API
 
-SQLAlchemy default Session class has the method `.get(Model, pk)`
-to query and return a record by its primary key.
-
-This class extends the `sqlalchemy.orm.Session` class with some useful
-active-record-like methods.
-
 ::: sqla_wrapper.Session
-    :members: all create first first_or_create create_or_first
+    options:
+        heading_level: 3
+        members:
+            - get
+            - all
+            - create
+            - first
+            - first_or_create
+            - create_or_first
 
 ---
 

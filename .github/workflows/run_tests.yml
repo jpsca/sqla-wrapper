@@ -16,7 +16,7 @@ jobs:
       - name: "Installs dependencies"
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-      - run: ~/.local/share/pypoetry/venv/bin/poetry install --with test
+      - run: ~/.local/share/pypoetry/venv/bin/poetry install --with lint
       - run: make lint
   tests:
     name: tests
