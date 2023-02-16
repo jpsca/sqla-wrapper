@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import shutil
+import typing as t
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from alembic import autogenerate, util
 from alembic.config import Config
@@ -13,7 +15,7 @@ from .sqlalchemy_wrapper import SQLAlchemy
 
 __all__ = ("Alembic",)
 
-StrPath = Union[str, Path]
+StrPath = t.Union[str, Path]
 DEFAULT_FILE_TEMPLATE = "%%(year)d_%%(month).2d_%%(day).2d_%%(rev)s_%%(slug)s"
 TEMPLATE_FILE = "script.py.mako"
 
@@ -50,12 +52,8 @@ class Alembic(object):
         self.script_directory = ScriptDirectory.from_config(self.config)
 
     def revision(
-        self,
-        message: str,
-        *,
-        empty: bool = False,
-        parent: str = "head",
-    ) -> Optional[Script]:
+        self, message: str, *, empty: bool = False, parent: str = "head"
+    ) -> Script | None:
         """Create a new revision.
         Auto-generate operations by comparing models and database.
 
@@ -106,7 +104,7 @@ class Alembic(object):
             by default.
         - **sql**:
             Don't emit SQL to database, dump to standard output instead.
-        - **\*\*kwargs**:
+        - **kwargs**:
             Optional arguments. If these are passed, they are sent directly
             to the `upgrade()` functions within each revision file.
             To use, modify the `script.py.mako`template file
@@ -143,7 +141,7 @@ class Alembic(object):
             "-1" by default.
         - **sql**:
             Don't emit SQL to database, dump to standard output instead.
-        - **\*\*kwargs**:
+        - **kwargs**:
             Optional arguments. If these are passed, they are sent directly
             to the `downgrade()` functions within each revision file.
             To use, modify the `script.py.mako` template file
@@ -174,8 +172,8 @@ class Alembic(object):
         )
 
     def get_history(
-        self, *, start: Optional[str] = None, end: Optional[str] = None
-    ) -> List[Script]:
+        self, *, start: str | None = None, end: str | None = None
+    ) -> list[Script]:
         """Get the list of revisions in chronological order.
         You can optionally specify the range of revisions to return.
 
@@ -202,8 +200,8 @@ class Alembic(object):
         self,
         *,
         verbose: bool = False,
-        start: Optional[str] = "base",
-        end: Optional[str] = "heads",
+        start: str | None = "base",
+        end: str | None = "heads",
     ) -> None:
         """Print the list of revisions in chronological order.
         You can optionally specify the range of revisions to return.
@@ -257,7 +255,7 @@ class Alembic(object):
             purge=purge,
         )
 
-    def _get_currents(self) -> Tuple[Script, ...]:
+    def _get_currents(self) -> t.Tuple[Script | None, ...]:
         """Get the last revisions applied."""
         env = EnvironmentContext(self.config, self.script_directory)
         with self.db.engine.connect() as connection:
@@ -267,7 +265,7 @@ class Alembic(object):
 
         return self.script_directory.get_revisions(current_heads)
 
-    def get_current(self) -> Optional[Script]:
+    def get_current(self) -> Script | None:
         """Get the last revision applied."""
         revisions = self._get_currents()
         return revisions[0] if revisions else None
@@ -292,11 +290,11 @@ class Alembic(object):
                 )
             )
 
-    def _get_heads(self) -> Tuple[Script, ...]:
+    def _get_heads(self) -> t.Tuple[Script | None, ...]:
         """Get the list of the latest revisions."""
         return self.script_directory.get_revisions("heads")
 
-    def get_head(self) -> Optional[Script]:
+    def get_head(self) -> Script | None:
         """Get the latest revision."""
         heads = self._get_heads()
         return heads[0] if heads else None
@@ -356,18 +354,18 @@ class Alembic(object):
         """
         return util.rev_id()
 
-    def get_proper_cli(self) -> Any:
+    def get_proper_cli(self) -> t.Any:
         return proper_cli_cli.get_proper_cli(self)
 
-    def get_click_cli(self, name="db") -> Any:
+    def get_click_cli(self, name="db") -> t.Any:
         return click_cli.get_click_cli(self, name)
 
-    def get_flask_cli(self, name="db") -> Any:
+    def get_flask_cli(self, name="db") -> t.Any:
         return click_cli.get_flask_cli(self, name)
 
     # Private
 
-    def _get_config(self, options: Dict[str, str]) -> Config:
+    def _get_config(self, options: dict[str, str]) -> Config:
         options.setdefault("file_template", DEFAULT_FILE_TEMPLATE)
         options.setdefault("version_locations", options["script_location"])
 
@@ -378,7 +376,7 @@ class Alembic(object):
         return config
 
     def _run_online(
-        self, fn: Callable, *, kwargs: Optional[Dict] = None, **envargs
+        self, fn: t.Callable, *, kwargs: dict | None = None, **envargs
     ) -> None:
         """Emit the SQL to the database."""
         env = EnvironmentContext(self.config, self.script_directory)
@@ -394,7 +392,7 @@ class Alembic(object):
                 env.run_migrations(**kwargs)
 
     def _run_offline(
-        self, fn: Callable, *, kwargs: Optional[Dict] = None, **envargs
+        self, fn: t.Callable, *, kwargs: dict | None = None, **envargs
     ) -> None:
         """Don't emit SQL to the database, dump to standard output instead."""
         env = EnvironmentContext(self.config, self.script_directory)

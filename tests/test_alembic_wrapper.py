@@ -1,14 +1,14 @@
 import pytest
-from sqlalchemy import select
-
+import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column
 from sqla_wrapper import Alembic
 
 
 def _create_test_model1(memdb):
     class TestModel1(memdb.Model):
         __tablename__ = "test_model_1"
-        id = memdb.Column(memdb.Integer, primary_key=True)
-        name = memdb.Column(memdb.String(50), nullable=False)
+        id: Mapped[int] = mapped_column(primary_key=True)
+        name: Mapped[str] = mapped_column(sa.String(50), nullable=False)
 
     return TestModel1
 
@@ -16,8 +16,8 @@ def _create_test_model1(memdb):
 def _create_test_model2(memdb):
     class TestModel2(memdb.Model):
         __tablename__ = "test_model_2"
-        id = memdb.Column(memdb.Integer, primary_key=True)
-        name = memdb.Column(memdb.String(50), nullable=False)
+        id: Mapped[int] = mapped_column(primary_key=True)
+        name: Mapped[str] = mapped_column(sa.String(50), nullable=False)
 
     return TestModel2
 
@@ -216,7 +216,8 @@ def test_stamp_sql(memdb, dst, capsys):
     alembic.stamp(sql=True)
 
     stdout, _ = capsys.readouterr()
-    stmt = f"INSERT INTO alembic_version (version_num) VALUES ('{rev1.revision}');"
+    print(stdout)
+    stmt = f"INSERT INTO alembic_version (version_num) VALUES ('{rev1.revision}')"
     assert stmt in stdout
     assert "CREATE TABLE test_model_1" not in stdout
 
@@ -307,7 +308,7 @@ def test_create_all(memdb, dst):
     alembic.create_all()
 
     with memdb.Session() as session:
-        session.execute(select(Model)).all()
+        session.execute(sa.select(Model)).all()
     assert alembic.get_current() == rev1
 
 

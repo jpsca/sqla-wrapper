@@ -1,6 +1,131 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+name = "sqla_wrapper"
+version = "6.0.0"
+description = "A framework-independent modern wrapper for SQLAlchemy & Alembic"
+authors = ["Juan-Pablo Scaletti <juanpablo@jpscaletti.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://sqla-wrapper.scaletti.dev/"
+repository = "https://github.com/jpsca/sqla-wrapper"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
+    "Typing :: Typed",
 ]
-build-backend = "setuptools.build_meta"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+sqlalchemy = "^2.0"
+alembic = "^1.9"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+flake8 = "*"
+flake8-bugbear = "*"
+ipdb = "^0.13.9"
+pre-commit = "^2.20.0"
+pyright = "^1.1.282"
+pytest-cov = "*"
+tox = "*"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=7.2.0"
+flask = "^2.2"
+proper-cli = "^1.2"
+psycopg2-binary = "^2.9"
+
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.tox
+  | \.venv
+  | _build
+  | build
+  | dist
+)/
+'''
+
+
+[tool.isort]
+profile = "black"
+force_single_line = true
+include_trailing_comma=true
+atomic = true
+lines_after_imports = 2
+lines_between_types = 1
+
+
+[tool.coverage.run]
+branch = true
+omit = "*/cli/*"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "TYPE_CHECKING",
+    "def __repr__",
+    "def __str__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:"
+]
+
+[tool.coverage.html]
+directory = "covreport"
+
+
+[tool.pyright]
+include = ["src"]
+exclude = [
+    "**/__pycache__",
+    "**/tests",
+]
+ignore = []
+reportPrivateImportUsage = false
+reportWildcardImportFromLibrary = false
+
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
+
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+skipsdist = True
+envlist = py39,py310,py311
+
+[testenv]
+skip_install = true
+allowlist_externals = poetry
+commands =
+    pip install -U pip wheel
+    poetry install --with test
+    pytest -x src/sqla_wrapper tests
+"""

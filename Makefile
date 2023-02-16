@@ -1,21 +1,24 @@
 .PHONY: test
 test:
-	pytest -x sqla_wrapper tests
+	poetry run pytest -x -vv src/sqla_wrapper tests
 
 .PHONY: lint
 lint:
-	flake8 --config=setup.cfg sqla_wrapper tests
+	poetry run flake8 src/sqla_wrapper tests
 
 .PHONY: coverage
 coverage:
-	pytest --cov-config=.coveragerc --cov-report html --cov sqla_wrapper sqla_wrapper tests
+	poetry run pytest --cov-config=pyproject.toml --cov-report html --cov sqla_wrapper src/sqla_wrapper tests
+
+.PHONY: types
+types:
+	poetry run pyright src/sqla_wrapper
 
 .PHONY: install
 install:
-	pip install -e .[test,dev]
-	pip install -r docs/requirements.txt
-	createdb dbtest || true
-	pre-commit install --hook-type pre-push
+	poetry install --with dev,test
+	createdb dbtest -U postgres || true
+	poetry run pre-commit install
 
 .PHONY: docs
 docs:

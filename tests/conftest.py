@@ -4,6 +4,8 @@ from pathlib import Path
 from tempfile import mkdtemp
 
 import pytest
+import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column
 
 from sqla_wrapper import SQLAlchemy
 
@@ -38,9 +40,9 @@ def db() -> SQLAlchemy:
 def TestModelA(db):
     class TestModelA(db.Model):
         __tablename__ = "test_model_a"
-        id = db.Column(db.Integer, primary_key=True)
-        title = db.Column(db.String(50), nullable=False, unique=True)
-        created_at = db.Column(db.DateTime, default=datetime.utcnow)
+        id: Mapped[int] = mapped_column(primary_key=True)
+        title: Mapped[str] = mapped_column(sa.String(50), nullable=False, unique=True)
+        created_at: Mapped[datetime] = mapped_column(sa.DateTime, default=datetime.utcnow)
 
     return TestModelA
 
@@ -49,8 +51,8 @@ def TestModelA(db):
 def TestModelB(db):
     class TestModelB(db.Model):
         __tablename__ = "test_model_b"
-        id = db.Column(db.Integer, primary_key=True)
-        title = db.Column(db.String(50), nullable=False, unique=True)
+        id: Mapped[int] = mapped_column(primary_key=True)
+        title: Mapped[str] = mapped_column(sa.String(50), nullable=False, unique=True)
 
     return TestModelB
 
