@@ -1,0 +1,768 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="A friendly wrapper for modern SQLAlchemy and Alembic">
+
+
+
+
+        <link rel="canonical" href="https://sqla-wrapper.scaletti.dev/working-with-the-session/">
+
+      <link rel="icon" href="../assets/img/favicon.svg">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+
+
+
+        <title>Working with the session - SQLA Wrapper</title>
+
+
+
+      <link rel="stylesheet" href="../assets/stylesheets/main.a57b2b03.min.css">
+
+
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Convergence:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Convergence";--md-code-font-family:"Roboto Mono"}</style>
+
+
+
+
+      <link rel="stylesheet" href="../assets/css/highlight.css">
+
+      <link rel="stylesheet" href="../assets/css/common.css">
+
+
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="SQLA Wrapper - Working with the session" />
+<meta property="og:description" content="A friendly wrapper for modern SQLAlchemy and Alembic" />
+<meta property="og:url" content="https://sqla-wrapper.scaletti.dev/working-with-the-session/" />
+<meta property="og:image" content="https://sqla-wrapper.scaletti.dev/assets/img/social.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1280" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="pink">
+
+
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#working-with-the-session" class="md-skip">
+          Skip to content
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+<header class="md-header" data-md-component="header">
+        <div id="outdated-warning">This document is for an older version of SQLA-Wrapper</div>
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="SQLA Wrapper" class="md-header__button md-logo" aria-label="SQLA Wrapper" data-md-component="logo">
+
+  <img src="../assets/img/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SQLA Wrapper
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              Working with the session
+
+          </span>
+        </div>
+      </div>
+    </div>
+          <div class="version-chooser">
+        <select onchange="javascript:location.href=this.value">
+          <option value="/">Version 6.0</option>
+          <optgroup label="Older versions">
+            <option value="/old/5.x/" selected>Version 5.6</option>
+          </optgroup>
+        </select>
+      </div>
+      <form class="md-header__option" data-md-component="palette">
+
+
+
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 10.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13zM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061zM16 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8zM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8zm10.657-5.657a.75.75 0 0 1 0 1.061l-1.061 1.06a.75.75 0 1 1-1.06-1.06l1.06-1.06a.75.75 0 0 1 1.06 0zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0z"/></svg>
+            </label>
+
+
+
+
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="pink"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M9.598 1.591a.75.75 0 0 1 .785-.175 7 7 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.5 5.5 0 1 0 7.678-7.678z"/></svg>
+            </label>
+
+
+      </form>
+
+
+
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      <div class="md-header__source">
+
+<a href="https://github.com/jpsca/sqla-wrapper" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jpsca/sqla-wrapper
+  </div>
+</a>
+      </div>
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SQLA Wrapper" class="md-nav__button md-logo" aria-label="SQLA Wrapper" data-md-component="logo">
+
+  <img src="../assets/img/logo.svg" alt="logo">
+
+    </a>
+    SQLA Wrapper
+  </label>
+
+    <div class="md-nav__source">
+
+<a href="https://github.com/jpsca/sqla-wrapper" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jpsca/sqla-wrapper
+  </div>
+</a>
+    </div>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+
+
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+
+
+
+
+        <label class="md-nav__link" for="__nav_2">
+          SQLAlchemy
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
+      <nav class="md-nav" aria-label="SQLAlchemy" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          SQLAlchemy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sqlalchemy-wrapper/" class="md-nav__link">
+        SQLAlchemy wrapper
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active">
+
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+
+
+
+
+
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Working with the session
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Working with the session
+      </a>
+
+
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#use-the-scoped-session-dbs" class="md-nav__link">
+    Use the scoped session db.s
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#instantiate-dbsession" class="md-nav__link">
+    Instantiate db.Session
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    API
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../testing-with-a-real-database/" class="md-nav__link">
+        Testing with a real database
+      </a>
+    </li>
+
+
+
+
+        </ul>
+      </nav>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--nested">
+
+
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+
+
+
+
+        <label class="md-nav__link" for="__nav_3">
+          Alembic
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
+      <nav class="md-nav" aria-label="Alembic" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Alembic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../alembic-wrapper/" class="md-nav__link">
+        Alembic wrapper
+      </a>
+    </li>
+
+
+
+
+        </ul>
+      </nav>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../how-to/" class="md-nav__link">
+        How to ...?
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        API Reference
+      </a>
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#use-the-scoped-session-dbs" class="md-nav__link">
+    Use the scoped session db.s
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#instantiate-dbsession" class="md-nav__link">
+    Instantiate db.Session
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    API
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+
+
+
+                <h1 id="working-with-the-session">Working with the session<a class="headerlink" href="#working-with-the-session" title="Permanent link">#</a></h1>
+<p>The Session is the mean to communicate with the database.
+There are two main ways to use it:</p>
+<h2 id="use-the-scoped-session-dbs">Use the scoped session <code>db.s</code><a class="headerlink" href="#use-the-scoped-session-dbs" title="Permanent link">#</a></h2>
+<p>The &ldquo;scoped_session&rdquo; is really a proxy to a  session automatically scoped to the current thread.</p>
+<p>This allows having a global session, so the session can be shared without the need to pass it explicitly.</p>
+<p>A scoped session is the recommended way to work in a web application, however, you must remember to call <code>db.s.remove()</code> the session at the end of the request.</p>
+<p>Use your framework&rsquo;s &ldquo;on request end&rdquo; hook, to do that. For example, in Flask:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">teardown_request</span>
+<span class="k">def</span> <span class="nf">remove_db_scoped_session</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+</code></pre></div>
+<p>The <code>db.s.remove()</code> method close the current session and dispose it. A new session will be created when <code>db.s</code> is called again.</p>
+<p>Outside a web request cycle, like in a background job, you must call manually call  <code>db.s.remove()</code> at the end.</p>
+<h2 id="instantiate-dbsession">Instantiate <code>db.Session</code><a class="headerlink" href="#instantiate-dbsession" title="Permanent link">#</a></h2>
+<p>You can use a context manager:</p>
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">dbs</span><span class="p">:</span>
+    <span class="c1"># work with the session here</span>
+</code></pre></div>
+<p>When the session is created in this way, a database transaction is automatically initiated when required, and the <code>dbs.flush()</code>, <code>dbs.commit()</code>, and <code>dbs.rollback()</code> methods can be used as needed.</p>
+<p>The session is automatically closed and returned to the session pool when the context manager block ends.</p>
+<p>You can also create it without a context manager and close it manually:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dbs</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Session</span><span class="p">():</span>
+<span class="c1"># work with the session here</span>
+<span class="n">dbs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<p>Instantiate <code>db.Session</code> is the recommended way to work when the session is not shared like in a command-line script.</p>
+<h2 id="api">API<a class="headerlink" href="#api" title="Permanent link">#</a></h2>
+<p>SQLAlchemy default Session class has the method <code>.get(Model, pk)</code>
+to query and return a record by its primary key.</p>
+<p>This class extends the <code>sqlalchemy.orm.Session</code> class with some useful
+active-record-like methods and a pagination helper.</p>
+<div class="autodoc">
+<div class="autodoc-signature"><em>class </em><code>sqla_wrapper.<strong>Session</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">bind=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">autoflush=True</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">future=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">expire_on_commit=True</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">autocommit=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">twophase=False</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">binds=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">enable_baked_queries=True</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">info=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">query_cls=None</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-members">
+<div class="autodoc-signature"><code><strong>all</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">Model</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**attrs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Returns all the object found with these attributes.</p>
+<p>The filtering is done with a simple <code>.filter_by()</code> so is limited
+to “equality” comparisons against the columns of the model.
+Also, there is no way to sort the results. If you need sorting or
+more complex filtering, you are better served using a <code>db.select()</code>.</p>
+<p><strong>Examples</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>create</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">Model</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**attrs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Creates a new object and adds it to the session.</p>
+<p>This is a shortcut for:</p>
+<div class="highlight"><pre><span></span><code><span class="n">obj</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</code></pre></div>
+<p>Note that this does a <code>db.s.flush()</code>, so you must later call
+<code>db.s.commit()</code> to persist the new object.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">new_user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>first</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">Model</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**attrs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Returns the first object found with these attributes or <code>None</code>
+if there isn&rsquo;t one.</p>
+<p>The filtering is done with a simple <code>.filter_by()</code> so is limited
+to “equality” comparisons against the columns of the model.
+Also, there is no way to sort the results. If you need sorting or
+more complex filtering, you are better served using a <code>db.select()</code>.</p>
+<p><strong>Examples</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+<span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>first_or_create</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">Model</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**attrs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Tries to find an object and if none exists, it tries to create
+a new one first. Use this method when you expect the object to
+already exists but want to create it in case it doesn&rsquo;t.</p>
+<p>This does a <code>db.s.flush()</code>, so you must later call <code>db.s.commit()</code>
+to persist the new object (in case one has been created).</p>
+<p><strong>Examples</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">user1</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first_or_create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
+<span class="n">user2</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">first_or_create</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
+<span class="n">user1</span> <span class="ow">is</span> <span class="n">user2</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>create_or_first</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">Model</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">**attrs</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Tries to create a new object, and if it fails because already exists,
+return the first it founds. For this to work one or more of the
+attributes must be unique so it does fail, otherwise you will be creating
+a new different object.</p>
+<p>Use this method when you expect that the object does not exists but want
+to avoid an exception in case it does.</p>
+<p>This does a <code>db.s.flush()</code>, so you must later call <code>db.s.commit()</code>
+to persist the new object (in case one has been created).</p>
+<p><strong>Examples</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">user1</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create_or_first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
+<span class="n">user2</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">create_or_first</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#102;&#111;&#111;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>&#39;</span><span class="p">)</span>
+<span class="n">user1</span> <span class="ow">is</span> <span class="n">user2</span>
+</code></pre></div></div>
+<div class="autodoc-signature"><code><strong>paginate</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">query</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">total</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">page=1</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">per_page=20</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">padding=0</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"><p>Returns a <code>Paginator</code> of the <code>query</code> results.
+Note that you must calculate the total number of unpaginated
+results first.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><strong>query</strong>:
+    A <code>select()</code> statement for all items.</li>
+<li><strong>total</strong>:
+    Total number of items. You must pre-calculate this value.</li>
+<li><strong>page</strong>:
+    Number of the current page (first page is <code>1</code>)
+    It can be a number, a string with a number, or
+    the strings &ldquo;first&rdquo; or &ldquo;last&rdquo;.</li>
+<li><strong>per_page</strong>:
+    Max number of items to display on each page.</li>
+<li><strong>padding</strong>:
+    Number of elements of the previous and next page to show.
+    For example, if <code>per_page</code> is 10 and <code>padding</code> is 2,
+    every page will show 14 items, the first two from the
+    previous page and the last two for the next one.
+    This extra items will be repeated again on their own pages.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">query</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">deleted</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span>
+
+<span class="n">total</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span>
+    <span class="n">select</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">deleted</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+<span class="p">)</span>
+
+<span class="n">pag</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">total</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div></div>
+</div>
+</div>
+<hr />
+<p>As always, I recommend reading the official <a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_data_manipulation.html#tutorial-orm-data-manipulation">SQLAlchemy tutorial</a> to learn more how to work with the session.</p>
+
+
+
+
+
+
+
+            </article>
+          </div>
+        </div>
+
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
+          </a>
+
+      </main>
+
+
+<footer class="md-footer">
+
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+
+
+        <a href="../sqlalchemy-wrapper/" class="md-footer__link md-footer__link--prev" aria-label="Previous: SQLAlchemy wrapper" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              SQLAlchemy wrapper
+            </div>
+          </div>
+        </a>
+
+
+
+        <a href="../testing-with-a-real-database/" class="md-footer__link md-footer__link--next" aria-label="Next: Testing with a real database" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Testing with a real database
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+
+    </nav>
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2013 - 2021 Juan-Pablo Scaletti
+          </div>
+
+
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+
+
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "navigation.tracking", "search.suggest", "search.highligh"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+
+
+      <script src="../assets/javascripts/bundle.b1047164.min.js"></script>
+
+
+  </body>
+</html>

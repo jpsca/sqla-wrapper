@@ -22,4 +22,5 @@ rm site/assets/javascripts/lunr/min/lunr.th.min.js
 rm site/assets/javascripts/lunr/min/lunr.tr.min.js
 rm site/assets/javascripts/lunr/min/lunr.vi.min.js
 rm site/assets/javascripts/lunr/min/lunr.zh.min.js
+cp -r old site/old
 rsync --recursive --delete --progress site code:/var/www/sqla-wrapper/

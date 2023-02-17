@@ -6,7 +6,6 @@ body[data-md-color-scheme="default"] {
 	background-color: #fbf7f0;
 }
 .md-header {
-	position: initial;
 	background: var(--md-primary-fg-color);
 	background: linear-gradient(
 		125deg,
@@ -22,10 +21,22 @@ body[data-md-color-scheme="default"] {
 .md-header__button.md-logo img,
 .md-header__button.md-logo svg {
 	height: auto !important;
-	width: 1.7rem !important;
 }
 .md-footer {
 	margin-top: 40px;
+}
+
+.autodoc-signature {
+	margin-bottom: 20px;
+}
+.autodoc-docstring {
+	padding-left: 20px;
+	margin-bottom: 30px;
+	border-left: 5px solid rgba(230, 230, 230);
+}
+.autodoc-members {
+	padding-left: 20px;
+	margin-bottom: 15px;
 }
 
 #outdated-warning {
@@ -39,9 +50,8 @@ body[data-md-color-scheme="default"] {
   text-align: center;
 	z-index: 100000;
 }
-.version-chooser select {;
-	border: 1px solid #444;
-	padding: 9px;
+.version-chooser select {
+	padding: 9px 4px;
 	border-radius: 2px;
-	background-color: rgba(255, 255, 255, 0.5);
+	background: white;
 }
