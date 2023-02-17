@@ -32,3 +32,4 @@ sdist/
 docs/site/*
 var/
 wheels/
+.coverage

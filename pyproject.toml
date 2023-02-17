@@ -96,7 +96,9 @@ lines_between_types = 1
 
 [tool.coverage.run]
 branch = true
-omit = "*/cli/*"
+omit = [
+    "*/cli/*",
+]
 
 [tool.coverage.report]
 exclude_lines = [
