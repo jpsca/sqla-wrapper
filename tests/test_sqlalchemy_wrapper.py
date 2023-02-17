@@ -1,5 +1,7 @@
 import pytest
-from sqlalchemy import *  # noqa
+import sqlalchemy as sa
+from sqlalchemy.exc import OperationalError
+from sqlalchemy.orm import Mapped, mapped_column
 
 from sqla_wrapper import SQLAlchemy
 
@@ -62,32 +64,33 @@ def test_setup_with_driver_options():
 def test_drop_all(memdb):
     class ToDo(memdb.Model):
         __tablename__ = "todos"
-        id = Column(Integer, primary_key=True)
+        id: Mapped[int] = mapped_column(primary_key=True)
 
     memdb.create_all()
     memdb.drop_all()
 
-    with pytest.raises(Exception):
+    with pytest.raises(OperationalError):
         with memdb.Session() as session:
-            session.execute(select(ToDo)).all()
+            session.execute(sa.select(ToDo)).all()
 
 
 def test_single_table_inhertance(memdb):
     class Person(memdb.Model):
         __tablename__ = "persons"
-        id = Column(Integer, primary_key=True)
-        type = Column(String(50))
+        id: Mapped[int] = mapped_column(primary_key=True)
+        type: Mapped[str] = mapped_column(sa.String(50))
+
         __mapper_args__ = {
             "polymorphic_identity": "person",
             "polymorphic_on": type,
         }
 
     class Engineer(Person):
-        engineer_name = Column(String(30))
+        engineer_name: Mapped[str] = mapped_column(sa.String(30), nullable=True)
         __mapper_args__ = {"polymorphic_identity": "engineer"}
 
     class Manager(Person):
-        manager_name = Column(String(30))
+        manager_name: Mapped[str] = mapped_column(sa.String(30), nullable=True)
         __mapper_args__ = {"polymorphic_identity": "manager"}
 
     memdb.create_all()

@@ -1,34 +1,24 @@
 # How to ...?
 
-In this section you can find how to do some common database tasks using SQLAlchemy and SQLA-wrapper. Is not a complete reference of what you can do with SQLAlchemy so you should read the official [SQLAlchemy tutorial](https://docs.sqlalchemy.org/en/14/tutorial/) to have a better understanding of it.
+In this section you can find how to do some common database tasks using SQLAlchemy and SQLA-wrapper. Is not a complete reference of what you can do with SQLAlchemy so you should read the official [SQLAlchemy tutorial](https://docs.sqlalchemy.org/en/20/tutorial/) to have a better understanding of it.
 
 All examples assume that an SQLAlchemy instance has been created and stored in a global variable named `db`.
 
 
 ## Declare models
 
-`db` provides a `db.Model` class to be used as a declarative base class for your models.
+`db` provides a `db.Model` class to be used as a declarative base class for your models and follow the new [type-based way to declare the table columns](https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#declaring-mapped-classes)
 
 ```python
-from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 from myapp.models import db
 
 class User(db.Model):
-    id = Column(Integer, primary_key=True)
-    name = Column(String(128))
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(128))
 ```
-
-`db` also includes all the functions and classes from `sqlalchemy` and `sqlalchemy.orm` so you don't need to import `Column`, `Integer`, `String`, etc. and can do this instead:
-
-```python
-from myapp.models import db
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128))
-```
-
-To learn more about how to define database models, consult the [SQLAlchemy ORM documentation](https://docs.sqlalchemy.org/en/14/orm/index.html).
 
 
 ## Insert an object to the database
@@ -81,13 +71,14 @@ user = db.s.first(User, login="hello")
 
 ## Query the database
 
-First, make a query using `db.select( ... )`, and then execute the query with `db.s.execute( ... )`.
+First, make a query using `sqlalchemy.select( ... )`, and then execute the query with `db.s.execute( ... )`.
 
 ```python
+import sqlalchemy as sa
 from myapp.models import User, db
 
 users = db.s.execute(
-  db.select(User)
+  sa.select(User)
   .where(User.email.endswith('@example.com'))
 ).scalars()
 
@@ -95,10 +86,10 @@ users = db.s.execute(
 # `users.unique()`, etc.
 ```
 
-The [results](https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.Result) from `db.s.execute()` are returned as a list of rows, where each row is a tuple, even if only one result per row was requested. The [`scalars()`](https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.ScalarResult) method conveniently extract the first result in each row.
+The [results](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.Result) from `db.s.execute()` are returned as a list of rows, where each row is a tuple, even if only one result per row was requested. The [`scalars()`](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.ScalarResult) method conveniently extract the first result in each row.
 
 The `select()` function it is very powerful and can do **a lot** more:
-https://docs.sqlalchemy.org/en/14/tutorial/data_select.html#selecting-rows-with-core-or-orm
+https://docs.sqlalchemy.org/en/20/tutorial/data_select.html#selecting-rows-with-core-or-orm
 
 
 
@@ -107,10 +98,11 @@ https://docs.sqlalchemy.org/en/14/tutorial/data_select.html#selecting-rows-with-
 Like with regular SQL, use the `count` function:
 
 ```python
+import sqlalchemy as sa
 from myapp.models import User, db
 
 num = db.s.execute(
-  db.select(db,func.count(User.id))
+  sa.select(db,func.count(User.id))
   .where(User.email.endswith('@example.com'))
 ).scalar()
 ```
@@ -147,18 +139,19 @@ db.s.commit()
 
 ## Run an arbitrary SQL statement
 
-Use `db.text` to build a query and then run it with `db.s.execute`.
+Use `sqlalchemy.text` to build a query and then run it with `db.s.execute`.
 
 ```python
+import sqlalchemy as sa
 from myapp.models import db
 
-sql = db.text("SELECT * FROM user WHERE user.id = :user_id")
+sql = sa.text("SELECT * FROM user WHERE user.id = :user_id")
 results = db.s.execute(sql, params={"user_id": 5}).all()
 ```
 
 Parameters are specified by name, always using the format `:name`, no matter the database engine.
 
-Is important to use `db.text()` instead of plain strings so the parameters are escaped protecting you from SQL injection attacks.
+Is important to use `text()` instead of plain strings so the parameters are escaped protecting you from SQL injection attacks.
 
 
 ## Work with background jobs/tasks

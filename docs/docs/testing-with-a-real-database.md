@@ -112,7 +112,7 @@ There is only one caveat: if you want to allow tests to also use rollbacks withi
     connection.close()
     ```
 
-    This recipe is what [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#session-external-transaction) recommends and even test in their own CI to ensure that it remains working as expected.
+    This recipe is what [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/20/orm/session_transaction.html#session-external-transaction) recommends and even test in their own CI to ensure that it remains working as expected.
 
 
 ### pytest
@@ -201,4 +201,6 @@ class TestSomething(DBTestCase):
 ## API
 
 ::: sqla_wrapper.TestTransaction
-    :members:
+    options:
+        heading_level: 3
+        filter:

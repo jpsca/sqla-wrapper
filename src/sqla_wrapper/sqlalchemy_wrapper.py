@@ -1,14 +1,14 @@
-from typing import Any, Dict, Optional
+import typing as t
 
-import sqlalchemy
-import sqlalchemy.orm
-from sqlalchemy.orm.decl_api import DeclarativeMeta
+import sqlalchemy as sa
+from sqlalchemy import orm as sa_orm
+from sqlalchemy.event import listens_for as sa_listens_for
 
 from .base_model import BaseModel
 from .session import PatchedScopedSession, Session
 
 
-__all__ = ("SQLAlchemy", "TestTransaction", "DeclarativeMeta")
+__all__ = ("SQLAlchemy", "TestTransaction")
 
 
 class SQLAlchemy:
@@ -25,7 +25,7 @@ class SQLAlchemy:
     user, password, host, port, and database name as separate arguments.
 
     Please review the
-    [Database URLs](https://docs.sqlalchemy.org/en/14/core/engines.html#database-urls)
+    [Database URLs](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls)
     section of the SQLAlchemy documentation, for general guidelines in composing
     URL strings. In particular, special characters, such as those often part of
     passwords, must be URL-encoded to be properly parsed.
@@ -41,28 +41,27 @@ class SQLAlchemy:
 
     class User(Base):
         __tablename__ = "users"
-        id = Column(Integer, primary_key=True)
-        login = Column(String(80), unique=True)
-        deleted = Column(DateTime)
-
+        id: Mapped[int] = mapped_column(primary_key=True)
+        name: Mapped[str] = mapped_column(sa.String(80), unique=True)
+        deleted: Mapped[datetime] = mapped_column(sa.DateTime)
     ```
 
     """
 
     def __init__(
         self,
-        url: Optional[str] = None,
+        url: "str | None" = None,
         *,
         dialect: str = "sqlite",
-        name: Optional[str] = None,
-        user: Optional[str] = None,
-        password: Optional[str] = None,
-        host: Optional[str] = None,
-        port: Optional[str] = None,
-        engine_options: Optional[Dict[str, Any]] = None,
-        session_options: Optional[Dict[str, Any]] = None,
-        base_model_class: Any = BaseModel,
-        base_model_metaclass: Any = DeclarativeMeta,
+        name: "str | None" = None,
+        user: "str | None" = None,
+        password: "str | None" = None,
+        host: "str | None" = None,
+        port: "str | int | None" = None,
+        engine_options: "t.Dict[str, t.Any] | None" = None,
+        session_options: "t.Dict[str, t.Any] | None" = None,
+        base_model_class: t.Any = BaseModel,
+        base_model_metaclass: t.Any = sa_orm.DeclarativeMeta,
     ) -> None:
         self.url = url or self._make_url(
             dialect=dialect,
@@ -74,9 +73,9 @@ class SQLAlchemy:
         )
         engine_options = engine_options or {}
         engine_options.setdefault("future", True)
-        self.engine = sqlalchemy.create_engine(self.url, **engine_options)
+        self.engine = sa.create_engine(self.url, **engine_options)
 
-        self.registry = sqlalchemy.orm.registry()
+        self.registry = sa_orm.registry()
         self.Model = self.registry.generate_base(
             cls=base_model_class,
             name="Model",
@@ -88,10 +87,8 @@ class SQLAlchemy:
         session_options.setdefault("bind", self.engine)
         session_options.setdefault("future", True)
         self.session_class = session_options["class_"]
-        self.Session = sqlalchemy.orm.sessionmaker(**session_options)
+        self.Session = sa_orm.sessionmaker(**session_options)
         self.s = PatchedScopedSession(self.Session)
-
-        self._include_sqlalchemy()
 
     def create_all(self, **kwargs) -> None:
         """Creates all the tables of the models registered so far.
@@ -114,30 +111,15 @@ class SQLAlchemy:
     def test_transaction(self, savepoint: bool = False) -> "TestTransaction":
         return TestTransaction(self, savepoint=savepoint)
 
-    def _include_sqlalchemy(self):
-        skip = (
-            "create_engine",
-            "create_session",
-            "declarative_base",
-            "scoped_session",
-            "sessionmaker",
-        )
-        for module in sqlalchemy, sqlalchemy.orm:
-            for key in module.__all__:
-                if key in skip or hasattr(self, key):
-                    continue
-                setattr(self, key, getattr(module, key))
-        self.event = sqlalchemy.event
-
     def _make_url(
         self,
         dialect: str,
         *,
-        user: Optional[str] = None,
-        password: Optional[str] = None,
-        host: Optional[str] = None,
-        port: Optional[str] = None,
-        name: Optional[str] = None,
+        user: "str | None" = None,
+        password: "str | None" = None,
+        host: "str | None" = None,
+        port: "str | int | None" = None,
+        name: "str | None" = None,
     ) -> str:
         url_parts = [f"{dialect}://"]
         if user:
@@ -165,7 +147,7 @@ class SQLAlchemy:
 class TestTransaction:
     """Helper for building sessions that rollback everyting at the end.
 
-    See ["Joining a Session into an External Transaction"](https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#session-external-transaction)
+    See ["Joining a Session into an External Transaction"](https://docs.sqlalchemy.org/en/20/orm/session_transaction.html#session-external-transaction)
     in the SQLAlchemy documentation.
     """
     def __init__(self, db: SQLAlchemy, savepoint: bool = False) -> None:
@@ -180,7 +162,7 @@ class TestTransaction:
             # will allow tests to also use rollback within tests
             self.nested = self.connection.begin_nested()
 
-            @sqlalchemy.event.listens_for(self.session, "after_transaction_end")
+            @sa_listens_for(target=self.session, identifier="after_transaction_end")
             def end_savepoint(session, transaction):
                 if not self.nested.is_active:
                     self.nested = self.connection.begin_nested()
@@ -190,8 +172,8 @@ class TestTransaction:
         self.trans.rollback()
         self.connection.close()
 
-    def __enter__(self):  # pragma: no cover
+    def __enter__(self) -> "TestTransaction":  # pragma: no cover
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):  # pragma: no cover
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:  # pragma: no cover
         self.close()

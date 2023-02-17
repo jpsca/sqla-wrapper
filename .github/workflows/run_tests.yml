@@ -7,11 +7,22 @@ on:
     branches:
       - main
 jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: "Installs dependencies"
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+      - run: ~/.local/share/pypoetry/venv/bin/poetry install --with lint
+      - run: make lint
   tests:
     name: tests
     strategy:
       matrix:
-        python: ['3.7', '3.8', '3.9', '3.10']
+        python: ["3.9", "3.10", "3.11"]
       fail-fast: false
     runs-on: ubuntu-latest
 
@@ -32,6 +43,8 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
-      - run: pip install -U pip wheel
-      - run: pip install -e .[test]
+      - name: "Installs dependencies"
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+      - run: ~/.local/share/pypoetry/venv/bin/poetry install --with test
       - run: make test

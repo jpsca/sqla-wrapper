@@ -1,13 +1,13 @@
 ![SQLA-Wrapper](header.png)
 
-A friendly wrapper for [modern SQLAlchemy](https://docs.sqlalchemy.org/en/14/glossary.html#term-2.0-style) (v1.4 or later) and Alembic.
+A friendly wrapper for [modern SQLAlchemy](https://docs.sqlalchemy.org/en/20/glossary.html#term-2.0-style) (v1.4 or later) and Alembic.
 
 **Documentation:** https://sqla-wrapper.scaletti.dev/
 
 Includes:
 
 - A SQLAlchemy wrapper, that does all the SQLAlchemy setup and gives you:
-    - A scoped session extended with some useful active-record-like methods and pagination helper.
+    - A scoped session extended with some useful active-record-like methods.
     - A declarative base class.
     - A helper for performant testing with a real database.
 

@@ -1,4 +1,4 @@
-from typing import Any
+import typing as t
 
 from sqlalchemy import inspect
 
@@ -7,7 +7,7 @@ __all__ = ("BaseModel", )
 
 
 class BaseModel:
-    def fill(self, **attrs) -> Any:
+    def fill(self, **attrs: t.Any) -> t.Any:
         """Fill the object with the values of the attrs dict."""
         for name in attrs:
             setattr(self, name, attrs[name])
@@ -20,12 +20,15 @@ class BaseModel:
         output.append(">")
         return "".join(output)
 
-    def _iter_attrs(self):
-        names = inspect(self.__class__).columns.keys()
+    def _iter_attrs(self) -> t.Generator:
+        inspection = inspect(self.__class__)
+        if inspection is None:
+            raise StopIteration
+        names = inspection.columns.keys()
         for name in names:
             yield (name, getattr(self, name))
 
-    def _repr_attr(self, attr):
+    def _repr_attr(self, attr: t.Any) -> str:
         name, value = attr
         if hasattr(value, "isoformat"):
             value = value.isoformat()

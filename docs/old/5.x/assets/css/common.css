@@ -1,0 +1,57 @@
+[data-md-color-scheme="default"] {
+	--md-code-bg-color: #fff;
+}
+
+body[data-md-color-scheme="default"] {
+	background-color: #fbf7f0;
+}
+.md-header {
+	background: var(--md-primary-fg-color);
+	background: linear-gradient(
+		125deg,
+		var(--md-primary-fg-color) 0%,
+		var(--md-accent-fg-color) 99%
+	);
+}
+.md-typeset code {
+	font-size: 0.95em;
+}
+.md-nav__title .md-nav__button.md-logo img,
+.md-nav__title .md-nav__button.md-logo svg,
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+	height: auto !important;
+}
+.md-footer {
+	margin-top: 40px;
+}
+
+.autodoc-signature {
+	margin-bottom: 20px;
+}
+.autodoc-docstring {
+	padding-left: 20px;
+	margin-bottom: 30px;
+	border-left: 5px solid rgba(230, 230, 230);
+}
+.autodoc-members {
+	padding-left: 20px;
+	margin-bottom: 15px;
+}
+
+#outdated-warning {
+  background-color: #FFBABA;
+  color: #181d27;
+  position: relative;
+	display: block;
+  width: 100%;
+  padding: 8px 20px 8px;
+  font-size: 14px;
+  text-align: center;
+	z-index: 100000;
+}
+.version-chooser select {
+	padding: 9px 4px;
+	border-radius: 2px;
+	background: white;
+}
