@@ -1,6 +1,6 @@
 ![SQLA-Wrapper](header.png)
 
-A friendly wrapper for [modern SQLAlchemy](https://docs.sqlalchemy.org/en/20/glossary.html#term-2.0-style) (v1.4 or later) and Alembic.
+A friendly wrapper for [modern SQLAlchemy](https://docs.sqlalchemy.org/en/20/glossary.html#term-2.0-style) (v2.0 or later) and Alembic.
 
 **Documentation:** https://sqla-wrapper.scaletti.dev/
 
