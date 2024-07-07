@@ -37,7 +37,7 @@ alembic = "^1.9"
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-black = "^22.10.0"
+black = ">=22.10,<25.0"
 pre-commit = "^2.20.0"
 tox = "*"
 
